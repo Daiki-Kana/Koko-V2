@@ -1,0 +1,5140 @@
+/* ==========================================================================
+   Koko* - 中学受験サポートアプリ スタイルシート (style.css)
+   【世界観コンセプト：レトロポップ】
+   「ここでいい」から、「ここがいい」へ。
+   温かみのあるクリーム地、ディープネイビー、チェリーレッド、マスタードの鮮やかなレトロポップデザイン
+   グラデーション一切なし（単色ソリッドカラーのみ）
+   ========================================================================== */
+
+:root {
+  /* --- メインカラーパレット（レトロポップ） --- */
+  --koko-blue-main: #1D3557;       /* ディープクラシックネイビー */
+  --koko-blue-hover: #13243B;
+  --koko-blue-light: #EDF2F7;
+  --koko-blue-subtle: #F6F9FC;
+
+  --koko-red: #E63946;             /* レトロチェリーレッド（主役アクセント） */
+  --koko-red-light: #FDE8EA;
+  --koko-yellow: #F4A261;          /* レトロウォームオレンジ・マスタード */
+  --koko-yellow-light: #FEF3EB;
+  --koko-green: #2A9D8F;           /* レトロセージグリーン */
+  --koko-green-light: #E7F5F3;
+
+  /* ハート・いいね用アクセント（可愛い感じのチェリーピンク〜赤） */
+  --koko-pink: #FF3366;
+  --koko-pink-light: #FFE8EE;
+  --koko-purple: #1D3557;
+
+  /* --- ベース・サーフェス --- */
+  --bg-page: #FFFDF0;              /* 温かみのあるオフホワイト・クリーム */
+  --bg-card: #FFFFFF;
+  --border-light: #1D3557;         /* レトロポップ特有のくっきりしたネイビー枠線 */
+  --border-subtle: #E2E8F0;
+  --border-focus: #E63946;
+
+  /* --- テキストカラー --- */
+  --text-primary: #1D2A44;
+  --text-secondary: #455A75;
+  --text-muted: #7B8CA3;
+
+  /* --- タイポグラフィ --- */
+  --font-logo: 'Comfortaa', 'Zen Maru Gothic', cursive, sans-serif;
+  --font-main: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+  --font-child: 'Zen Maru Gothic', 'M PLUS Rounded 1c', sans-serif;
+
+  /* --- 丸み＆シャドウ（レトロポップ・フラットオフセット） --- */
+  --radius-sm: 12px;
+  --radius-card: 20px;
+  --radius-pill: 9999px;
+
+  --shadow-card: 4px 4px 0px #1D3557;
+  --shadow-btn: 3px 3px 0px #1D3557;
+  --shadow-hover: 5px 5px 0px #1D3557;
+}
+
+/* ========================================================
+   グローバルリセット & 基本レイアウト
+   ======================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #E2E8F0;
+  overflow-x: hidden !important;
+  overscroll-behavior-x: none !important;
+  overscroll-behavior-y: auto;
+  touch-action: pan-y !important;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #E2E8F0;
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden !important;
+  overscroll-behavior-x: none !important;
+  touch-action: pan-y !important;
+}
+
+/* アプリコンテナ（スマホ・タブレット・PC全対応の中央配置・添付写真に準拠） */
+.app-container {
+  width: 100%;
+  max-width: 480px; /* スマートフォン・タブレットに最も見やすい横幅 */
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--koko-cream);
+  border-left: 2px solid var(--koko-blue-main);
+  border-right: 2px solid var(--koko-blue-main);
+  box-shadow: 0 0 30px rgba(29, 53, 87, 0.12);
+  position: relative;
+  overflow-x: hidden !important;
+  overscroll-behavior-x: none !important;
+  touch-action: pan-y !important;
+  box-sizing: border-box;
+}
+
+/* ========================================================
+   Koko* グローバルヘッダー
+   ======================================================== */
+.global-header {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.koko-logo-mark {
+  font-family: var(--font-logo);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+.koko-logo-mark .logo-star {
+  font-size: 26px;
+  color: var(--koko-blue-main);
+  vertical-align: super;
+  margin-left: 2px;
+}
+
+.brand-text-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.koko-catchphrase {
+  font-family: var(--font-child);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+
+.koko-sub-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.household-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background-color: var(--koko-blue-light);
+  color: var(--koko-blue-main);
+  border: 1px solid var(--border-light);
+}
+
+/* モード切り替えタブ */
+.device-sync-nav {
+  display: flex;
+  background-color: var(--koko-blue-subtle);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  gap: 4px;
+  border: 1px solid var(--border-light);
+}
+
+.nav-tab-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-tab-btn:hover {
+  color: var(--koko-blue-main);
+}
+
+.nav-tab-btn.active {
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-btn);
+}
+
+/* ========================================================
+   Koko* レトロポップ・オープニング（スタート画面）
+   ======================================================== */
+.koko-hero-opening-card {
+  text-align: center;
+  padding: 60px 32px 50px 32px;
+  background-color: #FFFFFF;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  margin: 16px auto 32px auto;
+  max-width: 680px;
+}
+
+.hero-logo-large {
+  margin-bottom: 20px;
+}
+.hero-logo-large .logo-main-huge {
+  font-family: var(--font-logo);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  letter-spacing: -1px;
+}
+.hero-logo-large .logo-star-huge {
+  font-family: var(--font-logo);
+  font-size: 44px;
+  color: var(--koko-red);
+  vertical-align: super;
+  margin-left: 4px;
+}
+
+.hero-catch-title {
+  font-family: var(--font-child);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+
+.hero-sub-description {
+  font-family: var(--font-child);
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 36px;
+}
+
+.hero-start-action-wrap {
+  margin-bottom: 32px;
+}
+
+.btn-retro-start-huge {
+  background-color: var(--koko-red);
+  color: #FFFFFF;
+  font-family: var(--font-child);
+  font-size: 20px;
+  font-weight: 800;
+  padding: 16px 64px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--koko-blue-main);
+  box-shadow: 4px 4px 0px var(--koko-blue-main);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-block;
+}
+.btn-retro-start-huge:hover {
+  background-color: #D62839;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--koko-blue-main);
+}
+.btn-retro-start-huge:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--koko-blue-main);
+}
+
+.hero-retro-badges-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.retro-badge-pill {
+  background-color: var(--koko-yellow-light);
+  color: #9C4221;
+  border: 1px solid var(--koko-yellow);
+  border-radius: var(--radius-pill);
+  padding: 6px 16px;
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ========================================================
+   メインコンテンツエリア
+   ======================================================== */
+.app-main-content {
+  flex: 1;
+  padding: 24px;
+}
+
+.role-view {
+  display: none;
+}
+.role-view.active {
+  display: block;
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 保護者サブナビ */
+.parent-sub-nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.p-sub-btn {
+  flex: 1;
+  border: 1px solid var(--border-light);
+  background-color: var(--bg-card);
+  color: var(--text-secondary);
+  font-family: var(--font-main);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.p-sub-btn:hover {
+  border-color: var(--koko-blue-main);
+  color: var(--koko-blue-main);
+}
+
+.p-sub-btn.active {
+  background-color: var(--koko-blue-main);
+  border-color: var(--koko-blue-main);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-btn);
+}
+
+.p-sub-view {
+  display: none;
+}
+.p-sub-view.active {
+  display: block;
+}
+
+/* ========================================================
+   ウィザード・1問1画面 スライド
+   ======================================================== */
+.wizard-viewport {
+  position: relative;
+  overflow: hidden;
+  min-height: 480px;
+}
+
+.question-slide {
+  display: none;
+  width: 100%;
+}
+.question-slide.active {
+  display: block;
+}
+
+/* スライドアニメーション */
+.slide-in-right {
+  display: block !important;
+  animation: animSlideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.slide-out-left {
+  display: block !important;
+  animation: animSlideOutLeft 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.slide-in-left {
+  display: block !important;
+  animation: animSlideInLeft 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.slide-out-right {
+  display: block !important;
+  animation: animSlideOutRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes animSlideInRight {
+  0% { transform: translateX(40px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+@keyframes animSlideOutLeft {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(-40px); opacity: 0; }
+}
+@keyframes animSlideInLeft {
+  0% { transform: translateX(-40px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+@keyframes animSlideOutRight {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(40px); opacity: 0; }
+}
+
+/* ========================================================
+   プログレスバー（Koko* スタイル）
+   ======================================================== */
+.wizard-progress-card {
+  background-color: var(--koko-blue-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+  margin-bottom: 20px;
+}
+
+.wizard-progress-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin-bottom: 8px;
+  font-family: var(--font-child);
+}
+
+.progress-bar-rail {
+  height: 8px;
+  background-color: #E2E8F0;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.progress-bar-active {
+  height: 100%;
+  background-color: var(--koko-blue-main);
+  border-radius: var(--radius-pill);
+  transition: width 0.3s ease;
+}
+
+/* ========================================================
+   質問カード（Koko* 柔らかなカード）
+   ======================================================== */
+.card-surface {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+.single-focus-card {
+  min-height: 460px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ステップバッジ */
+.badge-parent, .badge-child {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-child);
+  font-size: 12px;
+  font-weight: 700;
+  background-color: var(--koko-blue-light);
+  color: var(--koko-blue-main);
+  margin-bottom: 8px;
+}
+
+.slide-question-title {
+  font-family: var(--font-child);
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+.slide-question-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: var(--text-secondary);
+}
+.slide-question-desc strong {
+  color: var(--koko-blue-main);
+  font-weight: 700;
+}
+
+.slide-input-wrap {
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.slide-actions-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: auto;
+  border-top: 1px solid var(--border-light);
+  padding-top: 18px;
+}
+.slide-actions-bar.between {
+  justify-content: space-between;
+}
+
+/* ========================================================
+   Koko* ボタン（やわらかなピル型ボタン）
+   ======================================================== */
+.btn-solid-parent, .btn-solid-child {
+  border: none;
+  font-family: var(--font-child);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-btn);
+  transition: all 0.2s ease;
+}
+
+.btn-solid-parent:hover, .btn-solid-child:hover {
+  background-color: var(--koko-blue-hover);
+  transform: translateY(-1px);
+}
+
+.btn-outline-parent, .btn-outline-child {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  font-family: var(--font-child);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+.btn-outline-parent:hover, .btn-outline-child:hover {
+  border-color: var(--koko-blue-main);
+  color: var(--koko-blue-main);
+}
+
+/* ========================================================
+   子供向けステップ1：好きなこと10項目カード（Koko* スタイル）
+   ======================================================== */
+.selection-counter {
+  display: inline-block;
+  font-family: var(--font-child);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  background-color: var(--koko-blue-light);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 12px;
+}
+
+.child-interests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.interest-item-card {
+  min-height: 70px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-card);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.interest-item-card:hover {
+  border-color: var(--koko-blue-main);
+  transform: translateY(-2px);
+}
+
+.interest-item-card.selected {
+  border-color: var(--koko-blue-main);
+  background-color: var(--koko-blue-light);
+}
+
+.interest-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background-color: var(--koko-blue-subtle);
+  color: var(--koko-blue-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.interest-item-card.selected .interest-icon-box {
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+}
+
+.interest-label-box strong {
+  font-family: var(--font-child);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: block;
+}
+
+.interest-label-box span {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ========================================================
+   Q1〜Q5 選択肢カード（画像のチェックリスト風）
+   ======================================================== */
+.enjoyment-moment-grid, .big-select-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.moment-choice-btn, .big-select-card {
+  min-height: 56px;
+  padding: 14px 18px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-card);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-child);
+  transition: all 0.2s ease;
+}
+
+.moment-choice-btn:hover, .big-select-card:hover {
+  border-color: var(--koko-blue-main);
+  background-color: var(--koko-blue-subtle);
+}
+
+.moment-choice-btn.active, .big-select-card.active {
+  border-color: var(--koko-blue-main);
+  background-color: var(--koko-blue-light);
+}
+
+.moment-tag, .choice-tag {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background-color: var(--koko-blue-subtle);
+  color: var(--koko-blue-main);
+  font-family: var(--font-logo);
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.moment-choice-btn.active .moment-tag,
+.big-select-card.active .choice-tag {
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+}
+
+.moment-desc, .choice-desc {
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* 自由記述欄 */
+.slide-sub-input-wrap {
+  background-color: var(--koko-blue-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+
+.child-sublabel {
+  display: block;
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin-bottom: 6px;
+}
+
+.child-textarea {
+  width: 100%;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: var(--font-child);
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: #FFFFFF;
+  resize: vertical;
+}
+
+.child-textarea:focus {
+  outline: none;
+  border-color: var(--koko-blue-main);
+}
+
+/* ========================================================
+   学校マッチングカード（画像の「学校を探す」デザイン）
+   ======================================================== */
+.rec-school-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  margin-bottom: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.rec-school-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.rec-school-image-frame {
+  height: 140px;
+  background-color: var(--koko-blue-light);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rec-school-rank-label {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+  font-family: var(--font-child);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.rec-school-score-label {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  color: var(--koko-blue-main);
+  font-family: var(--font-logo);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.rec-school-body {
+  padding: 20px;
+}
+
+.rec-school-name {
+  font-family: var(--font-child);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.rec-school-catch {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin-bottom: 12px;
+}
+
+.rec-school-desc-100 {
+  background-color: var(--koko-blue-subtle);
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+/* ========================================================
+   わたしの記録（見学シート）
+   ======================================================== */
+.emotion-six-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.emotion-card-btn {
+  min-height: 52px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-card);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.emotion-card-btn:hover {
+  border-color: var(--koko-blue-main);
+}
+.emotion-card-btn.active {
+  border-color: var(--koko-blue-main);
+  background-color: var(--koko-blue-light);
+}
+
+.review-display-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+/* ========================================================
+   保護者ダッシュボード & AI分析
+   ======================================================== */
+.dashboard-school-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.dash-school-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+.badge-pass {
+  background-color: var(--koko-green);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.block-a-specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.spec-stat-item {
+  background-color: var(--koko-blue-subtle);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.spec-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: block;
+}
+
+.spec-stat-val {
+  font-family: var(--font-logo);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin-top: 2px;
+  display: block;
+}
+
+.block-b-child-review {
+  background-color: var(--koko-pink-light);
+  border: 1px solid #FFE4E8;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.block-b-title {
+  font-family: var(--font-child);
+  font-size: 14px;
+  font-weight: 700;
+  color: #E63946;
+  margin-bottom: 8px;
+}
+
+.block-c-ai-report {
+  background-color: var(--koko-blue-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.ai-report-tag {
+  display: inline-block;
+  background-color: var(--koko-blue-main);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 14px;
+}
+
+.ai-report-item {
+  margin-bottom: 12px;
+}
+.ai-report-item strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+.ai-report-item p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.conversation-prompts-box {
+  background-color: #FFFFFF;
+  border: 1px dashed var(--koko-blue-main);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 14px;
+}
+
+.prompts-title {
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin-bottom: 8px;
+}
+
+.prompt-list {
+  list-style: none;
+}
+.prompt-list li {
+  font-size: 13px;
+  color: var(--text-primary);
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--border-light);
+}
+.prompt-list li:last-child {
+  border-bottom: none;
+}
+
+/* ========================================================
+   入力フォーム部品
+   ======================================================== */
+.large-input {
+  width: 100%;
+  min-height: 50px;
+  font-size: 16px;
+  padding: 10px 16px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background-color: #FFFFFF;
+}
+.large-input:focus {
+  outline: none;
+  border-color: var(--koko-blue-main);
+}
+
+.slider-display-box {
+  background-color: var(--koko-blue-subtle);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.slider-large-val {
+  font-family: var(--font-logo);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  display: block;
+}
+
+.range-slider-parent {
+  width: 100%;
+  accent-color: var(--koko-blue-main);
+  cursor: pointer;
+}
+
+.choice-grid-2x2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.strict-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.strict-check-label {
+  padding: 14px 18px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.strict-check-label:hover {
+  border-color: var(--koko-blue-main);
+}
+.strict-check-label.selected {
+  border-color: var(--koko-blue-main);
+  background-color: var(--koko-blue-light);
+}
+
+.strict-custom-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF;
+}
+.strict-check-label.selected .strict-custom-box {
+  background-color: var(--koko-blue-main);
+  border-color: var(--koko-blue-main);
+  color: white;
+}
+
+/* ========================================================
+   Koko* スクリーン共通サブヘッダー
+   ======================================================== */
+.screen-sub-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 4px 8px;
+}
+
+.screen-title {
+  font-family: var(--font-child);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  flex: 1;
+}
+
+.btn-back-icon, .btn-sub-action-icon {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-back-icon:hover, .btn-sub-action-icon:hover {
+  border-color: var(--koko-blue-main);
+  color: var(--koko-blue-main);
+  background-color: var(--koko-blue-light);
+}
+
+/* ========================================================
+   Koko* ホーム画面コンポーネント
+   ======================================================== */
+.koko-home-greeting-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 6px 20px 6px;
+}
+
+.greeting-user-name {
+  font-family: var(--font-child);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.greeting-sub-prompt {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.user-avatar-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-pill);
+  background-color: var(--koko-pink-light);
+  border: 2px solid var(--koko-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.user-avatar-badge:hover {
+  transform: scale(1.08);
+}
+
+/* おすすめの学校を見るバナー（スカイブルー単色） */
+.koko-recommend-banner-card {
+  background-color: var(--koko-blue-main);
+  border-radius: var(--radius-card);
+  padding: 22px 24px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+  margin-bottom: 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.koko-recommend-banner-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  background-color: var(--koko-blue-hover);
+}
+
+.banner-avatar-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-pill);
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.banner-content {
+  flex: 1;
+}
+
+.banner-main-title {
+  font-family: var(--font-child);
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #FFFFFF;
+}
+
+.banner-sub-text {
+  font-size: 13px;
+  color: #EBF4FC;
+  line-height: 1.4;
+}
+
+.banner-arrow-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background-color: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+/* 4つの丸型アクションボタン（2x2グリッド） */
+.koko-home-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.home-action-btn {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-card);
+}
+.home-action-btn:hover {
+  transform: translateY(-3px);
+  border-color: var(--koko-blue-main);
+  box-shadow: var(--shadow-hover);
+}
+
+.action-icon-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+.bg-green-light { background-color: var(--koko-green-light); color: var(--koko-green); }
+.bg-purple-light { background-color: #F3E8FF; color: var(--koko-purple); }
+.bg-blue-light { background-color: var(--koko-blue-light); color: var(--koko-blue-main); }
+.bg-pink-light { background-color: var(--koko-pink-light); color: var(--koko-pink); }
+
+.action-btn-title {
+  font-family: var(--font-child);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* おうちの方へクイックカード */
+.home-parent-quick-card {
+  background-color: var(--koko-blue-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: 22px 24px;
+  margin-bottom: 28px;
+}
+
+.quick-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.quick-card-title {
+  font-family: var(--font-child);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.quick-card-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.quick-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* 情緒的メッセージ＆エモーショナルカード */
+.koko-emotional-quotes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.emotional-quote-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: 18px 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-card);
+}
+.emotional-quote-card.highlight {
+  background-color: var(--koko-blue-light);
+  border-color: var(--koko-blue-main);
+}
+
+.quote-sparkle {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.quote-text {
+  font-family: var(--font-child);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.emotional-quote-card.highlight .quote-text {
+  color: var(--text-primary);
+}
+
+/* ========================================================
+   学校を探す（一覧・検索フィルター）
+   ======================================================== */
+.search-filter-pill-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+  scrollbar-width: none;
+}
+.search-filter-pill-row::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-pill {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.filter-pill:hover {
+  border-color: var(--koko-blue-main);
+  color: var(--koko-blue-main);
+}
+.filter-pill.active {
+  background-color: var(--koko-blue-main);
+  border-color: var(--koko-blue-main);
+  color: #FFFFFF;
+}
+
+.school-search-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.school-search-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s ease;
+}
+.school-search-card:hover {
+  border-color: var(--koko-blue-main);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.search-card-thumb {
+  width: 68px;
+  height: 68px;
+  border-radius: var(--radius-sm);
+  background-color: var(--koko-blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--border-light);
+}
+.thumb-emoji {
+  font-size: 32px;
+}
+
+.search-card-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.search-school-name {
+  font-family: var(--font-child);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.btn-heart-favorite {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+.btn-heart-favorite:hover {
+  transform: scale(1.2);
+}
+
+.btn-heart-hero-corner {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  background-color: #FFFFFF;
+  border: 2px solid #1D2A44;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #1D2A44;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  z-index: 5;
+}
+.btn-heart-hero-corner:hover {
+  transform: scale(1.1);
+  background-color: var(--koko-pink-light);
+}
+.btn-heart-hero-corner.active {
+  background-color: var(--koko-pink-light);
+  border-color: var(--koko-pink);
+}
+
+.search-school-meta {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.search-school-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.search-tag-pill {
+  background-color: var(--koko-blue-light);
+  color: var(--koko-blue-main);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.search-card-score {
+  text-align: right;
+  flex-shrink: 0;
+  padding-left: 12px;
+  border-left: 1px solid var(--border-light);
+}
+
+.score-label {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.score-number {
+  font-family: var(--font-logo);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+}
+
+/* ========================================================
+   比較する画面（比較テーブル）
+   ======================================================== */
+.compare-table-card {
+  padding: 24px;
+}
+
+.compare-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.compare-school-col {
+  text-align: center;
+  flex: 1;
+}
+
+.compare-school-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-pill);
+  background-color: var(--koko-blue-light);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border-light);
+}
+
+.compare-school-name {
+  font-family: var(--font-child);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.compare-school-badge {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.compare-vs-badge {
+  font-family: var(--font-logo);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--koko-pink);
+  padding: 0 12px;
+}
+
+.compare-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+.koko-compare-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.koko-compare-table th {
+  text-align: left;
+  padding: 14px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-light);
+  width: 28%;
+}
+
+.koko-compare-table td {
+  text-align: center;
+  padding: 14px 12px;
+  font-size: 15px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.koko-compare-table td.highlight {
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  background-color: var(--koko-blue-light);
+  border-radius: 8px;
+}
+
+.compare-action-footer {
+  text-align: center;
+}
+
+/* ========================================================
+   わたしの記録（日記カード）
+   ======================================================== */
+.diary-category-tab-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.diary-tab-btn {
+  flex: 1;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.diary-tab-btn.active {
+  background-color: var(--koko-blue-main);
+  border-color: var(--koko-blue-main);
+  color: #FFFFFF;
+}
+
+.koko-diary-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.diary-card-date-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border-light);
+}
+
+.diary-date-text {
+  font-family: var(--font-child);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.diary-weather-icon {
+  font-size: 22px;
+}
+
+.diary-body-text {
+  font-family: var(--font-child);
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.diary-school-attachment {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--koko-blue-light);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+
+.diary-thumb-box {
+  font-size: 22px;
+}
+
+.diary-school-tag {
+  flex: 1;
+  font-family: var(--font-child);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+}
+
+.diary-heart-icon {
+  font-size: 18px;
+}
+
+/* ========================================================
+   マイページ画面
+   ======================================================== */
+.mypage-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.mypage-avatar-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-pill);
+  background-color: var(--koko-pink-light);
+  border: 2px solid var(--koko-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.mypage-user-name {
+  font-family: var(--font-child);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.mypage-user-motto {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.mypage-about-card, .mypage-found-schools-card, .mypage-wishlist-card {
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.mypage-section-title {
+  font-family: var(--font-child);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.mypage-tag-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.mypage-tag-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.mypage-tag-pills {
+  font-family: var(--font-child);
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: var(--koko-blue-light);
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  width: fit-content;
+}
+.mypage-tag-pills.highlight {
+  background-color: var(--koko-pink-light);
+  color: var(--koko-pink);
+  font-weight: 700;
+}
+
+.mypage-school-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.found-school-card {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #FFFFFF;
+}
+.found-school-card:hover {
+  border-color: var(--koko-blue-main);
+  background-color: var(--koko-blue-light);
+}
+
+.found-school-thumb {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.found-school-name {
+  font-family: var(--font-child);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.found-school-info {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.wishlist-items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wishlist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background-color: var(--koko-blue-subtle);
+}
+.wishlist-item.checked .wishlist-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* ========================================================
+   子供ワーク オンボーディング（はじめまして Koko*）
+   ======================================================== */
+.koko-welcome-card {
+  text-align: center;
+  padding: 36px 24px;
+}
+
+.koko-welcome-logo-wrap {
+  margin-bottom: 16px;
+}
+.koko-welcome-logo-wrap .logo-text {
+  font-family: var(--font-logo);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+}
+.koko-welcome-logo-wrap .logo-star {
+  font-family: var(--font-logo);
+  font-size: 32px;
+  color: var(--koko-yellow);
+}
+
+.welcome-heading {
+  font-family: var(--font-child);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+}
+
+.welcome-sub-desc {
+  font-family: var(--font-child);
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.welcome-illustration-box {
+  background-color: var(--koko-blue-light);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  margin: 0 auto;
+  max-width: 280px;
+  border: 1px solid var(--border-light);
+}
+
+.welcome-school-art {
+  font-size: 56px;
+  margin-bottom: 10px;
+}
+
+.welcome-sparkle-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  font-size: 20px;
+}
+
+.large-pill {
+  padding: 14px 44px;
+  font-size: 16px;
+}
+
+
+
+/* ========================================================
+   フッター
+   ======================================================== */
+/* ========================================================
+   フッター
+   ======================================================== */
+.app-global-footer {
+  background-color: var(--bg-card);
+  border-top: 1px solid var(--border-light);
+  padding: 24px 20px calc(88px + env(safe-area-inset-bottom, 0px)) 20px;
+  text-align: center;
+  font-family: var(--font-child);
+}
+
+.footer-app-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.footer-spec-note {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ==========================================
+   スマホ最適化コンテナ & 下部固定ボトムナビ（写真のデザインに完全準拠）
+   ========================================== */
+.app-main-content {
+  padding: 16px 16px calc(90px + env(safe-area-inset-bottom, 0px)) 16px;
+}
+
+/* スマホ・タブレット・PC全対応 固定ボトムナビゲーション (下部4項目：写真のデザインに準拠) */
+.koko-bottom-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 480px; /* PCでは中央コンテナと寸分違わずピッタリ一致 */
+  height: 64px;
+  background-color: #FFFFFF !important;
+  border-top: 1px solid #CBD5E1;
+  border-left: 2px solid var(--koko-blue-main);
+  border-right: 2px solid var(--koko-blue-main);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 9999 !important;
+  padding: 6px 10px calc(6px + env(safe-area-inset-bottom, 0px)) 10px;
+  box-sizing: border-box;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04);
+  overscroll-behavior-x: none !important;
+  touch-action: pan-y !important;
+}
+
+.bottom-nav-item {
+  flex: 1;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 12px;
+  color: #64748B;
+  transition: all 0.15s ease;
+  gap: 3px;
+  padding: 4px 2px;
+  margin: 0 4px;
+  box-sizing: border-box;
+}
+
+.bottom-nav-item .b-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.bottom-nav-item .b-nav-icon svg {
+  stroke: #64748B;
+  stroke-width: 1.9;
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.bottom-nav-item .b-nav-label {
+  font-family: var(--font-child);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  color: #64748B;
+}
+
+.bottom-nav-item:hover {
+  color: var(--koko-blue-main);
+}
+
+/* 選択中（アクティブ）タブ：添付写真の通りの濃紺角丸長方形＋白文字・白アイコン */
+.bottom-nav-item.active {
+  background-color: #1D3557 !important;
+  color: #FFFFFF !important;
+  border-radius: 12px !important;
+  box-shadow: none;
+}
+
+.bottom-nav-item.active .b-nav-icon svg {
+  stroke: #FFFFFF !important;
+  stroke-width: 2.2;
+}
+
+.bottom-nav-item.active .b-nav-label {
+  color: #FFFFFF !important;
+  font-weight: 800;
+}
+
+/* ==========================================
+   ホーム画面：おすすめ学校 ＆ 子供興味提案
+   ========================================== */
+.compact-hero {
+  padding: 28px 20px 24px 20px !important;
+  margin: 0 0 20px 0 !important;
+  text-align: center;
+}
+
+.compact-hero .hero-catch-title {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.compact-hero .hero-sub-description {
+  font-size: 13px;
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+
+.hero-quick-actions-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-retro-action-pill {
+  background-color: var(--koko-red);
+  color: #FFFFFF;
+  font-family: var(--font-child);
+  font-size: 14px;
+  font-weight: 800;
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--koko-blue-main);
+  box-shadow: 3px 3px 0px var(--koko-blue-main);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.btn-retro-action-pill.secondary {
+  background-color: var(--koko-yellow-light);
+  color: var(--koko-blue-main);
+}
+
+.btn-retro-action-pill:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--koko-blue-main);
+}
+
+.home-section-card {
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.home-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.section-sub-badge {
+  font-family: var(--font-logo);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background-color: var(--koko-blue-subtle);
+  color: var(--koko-blue-main);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  margin-bottom: 2px;
+}
+
+.section-sub-badge.badge-accent {
+  background-color: var(--koko-yellow-light);
+  color: #9C4221;
+}
+
+.home-section-title {
+  font-family: var(--font-child);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+  margin: 0;
+}
+
+.home-section-desc {
+  font-family: var(--font-child);
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.btn-link-action {
+  border: none;
+  background: transparent;
+  font-family: var(--font-child);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--koko-red);
+  cursor: pointer;
+}
+
+/* おすすめ学校カード */
+.home-school-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.home-recommend-school-card,
+.home-interest-spotlight-card {
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-card);
+  box-shadow: 3px 3px 0px var(--koko-blue-main);
+  overflow: hidden;
+  transition: all 0.15s ease;
+}
+
+/* 一言レコメンドバッジ */
+.home-card-one-phrase {
+  background-color: var(--koko-yellow-light);
+  color: #8C3A10;
+  border-bottom: 2px solid var(--koko-blue-main);
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 800;
+  padding: 8px 12px;
+  line-height: 1.4;
+}
+
+.home-card-one-phrase.interest-theme {
+  background-color: #E8F5E9;
+  color: #1B5E20;
+}
+
+.home-card-main-body {
+  padding: 14px;
+}
+
+.home-card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.home-school-title {
+  font-family: var(--font-child);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+  margin: 0 0 2px 0;
+}
+
+.home-school-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.home-school-dev-badge {
+  text-align: right;
+  background-color: var(--koko-blue-subtle);
+  border: 1px solid var(--koko-blue-main);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  min-width: 50px;
+}
+
+.home-school-dev-badge .dev-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.home-school-dev-badge .dev-number {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+}
+
+.home-school-catch {
+  font-family: var(--font-child);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.home-school-child-summary {
+  font-family: var(--font-child);
+  font-size: 12px;
+  color: var(--text-secondary);
+  background-color: var(--koko-cream);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+  border-left: 3px solid var(--koko-green);
+}
+
+.home-school-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.home-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* 子供の興味関心提案枠 */
+.interest-spotlight-card {
+  border-color: var(--koko-green);
+  box-shadow: 4px 4px 0px var(--koko-green);
+}
+
+.interest-spotlight-banner {
+  background-color: #E8F5E9;
+  border: 1px solid var(--koko-green);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.interest-spotlight-banner .spotlight-sparkle {
+  color: var(--koko-green);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.interest-spotlight-banner .spotlight-text {
+  font-family: var(--font-child);
+  font-size: 12px;
+  color: #1B5E20;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.interest-spotlight-top-tag {
+  background-color: var(--koko-green);
+  color: #FFFFFF;
+  font-family: var(--font-child);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ==========================================
+   探す画面：単語検索 ＆ 一言レコメンド
+   ========================================== */
+.search-keyword-container {
+  margin-bottom: 14px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.search-input-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--koko-blue-main);
+  display: flex;
+  align-items: center;
+}
+
+.keyword-search-field {
+  width: 100%;
+  padding: 12px 38px 12px 40px;
+  font-family: var(--font-child);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-pill);
+  box-shadow: 2px 2px 0px var(--koko-blue-main);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.keyword-search-field:focus {
+  box-shadow: 3px 3px 0px var(--koko-red);
+  border-color: var(--koko-red);
+}
+
+.btn-clear-keyword {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.quick-tags-scroll-row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.quick-tag-chip {
+  background-color: #FFFFFF;
+  border: 1px solid var(--koko-blue-main);
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+  font-family: var(--font-child);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.quick-tag-chip.active {
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+}
+
+.search-result-count-bar {
+  font-family: var(--font-child);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+/* 探す画面の学校カード（一言レコメンド付き） */
+.school-search-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.school-search-card {
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-card);
+  box-shadow: 3px 3px 0px var(--koko-blue-main);
+  overflow: hidden;
+}
+
+.school-search-one-phrase-banner {
+  background-color: var(--koko-yellow-light);
+  color: #8C3A10;
+  font-family: var(--font-child);
+  font-size: 12px;
+  font-weight: 800;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--koko-blue-main);
+  line-height: 1.4;
+}
+
+.search-card-inner-body {
+  display: flex;
+  padding: 14px;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.search-empty-box {
+  background-color: #FFFFFF;
+  border: 2px dashed var(--koko-blue-main);
+  border-radius: var(--radius-card);
+  padding: 30px 20px;
+  text-align: center;
+  font-family: var(--font-child);
+}
+
+.search-empty-box .empty-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+  margin-bottom: 6px;
+}
+
+.search-empty-box .empty-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+/* ==========================================
+   記録画面：1問1画面ウィザード ＆ 進捗表示
+   ========================================== */
+.review-wizard-card {
+  padding: 20px !important;
+  margin-bottom: 24px;
+}
+
+.btn-close-wizard-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #FFFFFF;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  margin-bottom: 8px;
+  box-shadow: 2px 2px 0px var(--border-color);
+  transition: all 0.1s ease;
+}
+
+.btn-close-wizard-top:hover {
+  background-color: var(--koko-yellow-light);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--border-color);
+}
+
+.review-wizard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.review-wizard-main-title {
+  font-family: var(--font-child);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+  margin: 2px 0 0 0;
+}
+
+/* 右上の「何問/何問中」進捗表示 */
+.wizard-step-counter-box {
+  background-color: var(--koko-yellow-light);
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  text-align: center;
+  box-shadow: 2px 2px 0px var(--koko-blue-main);
+}
+
+.wizard-step-counter-box .step-counter-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 800;
+  color: #8C3A10;
+  line-height: 1;
+}
+
+.wizard-step-counter-box .step-counter-numbers {
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--koko-blue-main);
+  white-space: nowrap;
+}
+
+.review-single-question-card {
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+}
+
+.r-choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.review-tile {
+  cursor: pointer;
+}
+
+.review-star-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.star-btn {
+  background: transparent;
+  border: none;
+  font-size: 32px;
+  color: #D1D5DB;
+  cursor: pointer;
+  padding: 0 2px;
+  transition: transform 0.1s ease;
+}
+
+.star-btn.active {
+  color: #F59E0B;
+}
+
+.star-rating-label {
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-left: 8px;
+}
+
+/* 過去の記録カード */
+.saved-reviews-card-container {
+  margin-top: 10px;
+}
+
+.saved-reviews-title {
+  font-family: var(--font-child);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+  margin-bottom: 12px;
+}
+
+.saved-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.saved-review-item-card {
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-card);
+  box-shadow: 3px 3px 0px var(--koko-blue-main);
+  padding: 14px;
+}
+
+.saved-review-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.review-date-badge {
+  font-family: var(--font-child);
+  font-size: 10px;
+  font-weight: 700;
+  background-color: var(--koko-blue-subtle);
+  color: var(--koko-blue-main);
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+}
+
+.review-school-name {
+  font-family: var(--font-child);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+  margin: 2px 0 0 0;
+}
+
+.review-rating-stars {
+  color: #F59E0B;
+  font-size: 16px;
+}
+
+.saved-review-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.r-pill-tag {
+  background-color: var(--koko-cream);
+  border: 1px solid var(--koko-blue-main);
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.saved-review-memo-text {
+  font-family: var(--font-child);
+  font-size: 12px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin: 0;
+  background-color: var(--koko-blue-subtle);
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================
+   マイページ：お子さま情報編集
+   ========================================== */
+.mypage-interest-checkbox-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.mypage-interest-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mypage-interest-checkbox-item:hover {
+  background-color: var(--koko-yellow-light);
+}
+
+.mypage-interest-checkbox-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--koko-red);
+}
+
+.interest-checkbox-label {
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+}
+
+.account-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.account-info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border-light);
+  font-size: 13px;
+  font-family: var(--font-child);
+}
+
+.account-info-label {
+  color: var(--text-secondary);
+}
+
+.account-info-val {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.account-info-val.text-success {
+  color: var(--koko-green);
+}
+
+/* ========================================================
+   保護者画面 ⇄ 子ども画面 モード切り替えピルバー
+   ======================================================== */
+.user-mode-switcher-bar {
+  display: flex;
+  background-color: #E2E8F0;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-pill);
+  padding: 3px;
+  gap: 4px;
+}
+
+.mode-pill-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  background-color: transparent;
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mode-pill-toggle.active {
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.15);
+}
+
+#btnModeChild.active {
+  background-color: var(--koko-pink);
+}
+
+.pill-star {
+  font-size: 12px;
+}
+
+/* ========================================================
+   保護者質問画面：選択肢の縦並びリスト (.vertical-list)
+   ======================================================== */
+.vertical-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  width: 100% !important;
+}
+
+.vertical-list .big-select-card,
+.vertical-list .big-tile-checkbox,
+.vertical-list .chip-large {
+  width: 100% !important;
+  text-align: left !important;
+  box-sizing: border-box !important;
+}
+
+/* ========================================================
+   学校カードのモード連動解説文ボックス
+   ======================================================== */
+.home-school-mode-summary-box,
+.search-card-mode-summary {
+  margin: 10px 0 12px 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--koko-blue-main);
+  background-color: #F8FAFC;
+}
+
+.home-school-mode-summary-box.parent-theme,
+.search-card-mode-summary.parent-theme {
+  border-color: var(--koko-blue-main);
+  background-color: #F0F7FF;
+}
+
+.home-school-mode-summary-box.child-theme,
+.search-card-mode-summary.child-theme {
+  border-color: var(--koko-yellow-dark);
+  background-color: #FEF9C3;
+}
+
+.mode-summary-label,
+.summary-badge-mini {
+  display: inline-block;
+  font-family: var(--font-child);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+}
+
+.child-theme .mode-summary-label,
+.child-theme .summary-badge-mini {
+  background-color: var(--koko-red);
+}
+
+.mode-summary-text,
+.summary-text-mini {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ========================================================
+   保護者画面ホーム（AI要約 ＆ 会話提案 ＆ まとめ）
+   ======================================================== */
+.parent-hero-bg {
+  background-color: #EBF5FF !important;
+  border-color: var(--koko-blue-main) !important;
+}
+
+.child-hero-bg {
+  background-color: #FEF9C3 !important;
+  border-color: var(--koko-blue-main) !important;
+}
+
+/* 1. AI要約サマリー */
+.ai-summary-highlight-card {
+  border-left: 6px solid var(--koko-blue-main) !important;
+}
+
+.ai-summary-content-box {
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: 3px 3px 0px var(--koko-blue-main);
+  margin-bottom: 16px;
+}
+
+.ai-summary-badge-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ai-pill-tag {
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+  font-family: var(--font-child);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.ai-date-tag {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.ai-summary-lead {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.ai-condition-match-points {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px dashed var(--border-light);
+  padding-top: 10px;
+}
+
+.match-point-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.point-badge {
+  color: var(--koko-blue-main);
+  font-weight: 700;
+}
+
+/* 2. AIによる会話の提案（食卓での問いかけ） */
+.ai-conversation-box {
+  background-color: #FEFCE8;
+  border: 2px solid var(--koko-yellow-dark);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: 3px 3px 0px var(--koko-yellow-dark);
+}
+
+.conversation-box-title {
+  font-family: var(--font-child);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin-bottom: 12px;
+}
+
+.conversation-prompts-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.conversation-prompt-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+.prompt-num-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: var(--koko-red);
+  color: #FFFFFF;
+  border-radius: 50%;
+  font-family: var(--font-child);
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.prompt-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prompt-phrase {
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  line-height: 1.5;
+}
+
+.prompt-guide {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* 3. 子どもの興味関心まとめカード */
+.parent-interest-tags-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.parent-interest-chip-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  box-shadow: 2px 2px 0px var(--koko-blue-main);
+}
+
+.chip-star {
+  font-size: 14px;
+}
+
+.chip-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.chip-name {
+  font-family: var(--font-child);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+}
+
+.chip-level {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+/* 4. 気になっている学校（親向けカード） */
+.parent-summary-schools-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.parent-fav-school-card {
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: 3px 3px 0px var(--koko-blue-main);
+}
+
+.fav-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.fav-school-name {
+  font-family: var(--font-child);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin-bottom: 2px;
+}
+
+.fav-school-meta {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.fav-school-dev {
+  text-align: center;
+  background-color: var(--koko-yellow-light);
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+}
+
+.parent-summary-text-box {
+  background-color: #F0F7FF;
+  border: 1px solid var(--koko-blue-main);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.box-badge-label {
+  font-family: var(--font-child);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin-bottom: 4px;
+}
+
+.box-desc-content {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.fav-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.school-cost-pill {
+  font-family: var(--font-child);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  background-color: #F1F5F9;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+/* 5. オーキャン・説明会の振り返りまとめ */
+.review-summary-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.review-summary-card {
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: 3px 3px 0px var(--koko-blue-main);
+}
+
+.review-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.review-school-tag {
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+}
+
+.review-type-badge {
+  font-size: 11px;
+  background-color: #F1F5F9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text-secondary);
+}
+
+.review-date-badge {
+  font-size: 10px;
+  color: var(--text-secondary);
+  margin-left: auto;
+}
+
+.review-ratings-row {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.review-child-quote {
+  background-color: #FEF9C3;
+  border-left: 3px solid var(--koko-yellow-dark);
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin: 0;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ========================================================
+   学校写真サムネイル・ヒーロー写真スタイル
+   ======================================================== */
+.home-card-photo-hero {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-bottom: 2px solid var(--koko-blue-main);
+  background-color: #E2E8F0;
+}
+
+.card-hero-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-overlay-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: auto;
+  z-index: 3;
+}
+
+.child-match-pill-hero {
+  background-color: var(--koko-yellow);
+  color: var(--koko-blue-main);
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--koko-blue-main);
+  box-shadow: 2px 2px 0px var(--koko-blue-main);
+}
+
+.parent-dev-pill-hero {
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  border: 2px solid #FFFFFF;
+}
+
+/* 他にもこんな学校がありますよ：写真 */
+.spotlight-photo-wrap {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  border-bottom: 2px solid var(--koko-blue-main);
+  background-color: #E2E8F0;
+}
+
+.spotlight-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.spotlight-photo-wrap .child-match-pill-hero {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 11px;
+  padding: 3px 8px;
+}
+
+/* 探す画面：学校カードの写真 */
+.search-card-thumb-photo {
+  position: relative;
+  width: 110px;
+  height: 95px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 2px solid var(--koko-blue-main);
+  background-color: #E2E8F0;
+}
+
+.search-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.child-thumb-match-tag {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--koko-yellow);
+  color: var(--koko-blue-main);
+  font-family: var(--font-child);
+  font-size: 10px;
+  font-weight: 800;
+  text-align: center;
+  padding: 2px 0;
+  border-top: 1px solid var(--koko-blue-main);
+}
+
+/* いいねフィルターチップ */
+.favorite-filter-chip.active {
+  background-color: var(--koko-pink) !important;
+  border-color: var(--koko-blue-main) !important;
+  color: #FFFFFF !important;
+}
+
+/* ========================================================
+   学校詳細画面（独立した全画面切り替え表示：背景を完全に隠す）
+   ======================================================== */
+/* ========================================================
+   学校詳細画面（独立した本物の画面：背景に他画面を表示しない）
+   ======================================================== */
+.school-detail-screen-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #FFFFFF;
+  border-bottom: 2px solid var(--koko-blue-main);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: -16px -16px 16px -16px;
+  box-shadow: 0 2px 8px rgba(29, 53, 87, 0.08);
+}
+
+.btn-screen-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #EFF6FF;
+  border: 1.5px solid #93C5FD;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 800;
+  color: #1D4ED8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-screen-back:hover {
+  background: #DBEAFE;
+}
+
+.school-detail-screen-title {
+  font-family: var(--font-child);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.btn-screen-fav-top {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.15s ease;
+}
+
+.btn-screen-fav-top.active {
+  background: #FFE8EE;
+  border-color: var(--koko-pink);
+  color: var(--koko-pink);
+}
+
+.btn-screen-fav-top.active svg {
+  fill: var(--koko-pink);
+  stroke: var(--koko-pink);
+}
+
+.school-detail-screen-content {
+  padding-bottom: 96px; /* 下部ナビゲーションとの被り防止 */
+}
+
+/* ========================================================
+   共通モーダルオーバーレイ（プロフィール編集等用）
+   ======================================================== */
+.school-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(26, 42, 74, 0.7);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.school-modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  background-color: var(--koko-cream);
+  border: 3px solid var(--koko-blue-main);
+  border-radius: var(--radius-card);
+  box-shadow: 6px 6px 0px var(--koko-blue-main);
+  overflow-y: auto;
+  overflow-x: hidden !important;
+  overscroll-behavior-x: none !important;
+  touch-action: pan-y !important;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.btn-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 2px 2px 0px var(--koko-blue-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-modal-close:hover {
+  background-color: var(--koko-yellow-light);
+}
+
+.modal-school-header {
+  background-color: #FFFFFF;
+  border-bottom: 2px solid var(--koko-blue-main);
+  padding-bottom: 14px;
+}
+
+.modal-school-photo-wrap {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background-color: #E2E8F0;
+  border-bottom: 2px solid var(--koko-blue-main);
+}
+
+.modal-school-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-photo-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: rgba(26, 42, 74, 0.85);
+  color: #FFFFFF;
+  font-family: var(--font-child);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.modal-school-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px 16px 8px 16px;
+}
+
+.modal-school-ruby {
+  display: block;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.modal-school-name {
+  font-family: var(--font-child);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+  margin: 2px 0 4px 0;
+}
+
+.modal-school-meta {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.btn-modal-favorite {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-child);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px var(--koko-blue-main);
+  transition: all 0.15s ease;
+}
+
+.btn-modal-favorite.active {
+  background-color: #FFE4E6;
+  border-color: var(--koko-pink);
+  color: var(--koko-pink);
+}
+
+.modal-school-catch-banner {
+  margin: 0 16px;
+  padding: 8px 12px;
+  background-color: var(--koko-yellow-light);
+  border: 2px solid var(--koko-yellow-dark);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--koko-blue-main);
+}
+
+/* モーダル各セクション */
+.modal-school-sections-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-section-card {
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: 3px 3px 0px var(--koko-blue-main);
+}
+
+.modal-section-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.section-star {
+  color: var(--koko-red);
+  font-size: 14px;
+}
+
+.modal-section-title {
+  font-family: var(--font-child);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin: 0;
+}
+
+/* 制服コーナー */
+.modal-uniform-content-grid {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.uniform-image-wrap {
+  position: relative;
+  width: 140px;
+  height: 190px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 2px solid var(--koko-blue-main);
+  background-color: #F8FAFC;
+}
+
+.modal-uniform-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.uniform-caption-badge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-family: var(--font-child);
+  text-align: center;
+  padding: 2px 0;
+}
+
+.uniform-info-wrap {
+  flex: 1;
+}
+
+.uniform-style-name {
+  font-family: var(--font-child);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin: 0 0 6px 0;
+}
+
+.uniform-style-desc {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.uniform-features-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.uniform-pill {
+  font-size: 10px;
+  font-family: var(--font-child);
+  font-weight: 700;
+  background-color: var(--koko-yellow-light);
+  color: var(--koko-blue-main);
+  border: 1px solid var(--koko-blue-main);
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+}
+
+/* 特徴的な授業 */
+.special-classes-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.special-class-card {
+  background-color: #F0FDF4;
+  border: 1.5px solid var(--koko-green);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+.class-num-badge {
+  display: inline-block;
+  background-color: var(--koko-green);
+  color: #FFFFFF;
+  font-family: var(--font-child);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.class-title {
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin: 0 0 4px 0;
+}
+
+.class-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* 学校の強み */
+.school-strengths-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.strength-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.strength-check-icon {
+  color: var(--koko-red);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+/* 通学イメージ */
+.simulation-text-box {
+  background-color: #FEF3C7;
+  border: 1.5px solid var(--koko-yellow-dark);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+
+.simulation-desc {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* モーダルの解説文 */
+.modal-summary-box {
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--koko-blue-main);
+}
+
+.modal-summary-box.child-theme {
+  background-color: #FEF9C3;
+  border-color: var(--koko-yellow-dark);
+}
+
+.modal-summary-box.parent-theme {
+  background-color: #F0F7FF;
+  border-color: var(--koko-blue-main);
+}
+
+.modal-summary-p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.modal-footer-actions {
+  padding: 12px 16px 20px 16px;
+}
+
+/* ==========================================
+   マイページ：お気に入り学校アイテム
+   ========================================== */
+.badge-favorite-pink {
+  background-color: var(--koko-pink) !important;
+}
+
+.mypage-favorite-schools-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.mypage-fav-empty-box {
+  text-align: center;
+  padding: 20px;
+  background-color: #FFFFFF;
+  border: 2px dashed var(--border-light);
+  border-radius: var(--radius-sm);
+}
+
+.fav-empty-title {
+  font-family: var(--font-child);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin-bottom: 4px;
+}
+
+.fav-empty-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.mypage-fav-item-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  box-shadow: 2px 2px 0px var(--koko-blue-main);
+}
+
+.mypage-fav-item-photo {
+  width: 65px;
+  height: 65px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1.5px solid var(--koko-blue-main);
+}
+
+.mypage-fav-item-main {
+  flex: 1;
+}
+
+.mypage-fav-item-name {
+  font-family: var(--font-child);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--koko-blue-main);
+  margin: 0 0 2px 0;
+}
+
+.mypage-fav-item-meta {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin: 0 0 2px 0;
+}
+
+.mypage-fav-item-phrase {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--koko-red);
+  margin: 0 0 4px 0;
+}
+
+.child-match-pill-mini {
+  display: inline-block;
+  font-family: var(--font-child);
+  font-size: 10px;
+  font-weight: 800;
+  background-color: var(--koko-yellow);
+  color: var(--koko-blue-main);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.parent-meta-pill-mini {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--text-secondary);
+  background-color: #F1F5F9;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+/* マッチング結果カード（写真付き） */
+.rec-school-card.with-photo {
+  overflow: hidden;
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-md);
+  box-shadow: 3px 3px 0px var(--koko-blue-main);
+  margin-bottom: 16px;
+}
+
+.rec-school-card.with-photo .rec-school-image-frame {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  border-bottom: 2px solid var(--koko-blue-main);
+}
+
+.rec-school-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.rec-school-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.rec-school-recommend-box {
+  background-color: var(--koko-yellow-light);
+  border: 1.5px solid var(--koko-yellow-dark);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  margin: 8px 0 10px 0;
+}
+
+.rec-badge-point {
+  font-family: var(--font-child);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.rec-point-text {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--koko-blue-main);
+  margin: 0;
+}
+
+.rec-school-actions-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.rec-school-actions-row .btn-solid-child {
+  flex: 1;
+}
+
+/* ========================================================
+   レスポンシブ（スマホ・タブレット対応：画面全体の横幅に自然にフィット＆下部常時固定）
+   ======================================================== */
+@media (max-width: 840px) {
+  body {
+    background-image: none !important;
+    background-color: var(--koko-cream) !important;
+  }
+  .app-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    min-height: 100vh;
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: none !important;
+  }
+  .koko-bottom-nav {
+    max-width: 100% !important;
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    margin: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: 1px solid #CBD5E1 !important;
+  }
+  .header-inner {
+    padding: 10px 14px;
+  }
+  .app-main-content {
+    padding: 12px 12px calc(80px + env(safe-area-inset-bottom, 0px)) 12px !important;
+  }
+  .parent-interest-tags-grid {
+    grid-template-columns: 1fr;
+  }
+  .modal-uniform-content-grid {
+    flex-direction: column;
+  }
+  .uniform-image-wrap {
+    width: 100%;
+    height: 240px;
+  }
+  .rec-school-actions-row {
+    flex-direction: column;
+  }
+}
+
+/* ========================================================
+   新ロゴ画像・ブレンドモード
+   ======================================================== */
+.koko-header-logo-img {
+  height: 38px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+@media (max-width: 480px) {
+  .koko-header-logo-img {
+    height: 34px;
+    max-width: 120px;
+  }
+}
+
+.koko-hero-logo-img {
+  max-width: 145px;
+  width: 50%;
+  height: auto;
+  margin: 0 auto 16px;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+.koko-card-logo-img {
+  max-width: 130px;
+  width: 50%;
+  height: auto;
+  margin: 0 auto 14px;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+/* ========================================================
+   記録画面：行く前（予定）／行った後（振り返り）サブタブ
+   ======================================================== */
+.review-sub-nav {
+  display: flex;
+  background-color: #E2E8F0;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.r-sub-tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background-color: transparent;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-base);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.r-sub-tab-btn.active {
+  background-color: #FFFFFF;
+  color: var(--text-primary);
+  border: 2px solid var(--border-color);
+  box-shadow: 2px 2px 0px var(--border-color);
+}
+
+.r-sub-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background-color: var(--koko-coral);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.btn-toggle-wizard {
+  background-color: var(--koko-cream);
+  border: 2px solid var(--border-color);
+  box-shadow: 2px 2px 0px var(--border-color);
+  border-radius: var(--radius-pill);
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-primary);
+}
+
+.btn-toggle-wizard:hover {
+  background-color: #FFE600;
+}
+
+/* 行く前（見学予定）カード */
+.planned-event-item-card {
+  background-color: #FFFFFF;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 3px 3px 0px var(--border-color);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.planned-event-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.planned-event-school-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.planned-event-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.planned-event-badge {
+  background-color: var(--koko-yellow-light);
+  border: 1.5px solid var(--koko-yellow-dark);
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.planned-event-date-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--koko-coral);
+  margin-bottom: 6px;
+}
+
+.planned-event-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0 0 12px 0;
+}
+
+.planned-event-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-action-review {
+  flex: 1;
+  background-color: #FFE600;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  border-radius: var(--radius-pill);
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #000;
+  cursor: pointer;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-action-review:hover {
+  background-color: #FFDE00;
+  transform: translateY(-1px);
+}
+
+.btn-action-cancel {
+  background-color: transparent;
+  border: 1.5px solid #CBD5E1;
+  border-radius: var(--radius-pill);
+  padding: 7px 12px;
+  font-size: 12px;
+  color: #64748B;
+  cursor: pointer;
+}
+
+.btn-action-cancel:hover {
+  background-color: #F1F5F9;
+  color: #0F172A;
+}
+
+.empty-planned-box {
+  background-color: #FFFFFF;
+  border: 2px dashed #94A3B8;
+  border-radius: var(--radius-md);
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.empty-planned-box .empty-title {
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.empty-planned-box .empty-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 16px 0;
+}
+
+/* ========================================================
+   ホーム＆探す：イベントバナー＆「行ってみる」ボタン
+   ======================================================== */
+.home-card-event-banner {
+  background-color: #FFFDF0;
+  border: 1.5px solid #000000;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin: 10px 0 12px 0;
+}
+
+.event-banner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.event-banner-badge {
+  background-color: #FFE600;
+  border: 1px solid #000000;
+  color: #000000;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.event-banner-date {
+  font-size: 12px;
+  font-weight: 800;
+  color: #E63946;
+}
+
+.event-banner-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 2px 0;
+}
+
+.event-banner-desc {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  margin: 0 0 8px 0;
+}
+
+.btn-event-action-pill {
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+
+.btn-event-action-pill:hover {
+  background-color: #2D3748;
+  transform: translateY(-1px);
+}
+
+/* ========================================================
+   マイページ：回答済み診断データカード
+   ======================================================== */
+.mypage-child-answers-card {
+  background-color: #FFFFFF;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 3px 3px 0px var(--border-color);
+  padding: 16px;
+}
+
+.flex-between-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.btn-edit-answers-pill {
+  background-color: var(--koko-cream);
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px #000000;
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #000000;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.btn-edit-answers-pill:hover {
+  background-color: #FFE600;
+  transform: translateY(-1px);
+}
+
+.mypage-ans-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mypage-ans-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.mypage-ans-item {
+  background-color: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+}
+
+.mypage-ans-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748B;
+  margin-bottom: 3px;
+}
+
+.mypage-ans-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.ans-chip-tag {
+  display: inline-block;
+  background-color: #FFE600;
+  border: 1px solid #000000;
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-right: 4px;
+  margin-bottom: 2px;
+}
+
+.ans-chip-parent {
+  background-color: #E0E7FF;
+  color: #1E3A8A;
+}
+
+.ans-chip-strict {
+  background-color: #FEE2E2;
+  color: #991B1B;
+  border-color: #000000;
+}
+
+.mypage-ans-quote {
+  background-color: #FFFDF0;
+  border-left: 3px solid #FFE600;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #334155;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* ========================================================
+   行く前・行った後 比較スタイル & 自由記述
+   ======================================================== */
+.review-comparison-card {
+  background-color: #FFFDF0;
+  border: 2px solid #000000;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-top: 10px;
+}
+
+.review-comparison-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--koko-blue-main);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.review-comparison-grid {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  background-color: #FFFFFF;
+  border: 1.5px solid #000000;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+}
+
+.comp-col {
+  flex: 1;
+}
+
+.comp-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  color: #64748B;
+  margin-bottom: 2px;
+}
+
+.comp-col-before .comp-val {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0284C7;
+}
+
+.comp-col-after .comp-val {
+  font-size: 13px;
+  font-weight: 800;
+  color: #E11D48;
+}
+
+.comp-arrow-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: #94A3B8;
+  padding: 0 4px;
+}
+
+.child-custom-input-box {
+  margin-top: 8px;
+}
+
+.child-text-field {
+  width: 100%;
+  padding: 10px 12px;
+  font-family: var(--font-main);
+  font-size: 14px;
+  border: 2px solid #000000;
+  border-radius: var(--radius-sm);
+  background-color: #FFFFFF;
+  outline: none;
+}
+
+.child-text-field:focus {
+  border-color: var(--koko-blue-main);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+}
+
+/* ========================================================
+   子供質問完了：その子に合っているポイントをどどんと表示
+   ======================================================== */
+.matching-fit-hero-card {
+  background-color: #FEF9C3;
+  border: 3px solid #1E293B;
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  margin-bottom: 24px;
+  box-shadow: 4px 4px 0px #1E293B;
+  position: relative;
+  text-align: center;
+}
+
+.fit-hero-top-badge {
+  display: inline-block;
+  background-color: #F97316;
+  color: #FFFFFF;
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 800;
+  padding: 5px 16px;
+  border-radius: var(--radius-pill);
+  border: 2px solid #1E293B;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.fit-hero-title {
+  font-family: var(--font-child);
+  font-size: 20px;
+  font-weight: 900;
+  color: #0F172A;
+  line-height: 1.4;
+  margin: 0 0 10px 0;
+}
+
+.fit-hero-subtitle {
+  font-size: 13px;
+  color: #475569;
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+}
+
+.fit-points-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.fit-point-row {
+  background-color: #FFFFFF;
+  border: 2px solid #1E293B;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-shadow: 2px 2px 0px #1E293B;
+}
+
+.fit-point-badge {
+  background-color: #0284C7;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid #1E293B;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.fit-point-content {
+  flex: 1;
+}
+
+.fit-point-heading {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+}
+
+.fit-point-detail {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ========================================================
+   記録画面：「予定から外す」ボタン（押しやすいピル型ボタン）
+   ======================================================== */
+.planned-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.btn-delete-plan-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #FFFFFF;
+  border: 2px solid #94A3B8;
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  font-family: var(--font-base);
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #94A3B8;
+  transition: all 0.15s ease;
+}
+
+.btn-delete-plan-text:hover {
+  background-color: #FEE2E2;
+  border-color: #EF4444;
+  color: #DC2626;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #DC2626;
+}
+
+.btn-delete-plan-text:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px #DC2626;
+}
+
+/* ========================================================
+   学校紹介・詳細：「✦ 行ってみる」ボタン（目立つプッシュボタン）
+   ======================================================== */
+.btn-event-quick-plan,
+.btn-plan-event {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #FBBF24;
+  color: #1E293B;
+  border: 2px solid #1E293B;
+  border-radius: var(--radius-pill);
+  padding: 7px 16px;
+  font-family: var(--font-child);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #1E293B;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-event-quick-plan:hover,
+.btn-plan-event:hover {
+  background-color: #F59E0B;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #1E293B;
+}
+
+.btn-event-quick-plan:active,
+.btn-plan-event:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px #1E293B;
+}
+
+.btn-event-quick-plan.added,
+.btn-plan-event.added {
+  background-color: #10B981;
+  color: #FFFFFF;
+  border-color: #065F46;
+  box-shadow: 2px 2px 0px #065F46;
+}
+
+/* ========================================================
+   マイページ「いいねした学校」：他校と比較するボタン
+   一目で分かりやすいレトロポップなプッシュボタン
+   ======================================================== */
+.mypage-fav-item-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.btn-compare-mypage {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background-color: #FFE66D;
+  color: #1B2028;
+  border: 2px solid #1B2028;
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #1B2028;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-compare-mypage:hover {
+  background-color: #FFD93D;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #1B2028;
+}
+
+.btn-compare-mypage:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px #1B2028;
+}
+
+/* ========================================================
+   保護者画面：見学記録 ＆ 保護者用入力画面
+   ======================================================== */
+.parent-review-intro-card {
+  border-color: var(--koko-dark);
+}
+
+.parent-plan-item-card {
+  background: var(--koko-card-bg);
+  border: 2px solid var(--koko-dark);
+  border-radius: var(--radius-md);
+  box-shadow: 3px 3px 0px var(--koko-dark);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.parent-review-recorded-box {
+  background: #F8F5FF;
+  border: 1.5px solid #7B61FF;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 10px;
+}
+
+.parent-review-editor-card {
+  background: var(--koko-card-bg);
+  border: 3px solid var(--koko-dark);
+  border-radius: var(--radius-lg);
+  box-shadow: 4px 4px 0px var(--koko-dark);
+}
+
+/* ========================================================
+   公式ホームページリンクボタン（外部リンク）
+   ======================================================== */
+.btn-official-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #F0F7FF;
+  color: var(--koko-blue-main);
+  border: 2px solid var(--koko-blue-main);
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 2px 2px 0px var(--koko-blue-main);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-official-card-link:hover {
+  background-color: #DBEAFE;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--koko-blue-main);
+}
+
+.btn-official-detail-link:hover {
+  background-color: #DBEAFE;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--koko-blue-main);
+}
+
+/* ========================================================
+   質問チェックボタンUI (.big-tile-checkbox)
+   何を選択しているか一目で分かる明確なチェックボタンデザイン
+   ======================================================== */
+.big-tile-checkbox {
+  position: relative;
+  display: flex !important;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background-color: #FFFFFF;
+  border: 2px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.big-tile-checkbox:hover {
+  border-color: var(--koko-blue-main);
+  background-color: #F8FAFC;
+  transform: translateY(-1px);
+}
+
+/* 隠しネイティブチェックボックス（アクセシビリティ維持） */
+.big-tile-checkbox input[type="checkbox"],
+.big-tile-checkbox input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* カスタム四角チェックボックス */
+.custom-check-box {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #94A3B8;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.custom-check-box .check-icon {
+  font-size: 16px;
+  font-weight: 900;
+  color: #FFFFFF;
+  display: none;
+  line-height: 1;
+}
+
+/* タイル内テキスト */
+.tile-text-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.tile-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.tile-sub {
+  font-size: 12px;
+  color: #64748B;
+  font-weight: 500;
+}
+
+/* 右端の「選択中」バッジ */
+.tile-checked-badge {
+  flex-shrink: 0;
+  display: none;
+  font-size: 11px;
+  font-weight: 800;
+  color: #FFFFFF;
+  background-color: var(--koko-blue-main);
+  padding: 3px 8px;
+  border-radius: 4px;
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
+}
+
+/* ★ 選択中（active または :has(input:checked)）時の強調デザイン */
+.big-tile-checkbox.active,
+.big-tile-checkbox:has(input:checked) {
+  background-color: #EFF6FF !important;
+  border: 2.5px solid var(--koko-blue-main) !important;
+  box-shadow: 3px 3px 0px var(--koko-blue-main) !important;
+}
+
+.big-tile-checkbox.active .custom-check-box,
+.big-tile-checkbox:has(input:checked) .custom-check-box {
+  background-color: var(--koko-blue-main) !important;
+  border-color: var(--koko-blue-main) !important;
+}
+
+.big-tile-checkbox.active .check-icon,
+.big-tile-checkbox:has(input:checked) .check-icon {
+  display: block !important;
+}
+
+.big-tile-checkbox.active .tile-title,
+.big-tile-checkbox:has(input:checked) .tile-title {
+  color: var(--koko-blue-main) !important;
+}
+
+.big-tile-checkbox.active .tile-checked-badge,
+.big-tile-checkbox:has(input:checked) .tile-checked-badge {
+  display: inline-block !important;
+}
+
+/* ========================================================
+   マイページ：プロフィールヘッダーカード
+   ======================================================== */
+.mypage-profile-card {
+  background-color: #FFFFFF;
+  border: 2.5px solid var(--koko-dark);
+  border-radius: var(--radius-lg);
+  box-shadow: 3px 3px 0px var(--koko-dark);
+  padding: 16px 20px;
+}
+
+.mypage-profile-flex {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-avatar-display {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background-color: #FEF9C3;
+  border: 2.5px solid var(--koko-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0px var(--koko-dark);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.profile-avatar-display:hover {
+  transform: scale(1.05);
+}
+
+.avatar-emoji {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.avatar-edit-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #FFFFFF;
+}
+
+.profile-meta-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-name-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.profile-user-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+}
+
+.badge-role-pill {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--koko-dark);
+}
+
+.badge-role-pill.child-badge {
+  background-color: var(--koko-yellow-main);
+  color: #0F172A;
+}
+
+.badge-role-pill.parent-badge {
+  background-color: var(--koko-blue-main);
+  color: #FFFFFF;
+  border-color: var(--koko-blue-main);
+}
+
+.profile-household-tag {
+  font-size: 12px;
+  color: #64748B;
+  margin: 4px 0 0 0;
+}
+
+.profile-household-tag strong {
+  color: #0F172A;
+  font-weight: 700;
+}
+
+.btn-edit-profile-action {
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+}
+
+/* ========================================================
+   プロフィール編集モーダル
+   ======================================================== */
+.profile-edit-modal-dialog {
+  max-width: 440px;
+  width: 90%;
+  background: #FFFFFF;
+  border: 3px solid var(--koko-dark);
+  border-radius: var(--radius-lg);
+  box-shadow: 6px 6px 0px var(--koko-dark);
+  padding: 24px;
+}
+
+.avatar-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+@media (max-width: 480px) {
+  .avatar-picker-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.avatar-picker-btn {
+  font-size: 26px;
+  line-height: 1;
+  padding: 8px 4px;
+  border: 2px solid #E2E8F0;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-picker-btn:hover {
+  background-color: #F1F5F9;
+  border-color: #94A3B8;
+  transform: scale(1.08);
+}
+
+.avatar-picker-btn.selected {
+  background-color: #FEF9C3;
+  border-color: var(--koko-dark);
+  border-width: 2.5px;
+  box-shadow: 2px 2px 0px var(--koko-dark);
+  transform: scale(1.1);
+}
+
+.edit-field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1E293B;
+  margin-bottom: 6px;
+}
+
+/* ==========================================
+   通学アクセス・所要時間詳細ボックス（レトロポップ調）
+   ========================================== */
+.home-school-commute-detail-box,
+.dash-commute-route-detail {
+  background-color: #F0FDF4 !important;
+  border: 2.5px solid var(--koko-dark) !important;
+  border-radius: 12px !important;
+  box-shadow: 3px 3px 0px var(--koko-dark) !important;
+}
+
+.home-school-commute-detail-box p,
+.dash-commute-route-detail p {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #14532D;
+  font-weight: 600;
+}
+
+/* ==========================================
+   写真プレースホルダー（大体のあたりの確保）
+   ========================================== */
+.school-card-photo-wrap {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+  border-radius: 12px;
+  border: 2px dashed #94A3B8;
+  overflow: hidden;
+  margin: 10px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.school-card-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.photo-placeholder-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #64748B;
+  padding: 12px;
+  text-align: center;
+}
+
+.photo-placeholder-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.photo-placeholder-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+}
+
+/* ==========================================
+   子ども画面の「ここがワクワク！」文字サイズ拡大＆読みやすさ向上
+   ========================================== */
+.rec-school-recommend-box,
+.home-school-mode-summary-box.child-theme {
+  padding: 12px 14px !important;
+  background-color: #FEF9C3 !important;
+  border: 2px solid var(--koko-dark) !important;
+  border-radius: 12px !important;
+  box-shadow: 2px 2px 0px var(--koko-dark) !important;
+}
+
+.rec-badge-point,
+.child-theme .summary-badge-mini {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  padding: 3px 10px !important;
+  border-radius: 6px !important;
+  margin-bottom: 6px !important;
+  display: inline-block !important;
+}
+
+.rec-point-text,
+.child-theme .summary-text-mini,
+.rec-school-desc-100 {
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+  font-weight: 700 !important;
+  color: #1E293B !important;
+}
+
+/* 子ども画面の一言キャッチコピー（崩した言い方で大きく目立たせる） */
+.child-catchphrase-banner {
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  color: #1D4ED8 !important;
+  background: #EFF6FF !important;
+  border-left: 4px solid #3B82F6 !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  margin: 8px 0 10px !important;
+  line-height: 1.5 !important;
+}
+
+/* ==========================================
+   行く前のワクワク度のテキストラベル非表示
+   ========================================== */
+#starRatingLabelText {
+  display: none !important;
+}
+
+

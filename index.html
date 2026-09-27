@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中学受験支援サービス - ここがいいノート</title>
+  <meta name="description" content="「ここでいい」から、「ここがいい」へ。自分にぴったりの学校を見つけて、「行きたい」と思える未来へ。中学受験サポートアプリ Koko*">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Fredoka:wght@500;600;700&family=M+PLUS+Rounded+1c:wght@500;700;800;900&family=Noto+Sans+JP:wght@400;500;700&family=Quicksand:wght@600;700&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app" class="app-container">
+
+    <!-- グローバルヘッダー (Koko* スマホ向けブランドバー & モード切替) -->
+    <header class="global-header">
+      <div class="header-inner">
+        <div class="brand-group" onclick="switchAppView('home')">
+          <div class="koko-logo-mark">
+            <img src="assets/images/koko_logo.png" alt="Koko ✦" class="koko-header-logo-img">
+          </div>
+          <div class="brand-text-block">
+            <div class="koko-catchphrase">「ここでいい」から、「ここがいい」へ。</div>
+          </div>
+        </div>
+        <div class="header-right-badges"></div>
+      </div>
+      <!-- 保護者画面 ⇄ 子ども画面 切り替えピルバー -->
+      <div class="user-mode-switcher-bar">
+        <button type="button" class="mode-pill-toggle active" id="btnModeParent" onclick="switchUserMode('parent')">
+          <span class="mode-bullet">✦</span> 保護者画面
+        </button>
+        <button type="button" class="mode-pill-toggle" id="btnModeChild" onclick="switchUserMode('child')">
+          <span class="mode-bullet">✦</span> 子ども画面
+        </button>
+      </div>
+    </header>
+
+    <main class="app-main-content">
+
+      <!-- ========================================================
+           0-1. ホーム画面（保護者画面 ⇄ 子ども画面 で切り替え）
+           ======================================================== -->
+      <section id="roleHomeView" class="role-view active">
+
+        <!-- ==========================================
+             A. 保護者画面のホーム（おうちの方の条件設定 ＆ AI会話提案）
+             ========================================== -->
+        <div id="homeParentViewBlock" class="home-mode-block active">
+          <!-- 親向けウェルカムカード（おうちの方の条件設定） -->
+          <div class="koko-hero-opening-card compact-hero">
+            <div class="hero-logo-large">
+              <img src="assets/images/koko_logo.png" alt="Koko ✦" class="koko-hero-logo-img">
+            </div>
+            <h1 class="hero-catch-title">おうちの方の条件設定</h1>
+            <p class="hero-sub-description">
+              ご家庭で大切にしたい教育方針や希望条件です。<br>
+              設定の確認や変更はマイページから行えます。
+            </p>
+            <div class="hero-quick-actions-row">
+              <button type="button" class="btn-retro-action-pill" onclick="switchAppView('mypage')">
+                ✎ マイページで条件を編集する
+              </button>
+            </div>
+          </div>
+
+          <!-- 1. AIによる会話の提案 ＆ 要約まとめカード -->
+          <div class="home-section-card ai-summary-highlight-card">
+            <div class="home-section-header">
+              <div class="section-title-wrap">
+                <span class="section-sub-badge badge-accent">AI ADVISOR</span>
+                <h2 class="home-section-title">AIによる要約 ＆ 会話の提案</h2>
+              </div>
+            </div>
+            <p class="home-section-desc">
+              お子さまの最新の興味や見学メモと、保護者の条件を総合分析したレポートです。
+            </p>
+            <!-- AI要約サマリー -->
+            <div class="ai-summary-content-box" id="aiParentSummaryContent">
+              <!-- JavaScriptで動的生成 -->
+            </div>
+            <!-- 今夜の食卓で聞いてみよう！会話の提案 -->
+            <div class="ai-conversation-box">
+              <h3 class="conversation-box-title">今夜の食卓で聞いてみよう！（AI対話のヒント）</h3>
+              <ul class="conversation-prompts-list" id="aiConversationPromptsList">
+                <!-- JavaScriptで動的生成 -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- 2. 子どもの興味関心のまとめカード -->
+          <div class="home-section-card">
+            <div class="home-section-header">
+              <div class="section-title-wrap">
+                <span class="section-sub-badge">CHILD INSIGHT</span>
+                <h2 class="home-section-title">お子さまの興味関心まとめ</h2>
+              </div>
+              <button type="button" class="btn-link-action" onclick="switchAppView('mypage')">編集 &gt;</button>
+            </div>
+            <p class="home-section-desc">お子さまが大切にしたいことやワクワクする分野です。</p>
+            <div class="parent-summary-interests-box" id="parentSummaryChildInterests">
+              <!-- JavaScriptで動的生成 -->
+            </div>
+          </div>
+
+          <!-- 3. 気になっている学校（検討リスト） -->
+          <div class="home-section-card">
+            <div class="home-section-header">
+              <div class="section-title-wrap">
+                <span class="section-sub-badge">FAVORITES</span>
+                <h2 class="home-section-title">お子さまが気になっている学校</h2>
+              </div>
+              <button type="button" class="btn-link-action" onclick="switchAppView('search')">探す &gt;</button>
+            </div>
+            <p class="home-section-desc">お子さまがお気に入り登録した学校や高マッチの候補です。</p>
+            <div class="parent-summary-schools-grid" id="parentSummaryFavoriteSchools">
+              <!-- JavaScriptで動的生成 -->
+            </div>
+          </div>
+
+          <!-- 4. オーキャン（見学・説明会）の振り返りまとめ -->
+          <div class="home-section-card">
+            <div class="home-section-header">
+              <div class="section-title-wrap">
+                <span class="section-sub-badge">CAMPUS REVIEW</span>
+                <h2 class="home-section-title">オーキャン・説明会の振り返りまとめ</h2>
+              </div>
+              <button type="button" class="btn-link-action" onclick="switchAppView('review')">記録する &gt;</button>
+            </div>
+            <p class="home-section-desc">学校見学直後にお子さまが感じた生の感想メモです。</p>
+            <div class="parent-summary-reviews-box" id="parentSummaryReviews">
+              <!-- JavaScriptで動的生成 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             B. 子ども画面のホーム（おすすめ ＆ 興味提案）
+             ========================================== -->
+        <div id="homeChildViewBlock" class="home-mode-block">
+          <!-- 子ども向けウェルカムカード -->
+          <div class="koko-hero-opening-card compact-hero child-hero-bg">
+            <div class="hero-logo-large">
+              <img src="assets/images/koko_logo.png" alt="Koko ✦" class="koko-hero-logo-img">
+            </div>
+            <h1 class="hero-catch-title">「ここでいい」から、<br>「ここがいい」へ。</h1>
+            <p class="hero-sub-description">
+              あなたの「すき」や「やってみたいこと」にあわせて、<br>
+              ワクワクする中学校をいっしょにみつけよう！
+            </p>
+            <div class="hero-quick-actions-row">
+              <button type="button" class="btn-retro-action-pill secondary" onclick="switchAppView('child')">
+                ✦ じぶんの「すき」を見つけるワーク（全10問）
+              </button>
+            </div>
+          </div>
+
+          <!-- セクション1：あなたへのおすすめの学校 -->
+          <div class="home-section-card">
+            <div class="home-section-header">
+              <div class="section-title-wrap">
+                <span class="section-sub-badge">MATCHING</span>
+                <h2 class="home-section-title">あなたへのおすすめの学校</h2>
+              </div>
+              <button type="button" class="btn-link-action" onclick="switchAppView('search')">すべて見る &gt;</button>
+            </div>
+            <p class="home-section-desc">
+              通いやすさや雰囲気があなたにぴったりの学校をピックアップしたよ！
+            </p>
+            <div class="home-school-cards-grid" id="homeRecommendedSchoolsContainer">
+              <!-- JavaScriptで動的生成 -->
+            </div>
+          </div>
+
+          <!-- セクション2：他にもこんな学校がありますよ！ -->
+          <div class="home-section-card interest-spotlight-card">
+            <div class="home-section-header">
+              <div class="section-title-wrap">
+                <span class="section-sub-badge badge-accent">DISCOVERY</span>
+                <h2 class="home-section-title">他にもこんな学校がありますよ！</h2>
+              </div>
+            </div>
+            <div class="interest-spotlight-banner">
+              <span class="spotlight-sparkle">✦</span>
+              <p class="spotlight-text">
+                <strong>あなたの「好き」や気になること</strong>に合わせたご提案だよ！<br>
+                知らなかったおもしろい学校に出会えるかも？
+              </p>
+            </div>
+            <div class="home-school-cards-grid" id="homeInterestAlternativeContainer">
+              <!-- JavaScriptで動的生成 -->
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================================
+           0-2. 学校を探す画面（一覧・検索フィルター）
+           ======================================================== -->
+      <!-- ========================================================
+           0-2. 学校を探す画面（単語検索・一言レコメンド付き）
+           ======================================================== -->
+      <section id="roleSchoolSearchView" class="role-view">
+        <div class="screen-sub-header">
+          <button type="button" class="btn-back-icon" onclick="switchAppView('home')">&lt;</button>
+          <h2 class="screen-title">学校を探す</h2>
+          <span style="width: 32px;"></span>
+        </div>
+
+        <!-- 単語から探す検索ボックス -->
+        <div class="search-keyword-container">
+          <div class="search-input-wrapper">
+            <span class="search-input-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input type="text" id="schoolSearchKeywordInput" class="keyword-search-field" placeholder="単語で探す（例：理科、英語、のびのび、渋谷、部活...）" oninput="handleKeywordSearch(this.value)">
+            <button type="button" class="btn-clear-keyword" id="btnClearKeyword" onclick="clearKeywordSearch()" style="display: none;">×</button>
+          </div>
+          <!-- クイック絞り込みタグ -->
+          <div class="quick-tags-scroll-row">
+            <button type="button" class="quick-tag-chip active" onclick="filterByQuickTag('all', this)">すべて</button>
+            <button type="button" class="quick-tag-chip favorite-filter-chip" onclick="filterByFavorite(this)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--koko-pink)" stroke="var(--koko-pink)" stroke-width="2" style="vertical-align: -1px; margin-right: 3px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>いいねした学校
+            </button>
+            <button type="button" class="quick-tag-chip" onclick="filterByQuickTag('のびのび', this)">#のびのび</button>
+            <button type="button" class="quick-tag-chip" onclick="filterByQuickTag('理科', this)">#理科・実験</button>
+            <button type="button" class="quick-tag-chip" onclick="filterByQuickTag('英語', this)">#英語・国際</button>
+            <button type="button" class="quick-tag-chip" onclick="filterByQuickTag('部活動', this)">#部活盛ん</button>
+            <button type="button" class="quick-tag-chip" onclick="filterByQuickTag('自由', this)">#自由な校風</button>
+            <button type="button" class="quick-tag-chip" onclick="filterByQuickTag('ICT', this)">#デジタル・ICT</button>
+          </div>
+        </div>
+
+        <!-- 検索結果件数バー -->
+        <div class="search-result-count-bar">
+          <span id="searchResultCountText">表示中: 8校</span>
+        </div>
+
+        <!-- 学校リストカード一覧（一言レコメンドつき） -->
+        <div class="school-search-list-container" id="schoolSearchListCards">
+          <!-- JavaScriptで動的生成 -->
+        </div>
+      </section>
+
+      <!-- ========================================================
+           0-3. 比較する画面（2校横並び比較テーブル）
+           ======================================================== -->
+      <section id="roleCompareView" class="role-view">
+        <div class="screen-sub-header">
+          <button type="button" class="btn-back-icon" onclick="returnFromCompareView()">&lt;</button>
+          <h2 class="screen-title">比較する</h2>
+          <span style="width: 32px;"></span>
+        </div>
+
+        <!-- 比較カード・テーブル -->
+        <div class="card-surface compare-table-card">
+          <div class="compare-header-row">
+            <div class="compare-school-col">
+              <div class="compare-school-thumb">
+                <span class="school-thumb-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--koko-pink)" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 10h1"/><path d="M14 10h1"/><path d="M9 14h1"/><path d="M14 14h1"/></svg>
+                </span>
+              </div>
+              <h3 class="compare-school-name" id="cmpSchoolName1">渋谷教育学園渋谷中学校</h3>
+              <span class="compare-school-badge">共学 ・ 普通科</span>
+            </div>
+            <div class="compare-vs-badge">VS</div>
+            <div class="compare-school-col">
+              <div class="compare-school-thumb">
+                <span class="school-thumb-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--koko-green)" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 10h1"/><path d="M14 10h1"/><path d="M9 14h1"/><path d="M14 14h1"/></svg>
+                </span>
+              </div>
+              <h3 class="compare-school-name" id="cmpSchoolName2">広尾学園中学校</h3>
+              <span class="compare-school-badge">共学 ・ 医進/インター/本科</span>
+            </div>
+          </div>
+
+          <div class="compare-table-wrap">
+            <table class="koko-compare-table">
+              <tbody>
+                <tr>
+                  <th scope="row">偏差値</th>
+                  <td class="td-val highlight" id="cmpDev1">58</td>
+                  <td class="td-val" id="cmpDev2">62</td>
+                </tr>
+                <tr>
+                  <th scope="row">学費（年間）</th>
+                  <td class="td-val" id="cmpTuition1">約80万円</td>
+                  <td class="td-val highlight" id="cmpTuition2">約72万円</td>
+                </tr>
+                <tr>
+                  <th scope="row">通学時間</th>
+                  <td class="td-val" id="cmpTime1">約40分</td>
+                  <td class="td-val highlight" id="cmpTime2">約30分</td>
+                </tr>
+                <tr>
+                  <th scope="row">校風</th>
+                  <td class="td-val" id="cmpVibe1">のびのび</td>
+                  <td class="td-val" id="cmpVibe2">しっかり</td>
+                </tr>
+                <tr>
+                  <th scope="row">部活動</th>
+                  <td class="td-val" id="cmpClub1">充実</td>
+                  <td class="td-val" id="cmpClub2">盛ん</td>
+                </tr>
+                <tr>
+                  <th scope="row">進学実績</th>
+                  <td class="td-val" id="cmpRecord1">◎</td>
+                  <td class="td-val" id="cmpRecord2">◎</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="compare-action-footer">
+            <button type="button" class="btn-solid-parent pill-btn" onclick="openCompareDetailModal()">
+              もっと詳しく見る
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           1. 保護者画面（1画面1問 シュッとスライド進行）
+           ======================================================== -->
+      <section id="roleParentView" class="role-view">
+
+        <!-- 条件入力ステージ（1画面1問ウィザード・質問だけが表示される専用画面） -->
+        <div id="parentSubInputView" class="p-sub-view active">
+          
+          <!-- 上部ナビゲーションバー（マイページへ戻る） -->
+          <div class="wizard-top-nav-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <button type="button" class="btn-subtle-pill" onclick="switchAppView('mypage')" style="font-size: 13px; font-weight: 700; background: #FFF; border: 1.5px solid #000; padding: 6px 14px; border-radius: 9999px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+              <span>&lt;</span> マイページに戻る
+            </button>
+            <span style="font-size: 12px; font-weight: 700; color: #64748B;">保護者・条件設定</span>
+          </div>
+
+          <!-- 親プログレスインジケーター -->
+          <div class="wizard-progress-card parent-progress">
+            <div class="wizard-progress-text">
+              <span id="parentProgressStepText">質問 1 / 10</span>
+              <span id="parentProgressSubTitle">保護者様のお名前</span>
+            </div>
+            <div class="progress-bar-rail">
+              <div class="progress-bar-active parent-fill" id="parentProgressBarFill" style="width: 10%;"></div>
+            </div>
+          </div>
+
+          <!-- スライド質問コンテナ（シュッとアニメーションする親ステージ） -->
+          <div class="wizard-viewport" id="parentWizardViewport">
+
+            <!-- 親問1：保護者のお名前 -->
+            <div id="pSlide1" class="question-slide active">
+              <div class="card-surface single-focus-card">
+                <span class="badge-phase">質問 1 / 10</span>
+                <h2 class="slide-question-title text-parent">保護者様のお名前（ニックネーム）を教えてください</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  アプリ内でお呼びするお名前です。入力したら「次へ進む」を押してください。
+                </p>
+
+                <div class="slide-input-wrap">
+                  <input type="text" id="pInputParentName" class="input-field large-input" value="いろはさん" placeholder="例：いろはさん、お父さん、お母さん" autofocus>
+                  <p class="form-hint-subnote" style="margin-top: 8px; font-size: 13px; color: var(--koko-blue-main); font-weight: 700;">
+                    💡 入力されたお名前はマイページからいつでも変更できます。
+                  </p>
+                </div>
+
+                <div class="slide-actions-bar">
+                  <button type="button" class="btn-solid-parent" onclick="nextParentSlide(2)">
+                    次へ進む
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 親問2：自宅住所（市区町村）＆最寄り駅（自転車・徒歩通学対応） -->
+            <div id="pSlide2" class="question-slide">
+              <div class="card-surface single-focus-card">
+                <span class="badge-phase">質問 2 / 10</span>
+                <h2 class="slide-question-title text-parent">ご自宅の住所（市区町村）と最寄り駅はどこですか？</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  電車通学だけでなく、<strong>自転車通学や徒歩通学</strong>をお考えのご家庭向けに、自宅から通いやすい学校をご提案します。
+                </p>
+
+                <div class="slide-input-wrap">
+                  <div style="margin-bottom: 16px;">
+                    <label for="pInputAddress" style="display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #1E293B;">
+                      🏠 ご自宅の住所（市区町村）
+                    </label>
+                    <input type="text" id="pInputAddress" class="input-field large-input" value="" placeholder="例：茨城県土浦市、東京都世田谷区、横浜市" oninput="handleAddressStationInput()">
+                  </div>
+                  <div>
+                    <label for="pInputStation" style="display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #1E293B;">
+                      🚉 自宅の最寄り駅
+                    </label>
+                    <input type="text" id="pInputStation" class="input-field large-input" value="" placeholder="例：荒川沖駅、土浦駅、渋谷駅、吉祥寺駅" oninput="handleAddressStationInput()">
+                  </div>
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline" onclick="prevParentSlide(1)">前に戻る</button>
+                  <button type="button" class="btn-solid-parent" onclick="nextParentSlide(3)">次へ進む</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 親問3：通学時間の上限（30〜90分、5分刻み） -->
+            <div id="pSlide3" class="question-slide">
+              <div class="card-surface single-focus-card">
+                <span class="badge-phase">質問 3 / 10</span>
+                <h2 class="slide-question-title text-parent">通学時間の上限はどのくらいですか？</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  ドア・トゥ・ドア（自宅の玄関から学校の校門まで）の片道許容上限を設定してください。
+                </p>
+
+                <div class="slide-input-wrap">
+                  <div class="slider-display-box">
+                    <span class="slider-large-val text-parent" id="valCommuteDisplay">60分</span>
+                    <span class="slider-note text-parent-muted">片道の上限時間</span>
+                  </div>
+                  <input type="range" id="pInputCommute" min="30" max="90" step="5" value="60" class="range-slider-parent" oninput="updateCommuteSlider(this.value)">
+                  <div class="range-ticks">
+                    <span>30分（近場・徒歩自転車重視）</span>
+                    <span>60分（一般的上限）</span>
+                    <span>90分（遠距離許容）</span>
+                  </div>
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline" onclick="prevParentSlide(2)">前に戻る</button>
+                  <button type="button" class="btn-solid-parent" onclick="nextParentSlide(4)">次へ進む</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 親問4：通学手段の制限（自転車通学・徒歩通学対応） -->
+            <div id="pSlide4" class="question-slide">
+              <div class="card-surface single-focus-card">
+                <span class="badge-phase">質問 4 / 10</span>
+                <h2 class="slide-question-title text-parent">許容する通学手段はどれですか？</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  利用してもよい通学方法をすべて選んでください（複数選択可）。
+                </p>
+
+                <div class="slide-input-wrap">
+                  <div class="big-tiles-group vertical-list" id="groupTransport">
+                    <label class="big-tile-checkbox active">
+                      <input type="checkbox" name="transport" value="train" checked onchange="handleTransportCheckboxChange(this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">電車利用</strong>
+                        <span class="tile-sub">一般的な鉄道路線</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="transport" value="bus" onchange="handleTransportCheckboxChange(this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">路線バス利用</strong>
+                        <span class="tile-sub">一般の路線バス</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="transport" value="school_bus" onchange="handleTransportCheckboxChange(this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">スクールバス利用可</strong>
+                        <span class="tile-sub">学校専用の送迎バス</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox active">
+                      <input type="checkbox" name="transport" value="bicycle" checked onchange="handleTransportCheckboxChange(this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">自転車通学</strong>
+                        <span class="tile-sub">近距離・アクティブに通学（駐輪場利用）</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox active">
+                      <input type="checkbox" name="transport" value="walk" checked onchange="handleTransportCheckboxChange(this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">徒歩通学のみ</strong>
+                        <span class="tile-sub">自宅から徒歩圏内（約20分以内）で安心通学</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline" onclick="prevParentSlide(3)">前に戻る</button>
+                  <button type="button" class="btn-solid-parent" onclick="nextParentSlide(5)">次へ進む</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 親問5：年間学費の上限（シンプルなチェックボックスUI） -->
+            <div id="pSlide5" class="question-slide">
+              <div class="card-surface single-focus-card">
+                <span class="badge-phase">質問 5 / 10</span>
+                <h2 class="slide-question-title text-parent">年間学費の上限の目安はどのくらいですか？</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  当てはまるものをチェックボックスで選び、下の「次へ進む」ボタンを押してください。
+                </p>
+
+                <div class="slide-input-wrap">
+                  <div class="big-tiles-group vertical-list" id="groupTuition">
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="tuition_radio" value="80" onchange="handleSingleCheckboxSelect('tuition', 80, this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">80万円未満</strong>
+                        <span class="tile-sub">公立中高一貫校や抑えめな費用設定</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox active">
+                      <input type="checkbox" name="tuition_radio" value="100" checked onchange="handleSingleCheckboxSelect('tuition', 100, this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">100万円未満</strong>
+                        <span class="tile-sub">私立中学校の標準的な学費帯</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="tuition_radio" value="120" onchange="handleSingleCheckboxSelect('tuition', 120, this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">120万円未満</strong>
+                        <span class="tile-sub">施設や実験設備の充実した私立校</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="tuition_radio" value="150" onchange="handleSingleCheckboxSelect('tuition', 150, this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">150万円未満</strong>
+                        <span class="tile-sub">大学附属校や先進教育校</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="tuition_radio" value="0" onchange="handleSingleCheckboxSelect('tuition', 0, this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">上限なし（こだわらない）</strong>
+                        <span class="tile-sub">学費の制限を設けずに幅広く検討</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline" onclick="prevParentSlide(4)">前に戻る</button>
+                  <button type="button" class="btn-solid-parent" onclick="nextParentSlide(6)">次へ進む</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 親問6：希望する学校形態（シンプルなチェックボックスUI） -->
+            <div id="pSlide6" class="question-slide">
+              <div class="card-surface single-focus-card">
+                <span class="badge-phase">質問 6 / 10</span>
+                <h2 class="slide-question-title text-parent">希望する学校形態はどれですか？</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  当てはまるものをチェックボックスで選び、下の「次へ進む」ボタンを押してください。
+                </p>
+
+                <div class="slide-input-wrap">
+                  <div class="big-tiles-group vertical-list" id="groupGender">
+                    <label class="big-tile-checkbox active">
+                      <input type="checkbox" name="gender_radio" value="coed" checked onchange="handleSingleCheckboxSelect('gender', 'coed', this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">共学校のみ</strong>
+                        <span class="tile-sub">男子・女子がともに学ぶ環境</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="gender_radio" value="boys" onchange="handleSingleCheckboxSelect('gender', 'boys', this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">男子校のみ</strong>
+                        <span class="tile-sub">男子ならではの成長と活気ある環境</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="gender_radio" value="girls" onchange="handleSingleCheckboxSelect('gender', 'girls', this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">女子校のみ</strong>
+                        <span class="tile-sub">落ち着いた自主性と情操を育む環境</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="gender_radio" value="any" onchange="handleSingleCheckboxSelect('gender', 'any', this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">こだわらない</strong>
+                        <span class="tile-sub">学校の魅力を優先して幅広く検討</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline" onclick="prevParentSlide(5)">前に戻る</button>
+                  <button type="button" class="btn-solid-parent" onclick="nextParentSlide(7)">次へ進む</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 親問7：学校種別（私立/公立/国立 縦並び） -->
+            <div id="pSlide7" class="question-slide">
+              <div class="card-surface single-focus-card">
+                <span class="badge-phase">質問 7 / 10</span>
+                <h2 class="slide-question-title text-parent">希望する学校種別はどれですか？</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  対象としたい種別を選んで、下の「次へ進む」ボタンを押してください（複数選択可）。
+                </p>
+
+                <div class="slide-input-wrap">
+                  <div class="big-tiles-group vertical-list" id="groupCategory">
+                    <label class="big-tile-checkbox active">
+                      <input type="checkbox" name="category" value="private" checked onchange="handleCategoryCheckboxChange(this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">私立中高一貫校</strong>
+                        <span class="tile-sub">独自の教育理念と充実した設備</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="category" value="public" onchange="handleCategoryCheckboxChange(this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">公立中高一貫校</strong>
+                        <span class="tile-sub">高い進学実績と抑えられた学費</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="category" value="national" onchange="handleCategoryCheckboxChange(this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">国立大学附属中</strong>
+                        <span class="tile-sub">先進的な研究授業と高い知的好奇心</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline" onclick="prevParentSlide(6)">前に戻る</button>
+                  <button type="button" class="btn-solid-parent" onclick="nextParentSlide(8)">次へ進む</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 親問8：宗教教育（シンプルなチェックボックスUI） -->
+            <div id="pSlide8" class="question-slide">
+              <div class="card-surface single-focus-card">
+                <span class="badge-phase">質問 8 / 10</span>
+                <h2 class="slide-question-title text-parent">宗教教育についてのご希望はありますか？</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  当てはまる方針をチェックボックスで選び、下の「次へ進む」ボタンを押してください。
+                </p>
+
+                <div class="slide-input-wrap">
+                  <div class="big-tiles-group vertical-list" id="groupReligion">
+                    <label class="big-tile-checkbox active">
+                      <input type="checkbox" name="religion_radio" value="none" checked onchange="handleSingleCheckboxSelect('religion', 'none', this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">無宗教が良い</strong>
+                        <span class="tile-sub">宗教色のない一般的な学校</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="religion_radio" value="christian" onchange="handleSingleCheckboxSelect('religion', 'christian', this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">キリスト教系OK</strong>
+                        <span class="tile-sub">プロテスタント・カトリックなどの礼拝や聖書教育</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="religion_radio" value="buddhist" onchange="handleSingleCheckboxSelect('religion', 'buddhist', this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">仏教系OK</strong>
+                        <span class="tile-sub">禅の精神や礼儀・情操を大切にする教育</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="religion_radio" value="any" onchange="handleSingleCheckboxSelect('religion', 'any', this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">こだわらない</strong>
+                        <span class="tile-sub">宗教の有無に関わらず教育内容を重視</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline" onclick="prevParentSlide(7)">前に戻る</button>
+                  <button type="button" class="btn-solid-parent" onclick="nextParentSlide(9)">次へ進む</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 親問9：希望進学傾向（シンプルなチェックボックスUI） -->
+            <div id="pSlide9" class="question-slide">
+              <div class="card-surface single-focus-card">
+                <span class="badge-phase">質問 9 / 10</span>
+                <h2 class="slide-question-title text-parent">希望する進学傾向はどちらですか？</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  当てはまるものをチェックボックスで選び、下の「次へ進む」ボタンを押してください。
+                </p>
+
+                <div class="slide-input-wrap">
+                  <div class="big-tiles-group vertical-list" id="groupUnivPath">
+                    <label class="big-tile-checkbox active">
+                      <input type="checkbox" name="univpath_radio" value="attached" checked onchange="handleSingleCheckboxSelect('univpath', 'attached', this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">大学附属系</strong>
+                        <span class="tile-sub">受験勉強に追われず、のびのびやりたいことに没頭できる</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="univpath_radio" value="prep" onchange="handleSingleCheckboxSelect('univpath', 'prep', this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">進学校系</strong>
+                        <span class="tile-sub">大学受験を見据え、しっかりとした学力と進学指導を重視</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox">
+                      <input type="checkbox" name="univpath_radio" value="any" onchange="handleSingleCheckboxSelect('univpath', 'any', this)">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">こだわらない</strong>
+                        <span class="tile-sub">どちらの良さも視野に入れて検討</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline" onclick="prevParentSlide(8)">前に戻る</button>
+                  <button type="button" class="btn-solid-parent" onclick="nextParentSlide(10)">次へ進む</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 親問10：求める校風（チェックボタン式UI・選択状態が一目瞭然） -->
+            <div id="pSlide10" class="question-slide">
+              <div class="card-surface single-focus-card">
+                <span class="badge-phase">質問 10 / 10</span>
+                <h2 class="slide-question-title text-parent">求める校風や教育方針はどれですか？</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  当てはまるものを<strong>最大3つまで</strong>チェックボタンで選び、下の「次へ進む」ボタンを押してください。
+                </p>
+
+                <div class="slide-input-wrap">
+                  <div class="big-tiles-group vertical-list" id="groupAtmosphere">
+                    <label class="big-tile-checkbox vibe-check-tile active">
+                      <input type="checkbox" name="vibe" value="free" checked onchange="toggleVibeCheckbox(this, 'free')">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">自由・自主性</strong>
+                        <span class="tile-sub">生徒の自立と主体的な行動を尊重</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox vibe-check-tile active">
+                      <input type="checkbox" name="vibe" value="stem" checked onchange="toggleVibeCheckbox(this, 'stem')">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">理数探究</strong>
+                        <span class="tile-sub">実験や科学、IT・ものづくりに強い</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox vibe-check-tile">
+                      <input type="checkbox" name="vibe" value="support" onchange="toggleVibeCheckbox(this, 'support')">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">手厚い補習</strong>
+                        <span class="tile-sub">放課後の手厚い学習指導やフォロー体制</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox vibe-check-tile">
+                      <input type="checkbox" name="vibe" value="global" onchange="toggleVibeCheckbox(this, 'global')">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">グローバル英語</strong>
+                        <span class="tile-sub">国際教育やネイティブ教員との交流</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox vibe-check-tile">
+                      <input type="checkbox" name="vibe" value="manners" onchange="toggleVibeCheckbox(this, 'manners')">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">情操礼儀</strong>
+                        <span class="tile-sub">礼儀作法や落ち着いた生活習慣の確立</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                    <label class="big-tile-checkbox vibe-check-tile">
+                      <input type="checkbox" name="vibe" value="both" onchange="toggleVibeCheckbox(this, 'both')">
+                      <span class="custom-check-box"><span class="check-icon">✓</span></span>
+                      <div class="tile-text-wrap">
+                        <strong class="tile-title">文武両道</strong>
+                        <span class="tile-sub">勉強も部活動・行事も全力でやりきる</span>
+                      </div>
+                      <span class="tile-checked-badge">選択中</span>
+                    </label>
+                  </div>
+                  <div class="vibe-count-pill" id="vibeCountNotice">選択中: 2 / 3</div>
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline" onclick="prevParentSlide(9)">前に戻る</button>
+                  <button type="button" class="btn-solid-parent" onclick="goToParentPhase2Slide()">
+                    フェーズ2（絶対に譲れない条件の選定）へ進む
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 親・フェーズ2：絶対に譲れない条件（ハードフィルター）の確定 -->
+            <div id="pSlidePhase2" class="question-slide">
+              <div class="card-surface single-focus-card">
+                <span class="badge-phase badge-strict">フェーズ 2</span>
+                <h2 class="slide-question-title text-parent">入力した条件のうち、絶対に譲れない条件を選んでください</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  ここで選んだ条件に当てはまらない学校は、候補から完全に除外されます。<br>
+                  チェックを外した条件は「参考条件」として、マッチ度スコアの加点要素となります。
+                </p>
+
+                <div class="strict-selection-list" id="strictFilterCardsList">
+                  <!-- JavaScriptで動的生成 -->
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline" onclick="prevParentSlide(10)">質問に戻る</button>
+                  <button type="button" class="btn-solid-parent" onclick="saveAndGenerateChildUrl()">
+                    保存して子供用URLを発行する
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- URL・QRコード発行完了カード -->
+            <div id="pSlideUrlToken" class="question-slide">
+              <div class="card-surface single-focus-card modal-token-card">
+                <span class="badge-tag-emerald">URL発行完了</span>
+                <h2 class="slide-question-title text-parent">お子さま専用のアクセスURLが発行されました</h2>
+                <p class="slide-question-desc text-parent-muted">
+                  お子さまのスマートフォンやタブレットでQRコードを読み取るか、URLをLINE等で送信してください。<br>
+                  お子さま端末側は個別ログイン不要で、すぐに1問1画面の興味ワークを始められます。
+                </p>
+
+                <div class="token-share-container">
+                  <div class="qr-code-box" id="qrCodeContainer"></div>
+
+                  <div class="token-url-info">
+                    <label class="form-label text-parent">お子さま専用アクセスURL</label>
+                    <div class="url-copy-row">
+                      <input type="text" id="inputGeneratedUrl" class="input-field-readonly" readonly value="https://kokogaii.app/?child_access=koko_child_direct">
+                      <button type="button" class="btn-copy" onclick="copyChildUrl()">URLコピー</button>
+                    </div>
+                    <p class="copy-notice" id="copyNoticeMsg"></p>
+
+                    <div class="direct-jump-wrap">
+                      <button type="button" class="btn-solid-child" onclick="simulateChildLogin()">
+                        子供端末としてこの画面で回答を始める
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="slide-actions-bar between" style="margin-top: 24px;">
+                  <button type="button" class="btn-outline" onclick="switchAppView('home')">
+                    ホームに戻る
+                  </button>
+                  <button type="button" class="btn-solid-parent" onclick="switchAppView('mypage')">
+                    マイページで条件を確認する
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 親向けダッシュボード（機能5：ブロックA・B・C） -->
+        <div id="parentSubDashboardView" class="p-sub-view">
+          <div class="dashboard-intro-card">
+            <span class="badge-phase">機能5：親向けダッシュボード</span>
+            <h2 class="title-h2 text-parent">親子の共有ダッシュボード ＆ AIギャップ分析</h2>
+            <p class="desc-text text-parent-muted">
+              保護者の絶対条件を満たした推奨学校3校と、お子さまの事前興味・見学後振り返りシートを照合したAI分析レポートです。
+            </p>
+          </div>
+
+          <div class="school-dashboard-stack" id="schoolDashboardContainer">
+            <!-- JavaScriptで動的生成 -->
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- ========================================================
+           2. 子供画面（1画面1問 シュッとスライド進行）
+           ======================================================== -->
+      <section id="roleChildView" class="role-view">
+        <!-- 子供プログレスインジケーター（「いま ○問目 / 全部で 7問」） -->
+        <div class="wizard-progress-card">
+          <div class="wizard-progress-text">
+            <span id="childProgressStepText">いま 1問目 / 全部で 7問</span>
+            <span id="childProgressSubTitle">ニックネームをおしえてね</span>
+          </div>
+          <div class="progress-bar-rail">
+            <div class="progress-bar-active" id="childProgressBarFill" style="width: 14.3%;"></div>
+          </div>
+        </div>
+
+        <!-- スライド質問コンテナ（シュッとアニメーションする子供ステージ） -->
+        <div class="wizard-viewport" id="childWizardViewport">
+
+          <!-- 子供・オンボーディング：Koko* はじめましてカード（画像再現） -->
+          <div id="cSlide0" class="question-slide active">
+            <div class="card-surface single-focus-card koko-welcome-card">
+              <div class="koko-welcome-logo-wrap">
+                <img src="assets/images/koko_logo.png" alt="Koko ✦" class="koko-hero-logo-img">
+              </div>
+              <h2 class="welcome-heading">はじめまして Koko* です</h2>
+              <p class="welcome-sub-desc">
+                あなたの「好き」や「やりたいこと」から<br>
+                ぴったりの学校を見つける<br>
+                お手伝いをします。
+              </p>
+              <div class="welcome-illustration-box">
+                <div class="welcome-school-art">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--koko-blue-main)" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 10h1"/><path d="M14 10h1"/><path d="M9 14h1"/><path d="M14 14h1"/></svg>
+                </div>
+              </div>
+              <div class="slide-actions-bar center" style="margin-top: 24px;">
+                <button type="button" class="btn-solid-child pill-btn large-pill" onclick="nextChildSlide(1)">
+                  はじめる
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 子供・質問1：ニックネームを教えてね -->
+          <div id="cSlide1" class="question-slide">
+            <div class="card-surface single-focus-card">
+              <span class="badge-child">質問 1 / 7</span>
+              <h2 class="slide-question-title text-child">あなたのニックネームを教えてね！</h2>
+              <p class="slide-question-desc text-child-muted">
+                アプリの中であなたをお呼びするなまえだよ。入力したら「次へ進む」を押してね。
+              </p>
+
+              <div class="slide-input-wrap">
+                <input type="text" id="cInputNickname" class="input-field large-input" value="いろは" placeholder="例：いろは、そうた、ゆい" autofocus>
+                <p class="nickname-hint-note" style="margin-top: 8px; font-size: 13px; color: var(--koko-blue-main); font-weight: 700;">
+                  💡 ニックネームはいつでもマイページから変えられるよ！
+                </p>
+              </div>
+
+              <div class="slide-actions-bar">
+                <button type="button" class="btn-solid-child" onclick="nextChildSlide(2)">
+                  次へ進む
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 子供・質問2：すきなことを見つける10項目（最大3つ） -->
+          <div id="cSlide2" class="question-slide">
+            <div class="card-surface single-focus-card">
+              <span class="badge-child">質問 2 / 7</span>
+              <h2 class="slide-question-title text-child">すきなこと・ワクワクすることはどれ？</h2>
+              <p class="slide-question-desc text-child-muted">
+                あてはまるものを<strong>最大3つまで</strong>選んでね！選んだら「次へ進む」を押してね。
+              </p>
+              <div class="selection-counter" id="interestSelectCounter">えらんだ数: 0 / 3</div>
+
+              <div class="slide-input-wrap">
+                <div class="child-interests-grid" id="childInterestsGrid">
+                  <!-- JavaScriptで動的生成 -->
+                </div>
+              </div>
+
+              <div class="slide-sub-input-wrap" style="margin-top: 20px;">
+                <label for="childFreeComment_step1" class="child-sublabel" style="display:block; font-size:14px; font-weight:700; color:var(--color-child-text); margin-bottom:8px;">
+                  ほかにも好きなことがあったら教えてね（書かなくてもOKだよ）
+                </label>
+                <textarea id="childFreeComment_step1" class="child-textarea" rows="2" placeholder="（例）レゴブロックで大きなお城を作ること、電車の路線図をながめること"></textarea>
+              </div>
+
+              <div class="slide-actions-bar between">
+                <button type="button" class="btn-outline-child" onclick="prevChildSlide(1)">まえにもどる</button>
+                <button type="button" class="btn-solid-child" id="btnChildStep1Next" onclick="nextChildSlide(3)">
+                  次へ進む
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 子供・質問3：楽しさの瞬間（4択＋自由記述） -->
+          <div id="cSlide3" class="question-slide">
+            <div class="card-surface single-focus-card">
+              <span class="badge-child">質問 3 / 7</span>
+              <h2 class="slide-question-title text-child">それが「一番楽しい！」と感じるのはどんなとき？</h2>
+              <p class="slide-question-desc text-child-muted">
+                あてはまる気持ちを1つ選んでね。選んだら下の「次へ進む」を押してね。
+              </p>
+
+              <div class="slide-input-wrap">
+                <div class="enjoyment-moment-grid" id="momentOptionsGrid">
+                  <button type="button" class="moment-choice-btn" data-tag="moment_creation" onclick="selectQuestionChoice('moment', 'moment_creation', this)">
+                    <span class="moment-tag">A</span>
+                    <span class="moment-desc">自分で新しいアイデアを思いついて形にしたとき</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="moment_discovery" onclick="selectQuestionChoice('moment', 'moment_discovery', this)">
+                    <span class="moment-tag">B</span>
+                    <span class="moment-desc">仕組みや理由がわかって「なるほど！」と思ったとき</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="moment_collaboration" onclick="selectQuestionChoice('moment', 'moment_collaboration', this)">
+                    <span class="moment-tag">C</span>
+                    <span class="moment-desc">友だちやチームのみんなで力を合わせてできたとき</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="moment_mastery" onclick="selectQuestionChoice('moment', 'moment_mastery', this)">
+                    <span class="moment-tag">D</span>
+                    <span class="moment-desc">練習や工夫を重ねて、できなかったことができるようになったとき</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="slide-sub-input-wrap" style="margin-top: 20px;">
+                <label for="childFreeComment_q1" class="child-sublabel" style="display:block; font-size:14px; font-weight:700; color:var(--color-child-text); margin-bottom:8px;">
+                  あなたの言葉でも教えてね（書かなくてもOKだよ）
+                </label>
+                <textarea id="childFreeComment_q1" class="child-textarea" rows="2" placeholder="（例）じぶんで考えたゲームのルールを、友だちに「おもしろい！」って言ってもらえたとき！"></textarea>
+              </div>
+
+              <div class="slide-actions-bar between">
+                <button type="button" class="btn-outline-child" onclick="prevChildSlide(2)">まえにもどる</button>
+                <button type="button" class="btn-solid-child" onclick="nextChildSlide(4)">次へ進む</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 子供・質問4：放課後の過ごし方（4択＋自由記述） -->
+          <div id="cSlide4" class="question-slide">
+            <div class="card-surface single-focus-card">
+              <span class="badge-child">質問 4 / 7</span>
+              <h2 class="slide-question-title text-child">中学校に入ったら、放課後（ほうかご）や休み時間はどんなふうに過ごしたい？</h2>
+              <p class="slide-question-desc text-child-muted">
+                あてはまるものを1つ選んでね。選んだら下の「次へ進む」を押してね。
+              </p>
+
+              <div class="slide-input-wrap">
+                <div class="enjoyment-moment-grid" id="lifestyleOptionsGrid">
+                  <button type="button" class="moment-choice-btn" data-tag="lifestyle_club_active" onclick="selectQuestionChoice('lifestyle', 'lifestyle_club_active', this)">
+                    <span class="moment-tag">A</span>
+                    <span class="moment-desc">部活に思いっきり打ちこんで、毎日汗を流したい</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="lifestyle_relax_social" onclick="selectQuestionChoice('lifestyle', 'lifestyle_relax_social', this)">
+                    <span class="moment-tag">B</span>
+                    <span class="moment-desc">友だちとおしゃべりしたり、教室や中庭でのんびり過ごしたい</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="lifestyle_individual_focus" onclick="selectQuestionChoice('lifestyle', 'lifestyle_individual_focus', this)">
+                    <span class="moment-tag">C</span>
+                    <span class="moment-desc">図書館や好きな教室で、じぶんの趣味や勉強に没頭したい</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="lifestyle_event_driven" onclick="selectQuestionChoice('lifestyle', 'lifestyle_event_driven', this)">
+                    <span class="moment-tag">D</span>
+                    <span class="moment-desc">季節のお祭りや行事の準備を、学年を超えてみんなでワイワイやりたい</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="slide-sub-input-wrap" style="margin-top: 20px;">
+                <label for="childFreeComment_q2" class="child-sublabel" style="display:block; font-size:14px; font-weight:700; color:var(--color-child-text); margin-bottom:8px;">
+                  あなたの言葉でも教えてね（書かなくてもOKだよ）
+                </label>
+                <textarea id="childFreeComment_q2" class="child-textarea" rows="2" placeholder="（例）放課後に理科室へ行って、友だちとずっと実験の続きをやりたい！"></textarea>
+              </div>
+
+              <div class="slide-actions-bar between">
+                <button type="button" class="btn-outline-child" onclick="prevChildSlide(3)">まえにもどる</button>
+                <button type="button" class="btn-solid-child" onclick="nextChildSlide(5)">次へ進む</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 子供・質問5：授業スタイル（4択＋自由記述） -->
+          <div id="cSlide5" class="question-slide">
+            <div class="card-surface single-focus-card">
+              <span class="badge-child">質問 5 / 7</span>
+              <h2 class="slide-question-title text-child">どんな授業（じゅぎょう）の時間が一番ワクワクしそう？</h2>
+              <p class="slide-question-desc text-child-muted">
+                あてはまるものを1つ選んでね。選んだら下の「次へ進む」を押してね。
+              </p>
+
+              <div class="slide-input-wrap">
+                <div class="enjoyment-moment-grid" id="studyOptionsGrid">
+                  <button type="button" class="moment-choice-btn" data-tag="study_lecture_expert" onclick="selectQuestionChoice('study', 'study_lecture_expert', this)">
+                    <span class="moment-tag">A</span>
+                    <span class="moment-desc">先生の話がとても面白くて、知らなかったことをグングン学べる授業</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="study_inquiry_ict" onclick="selectQuestionChoice('study', 'study_inquiry_ict', this)">
+                    <span class="moment-tag">B</span>
+                    <span class="moment-desc">タブレットやパソコンを使って、自分で調べたり発表したりする授業</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="study_hands_on" onclick="selectQuestionChoice('study', 'study_hands_on', this)">
+                    <span class="moment-tag">C</span>
+                    <span class="moment-desc">実験や外での観察、見学など、実際に手や体を動かす授業</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="study_discussion_group" onclick="selectQuestionChoice('study', 'study_discussion_group', this)">
+                    <span class="moment-tag">D</span>
+                    <span class="moment-desc">クラスの友だちと意見を出し合って、正解が一つではない問題を考える授業</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="slide-sub-input-wrap" style="margin-top: 20px;">
+                <label for="childFreeComment_q3" class="child-sublabel" style="display:block; font-size:14px; font-weight:700; color:var(--color-child-text); margin-bottom:8px;">
+                  あなたの言葉でも教えてね（書かなくてもOKだよ）
+                </label>
+                <textarea id="childFreeComment_q3" class="child-textarea" rows="2" placeholder="（例）教科書にのっていない不思議なことを、外に出てみんなで調べたい！"></textarea>
+              </div>
+
+              <div class="slide-actions-bar between">
+                <button type="button" class="btn-outline-child" onclick="prevChildSlide(4)">まえにもどる</button>
+                <button type="button" class="btn-solid-child" onclick="nextChildSlide(6)">次へ進む</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 子供・質問6：学校の設備・お気に入りの場所（4択＋自由記述） -->
+          <div id="cSlide6" class="question-slide">
+            <div class="card-surface single-focus-card">
+              <span class="badge-child">質問 6 / 7</span>
+              <h2 class="slide-question-title text-child">学校の中に、こんな場所があったらうれしい？</h2>
+              <p class="slide-question-desc text-child-muted">
+                あてはまるものを1つ選んでね。選んだら下の「次へ進む」を押してね。
+              </p>
+
+              <div class="slide-input-wrap">
+                <div class="enjoyment-moment-grid" id="facilityOptionsGrid">
+                  <button type="button" class="moment-choice-btn" data-tag="facility_rich_library" onclick="selectQuestionChoice('facility', 'facility_rich_library', this)">
+                    <span class="moment-tag">A</span>
+                    <span class="moment-desc">本がたくさん並んでいて、静かに落ち着ける広くてきれいな図書館</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="facility_maker_lab" onclick="selectQuestionChoice('facility', 'facility_maker_lab', this)">
+                    <span class="moment-tag">B</span>
+                    <span class="moment-desc">本格的な実験器具や工作の道具、パソコンがそろった特別な教室</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="facility_sports_arena" onclick="selectQuestionChoice('facility', 'facility_sports_arena', this)">
+                    <span class="moment-tag">C</span>
+                    <span class="moment-desc">広いグラウンドやきれいな体育館など、思いきり運動できる設備</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="facility_open_lounge" onclick="selectQuestionChoice('facility', 'facility_open_lounge', this)">
+                    <span class="moment-tag">D</span>
+                    <span class="moment-desc">日当たりがよくて、ベンチや芝生があって友だちと語り合える中庭やラウンジ</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="slide-sub-input-wrap" style="margin-top: 20px;">
+                <label for="childFreeComment_q4" class="child-sublabel" style="display:block; font-size:14px; font-weight:700; color:var(--color-child-text); margin-bottom:8px;">
+                  あなたの言葉でも教えてね（書かなくてもOKだよ）
+                </label>
+                <textarea id="childFreeComment_q4" class="child-textarea" rows="2" placeholder="（例）ボルダリングができる壁があったり、秘密基地みたいな読書スペースがあったら最高！"></textarea>
+              </div>
+
+              <div class="slide-actions-bar between">
+                <button type="button" class="btn-outline-child" onclick="prevChildSlide(5)">まえにもどる</button>
+                <button type="button" class="btn-solid-child" onclick="nextChildSlide(7)">次へ進む</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 子供・質問7：先生や先輩との関係（4択＋自由記述）＆完了 -->
+          <div id="cSlide7" class="question-slide">
+            <div class="card-surface single-focus-card">
+              <span class="badge-child">質問 7 / 7</span>
+              <h2 class="slide-question-title text-child">どんな先生や先輩がいる学校だと、安心して楽しく通えそう？</h2>
+              <p class="slide-question-desc text-child-muted">
+                あてはまるものを1つ選んでね。選んだら下のボタンを押してね。
+              </p>
+
+              <div class="slide-input-wrap">
+                <div class="enjoyment-moment-grid" id="relationOptionsGrid">
+                  <button type="button" class="moment-choice-btn" data-tag="relation_supportive_care" onclick="selectQuestionChoice('relation', 'relation_supportive_care', this)">
+                    <span class="moment-tag">A</span>
+                    <span class="moment-desc">困ったときにすぐ相談に乗ってくれて、勉強をていねいに教えてくれる先生</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="relation_autonomous_trust" onclick="selectQuestionChoice('relation', 'relation_autonomous_trust', this)">
+                    <span class="moment-tag">B</span>
+                    <span class="moment-desc">「やってみたい！」と思ったことを、自由に応援して見守ってくれる先生</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="relation_passion_peer" onclick="selectQuestionChoice('relation', 'relation_passion_peer', this)">
+                    <span class="moment-tag">C</span>
+                    <span class="moment-desc">好きなことや趣味の話で、友だちみたいに熱く語り合える先輩や先生</span>
+                  </button>
+                  <button type="button" class="moment-choice-btn" data-tag="relation_disciplined_order" onclick="selectQuestionChoice('relation', 'relation_disciplined_order', this)">
+                    <span class="moment-tag">D</span>
+                    <span class="moment-desc">ルールやマナーをしっかり教えてくれて、みんなが気持ちよく過ごせる学校</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="slide-sub-input-wrap" style="margin-top: 20px;">
+                <label for="childFreeComment_q5" class="child-sublabel" style="display:block; font-size:14px; font-weight:700; color:var(--color-child-text); margin-bottom:8px;">
+                  あなたの言葉でも教えてね（書かなくてもOKだよ）
+                </label>
+                <textarea id="childFreeComment_q5" class="child-textarea" rows="2" placeholder="（例）へんな質問をしても笑わずに、いっしょに真剣になって考えてくれる先生がいい！"></textarea>
+              </div>
+
+              <div class="slide-actions-bar between">
+                <button type="button" class="btn-outline-child" onclick="prevChildSlide(6)">まえにもどる</button>
+                <button type="button" class="btn-solid-child" onclick="finishChildQuestionsAndSlideToResult()">
+                  ぴったりな学校を見る！（完了）
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 子供・結果：学校マッチング（上位3校） -->
+          <div id="cSlideResult" class="question-slide">
+            <div class="card-surface single-focus-card">
+              <div class="result-header-status-bar">
+                <span class="badge-child">マッチング結果</span>
+                <span class="saved-data-pill">✓ マイページに保存済み</span>
+              </div>
+              <h2 class="slide-question-title text-child">あなたにぴったりの中学校 TOP 3</h2>
+              <p class="slide-question-desc text-child-muted">
+                おうちの人の条件と、あなたが教えてくれた「すきなこと」から見つかったおすすめの3校です！
+              </p>
+
+              <div class="result-edit-guide-banner">
+                <span class="banner-star">✦</span>
+                <span class="banner-txt">この回答はマイページに保存されています。選び直したい時はいつでも編集できます。</span>
+                <button type="button" class="btn-edit-answers-pill" onclick="startChildQuestionEdit()">
+                  ✎ 回答を編集する
+                </button>
+              </div>
+
+              <!-- その子に合っているポイントをどどんと表示するバナー -->
+              <div id="childMatchingFitBanner" style="margin-bottom: 24px;"></div>
+
+              <div class="recommended-schools-grid" id="childRecommendedList"></div>
+
+              <div class="slide-actions-bar between">
+                <button type="button" class="btn-outline-child" onclick="startChildQuestionEdit()">
+                  ✎ 質問をやり直す
+                </button>
+                <button type="button" class="btn-solid-child" onclick="switchAppView('home')">
+                  ホームにもどる
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ========================================================
+           3. 学校見学の振り返りシート（Koko* わたしの記録）
+           ======================================================== -->
+      <!-- ========================================================
+           3. 学校見学・文化祭の記録（1問1画面・何問何問中表示）
+           ======================================================== -->
+      <section id="roleReviewView" class="role-view">
+        <div class="screen-sub-header">
+          <button type="button" class="btn-back-icon" onclick="switchAppView('home')">&lt;</button>
+          <h2 class="screen-title">見学の記録</h2>
+          <span style="width: 32px;"></span>
+        </div>
+
+        <!-- 子供用：一覧画面（期待を記録 ＆ 振り返りメモをひとつの画面に統合表示） -->
+        <div id="reviewDashboardView" class="review-dashboard-wrapper">
+          <!-- 上段：【行く前】イベントへの期待・予定 -->
+          <div class="card-surface planned-events-intro-card" style="margin-bottom: 24px;">
+            <div class="phase-header">
+              <span class="badge-phase">見学予定</span>
+              <h3 class="title-h2 text-child">これから行く予定のイベント（期待を記録）</h3>
+              <p class="desc-text text-child-muted">
+                学校の紹介で「行ってみる」を押したイベントがここに登録されます。<br>
+                行く前に「期待を記録」して、見学に行ったら「振り返り」を記録しよう！
+              </p>
+            </div>
+            <div class="planned-events-cards-grid" id="plannedEventsListContainer">
+              <!-- JavaScriptで動的生成 -->
+            </div>
+          </div>
+
+          <!-- 下段：【行った後】振り返りメモ一覧 -->
+          <div class="card-surface saved-reviews-card-container">
+            <div class="after-section-header-row">
+              <div>
+                <span class="badge-phase">見学メモ一覧</span>
+                <h3 class="saved-reviews-title" style="margin-top: 4px;">行った学校の振り返り記録</h3>
+              </div>
+              <button type="button" class="btn-solid-child btn-sm" onclick="startDirectReviewWizard()">
+                ＋ 新しい見学を記録
+              </button>
+            </div>
+            <div class="saved-reviews-list" id="savedReviewCardsList">
+              <!-- JavaScriptで保存カードを表示 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 保護者用：記録一覧画面（子供が追加した学校が自動反映される） -->
+        <div id="parentReviewDashboardView" class="review-dashboard-wrapper" style="display: none;">
+          <div class="card-surface parent-review-intro-card" style="margin-bottom: 24px;">
+            <div class="phase-header">
+              <span class="badge-phase">保護者の記録</span>
+              <h3 class="title-h2 text-parent">お子さまの見学予定・保護者の記録</h3>
+              <p class="desc-text text-parent-muted">
+                お子さまが「行ってみる」に登録した学校のイベントがここに自動で共有されます。<br>
+                見学の事前準備や参加後に、保護者の方の視点で気になった点や感想をサッと記録できます。
+              </p>
+            </div>
+            <div class="parent-plans-cards-grid" id="parentVisitPlansListContainer">
+              <!-- JavaScriptで動的生成 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 保護者用：記録専用画面（質問時はこれだけを全画面表示） -->
+        <div id="parentReviewEditorCard" class="card-surface parent-review-editor-card" style="display: none;">
+          <div class="review-wizard-header">
+            <div class="wizard-title-block">
+              <button type="button" class="btn-close-wizard-top" onclick="closeParentReviewEditor()" title="一覧にもどる">
+                &lt; 記録一覧にもどる
+              </button>
+              <h3 class="review-wizard-main-title" id="parentEditorTitle">【保護者の記録】見学メモを書く</h3>
+            </div>
+            <div class="wizard-step-counter-box">
+              <span class="step-counter-label">画面</span>
+              <span class="step-counter-numbers">保護者メモ</span>
+            </div>
+          </div>
+
+          <div class="parent-editor-body" style="padding: 24px 16px;">
+            <!-- 質問1：どこが一番気になりましたか？（子供と同じ選択肢） -->
+            <div class="parent-editor-section" style="margin-bottom: 28px;">
+              <span class="badge-phase">質問 1</span>
+              <h4 class="parent-q-title" style="font-size: 16px; font-weight: bold; margin: 8px 0 4px 0; color: var(--koko-dark);">どこが一番気になりましたか？</h4>
+              <p class="parent-q-desc" style="font-size: 13px; color: var(--koko-text-muted); margin-bottom: 14px;">お子さまの質問と同じ視点から、特に注目したポイントを選んでください。</p>
+              
+              <div class="r-choice-list" id="parentEditorPlaceChoiceContainer">
+                <label class="big-tile-checkbox review-tile">
+                  <input type="radio" name="parentReviewPlace" value="図書室や自習室などのべんきょうスペース" checked>
+                  <span class="tile-title">図書室や自習室などのべんきょうスペース</span>
+                  <span class="tile-sub">学習環境や蔵書数、自習のしやすさ</span>
+                </label>
+                <label class="big-tile-checkbox review-tile">
+                  <input type="radio" name="parentReviewPlace" value="理科室やパソコン室などのおもしろい実験設備">
+                  <span class="tile-title">理科室やパソコン室などのおもしろい実験設備</span>
+                  <span class="tile-sub">ICT機器や実験機材の充実度</span>
+                </label>
+                <label class="big-tile-checkbox review-tile">
+                  <input type="radio" name="parentReviewPlace" value="広い校庭・体育館などの運動設備">
+                  <span class="tile-title">広い校庭・体育館などの運動設備</span>
+                  <span class="tile-sub">運動施設やグラウンドの広さ・安全性</span>
+                </label>
+                <label class="big-tile-checkbox review-tile">
+                  <input type="radio" name="parentReviewPlace" value="先輩たちの部活動や文化祭の出し物・展示">
+                  <span class="tile-title">先輩たちの部活動や文化祭の出し物・展示</span>
+                  <span class="tile-sub">在校生の活気や主体的な取り組み</span>
+                </label>
+                <label class="big-tile-checkbox review-tile">
+                  <input type="radio" name="parentReviewPlace" value="きれいなカフェテリア（食堂）や中庭">
+                  <span class="tile-title">きれいなカフェテリア（食堂）や中庭</span>
+                  <span class="tile-sub">学食や休憩スペースの清潔さ・雰囲気</span>
+                </label>
+                <label class="big-tile-checkbox review-tile">
+                  <input type="radio" name="parentReviewPlace" value="先生や先輩たちがどんな雰囲気か">
+                  <span class="tile-title">先生や先輩たちがどんな雰囲気か</span>
+                  <span class="tile-sub">先生方の指導姿勢や生徒たちの挨拶・表情</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 質問2：保護者の感想・メモ（自由記述のみ） -->
+            <div class="parent-editor-section" style="margin-bottom: 24px;">
+              <span class="badge-phase">質問 2</span>
+              <h4 class="parent-q-title" style="font-size: 16px; font-weight: bold; margin: 8px 0 4px 0; color: var(--koko-dark);">保護者の感想・メモ（自由記述）</h4>
+              <p class="parent-q-desc" style="font-size: 13px; color: var(--koko-text-muted); margin-bottom: 12px;">見学で感じたこと、通学経路や先生への印象などをご自由に入力してください。</p>
+              
+              <textarea id="parentEditorFreeMemo" class="koko-textarea" rows="5" style="width: 100%; box-sizing: border-box; font-size: 14px; padding: 12px; border-radius: 12px; border: 2.5px solid var(--koko-dark);" placeholder="例）校舎がとても清潔で、生徒たちの挨拶が気持ちよかったです。通学ルートの歩道も広く安心感がありました。"></textarea>
+            </div>
+
+            <!-- アクションボタン -->
+            <div class="slide-actions-bar between" style="margin-top: 24px;">
+              <button type="button" class="btn-outline" onclick="closeParentReviewEditor()">
+                キャンセル
+              </button>
+              <button type="button" class="btn-solid-parent" onclick="saveParentReviewRecord()" style="padding: 10px 24px; font-size: 14px;">
+                ✦ この内容で保存する
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             C. 見学記録ウィザード本体（1問1画面・全4問）
+             質問中はこれだけが画面全体に表示される
+             ========================================== -->
+        <div id="reviewWizardCard" class="card-surface review-wizard-card" style="display: none;">
+          <!-- 上部ヘッダー：タイトル ＆ 右上の「何問/何問中」進捗表示 -->
+          <div class="review-wizard-header">
+            <div class="wizard-title-block">
+              <button type="button" class="btn-close-wizard-top" onclick="closeReviewWizard()" title="一覧にもどる">
+                &lt; 記録一覧にもどる
+              </button>
+              <h3 class="review-wizard-main-title" id="reviewWizardTargetTitle">【行く前】イベントへの期待を記録しよう！</h3>
+            </div>
+            <!-- 右上の「何問/何問中」表示 -->
+            <div class="wizard-step-counter-box">
+              <span class="step-counter-label">進捗</span>
+              <span class="step-counter-numbers" id="reviewStepCounterText">質問 1 / 4 問</span>
+            </div>
+          </div>
+
+          <!-- プログレスバー（進行状況） -->
+          <div class="progress-bar-rail" style="margin-bottom: 20px;">
+            <div class="progress-bar-active" id="reviewProgressBarFill" style="width: 25%;"></div>
+          </div>
+
+          <!-- 1画面1問のスライドビューポート -->
+          <div class="wizard-viewport" id="reviewWizardViewport">
+
+            <!-- 記録問1：学校とイベント -->
+            <div id="rSlide1" class="question-slide active">
+              <div class="review-single-question-card">
+                <span class="badge-phase" id="rSlideBadge1">質問 1 / 4</span>
+                <h4 class="slide-question-title text-child" id="rSlideTitle1">見学に行く学校とイベント</h4>
+                <p class="slide-question-desc text-child-muted" id="rSlideDesc1">対象の学校とイベントを確認してください。</p>
+                
+                <div class="slide-input-wrap">
+                  <label for="reviewInputSchool" class="form-label text-child">学校名：</label>
+                  <select id="reviewInputSchool" class="select-field child-select">
+                    <!-- 学校一覧（JavaScriptで動的設定） -->
+                  </select>
+                </div>
+
+                <div class="slide-input-wrap">
+                  <label class="form-label text-child">イベントの種類：</label>
+                  <div class="r-choice-list" id="reviewEventChoiceList">
+                    <label class="big-tile-checkbox review-tile">
+                      <input type="radio" name="reviewEventType" value="文化祭・学園祭" checked>
+                      <span class="tile-title">文化祭・学園祭</span>
+                      <span class="tile-sub">生徒の活気や展示を体験</span>
+                    </label>
+                    <label class="big-tile-checkbox review-tile">
+                      <input type="radio" name="reviewEventType" value="学校説明会">
+                      <span class="tile-title">学校説明会</span>
+                      <span class="tile-sub">教育方針や進路の説明</span>
+                    </label>
+                    <label class="big-tile-checkbox review-tile">
+                      <input type="radio" name="reviewEventType" value="オープンキャンパス">
+                      <span class="tile-title">オープンキャンパス</span>
+                      <span class="tile-sub">施設見学や体験授業</span>
+                    </label>
+                    <label class="big-tile-checkbox review-tile">
+                      <input type="radio" name="reviewEventType" value="部活動・クラブ体験">
+                      <span class="tile-title">部活動・クラブ体験</span>
+                      <span class="tile-sub">先輩たちとの実際の交流</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="slide-actions-bar">
+                  <button type="button" class="btn-solid-child" onclick="nextReviewSlide(2)">次へ進む</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 記録問2：今の感情（行く前「今の気持ちは？」 vs 行った後「実際に行ってみて、今はどう思う？」） -->
+            <div id="rSlide2" class="question-slide">
+              <div class="review-single-question-card">
+                <span class="badge-phase" id="rSlideBadge2">質問 2 / 4</span>
+                <h4 class="slide-question-title text-child" id="rSlideTitle2">今の気持ちは？</h4>
+                <p class="slide-question-desc text-child-muted" id="rSlideDesc2">あてはまる気持ちを1つえらんでね。</p>
+                
+                <div class="r-choice-list" id="reviewEmotionChoiceContainer">
+                  <!-- JavaScriptで動的生成（行く前／行った後で切り替え） -->
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline-child" onclick="prevReviewSlide(1)">前に戻る</button>
+                  <button type="button" class="btn-solid-child" onclick="nextReviewSlide(3)">次へ進む</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 記録問3：見たいところ ➡️ 印象に残ったところ -->
+            <div id="rSlide3" class="question-slide">
+              <div class="review-single-question-card">
+                <span class="badge-phase" id="rSlideBadge3">質問 3 / 4</span>
+                <h4 class="slide-question-title text-child" id="rSlideTitle3">学校のどんなところを見てみたい？（気になるところ）</h4>
+                <p class="slide-question-desc text-child-muted" id="rSlideDesc3">いちばん気になる場所やポイントをえらんでね。</p>
+                
+                <div class="r-choice-list" id="reviewPlaceChoiceContainer">
+                  <!-- JavaScriptで動的生成（行く前／行った後で切り替え） -->
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline-child" onclick="prevReviewSlide(2)">前に戻る</button>
+                  <button type="button" class="btn-solid-child" onclick="nextReviewSlide(4)">次へ進む</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 記録問4：星評価 ＆ 自由記述（任意） -->
+            <div id="rSlide4" class="question-slide">
+              <div class="review-single-question-card">
+                <span class="badge-phase" id="rSlideBadge4">質問 4 / 4（最終）</span>
+                <h4 class="slide-question-title text-child" id="rSlideTitle4">期待度とひとことメモ</h4>
+                <p class="slide-question-desc text-child-muted" id="rSlideDesc4">今の思いを自由に残せます。</p>
+                
+                <div class="slide-input-wrap">
+                  <label class="form-label text-child" id="reviewRatingFieldLabel">行く前のワクワク度：</label>
+                  <div class="review-star-rating-row" id="reviewStarRatingRow">
+                    <button type="button" class="star-btn active" data-rating="1" onclick="setReviewRating(1)">★</button>
+                    <button type="button" class="star-btn active" data-rating="2" onclick="setReviewRating(2)">★</button>
+                    <button type="button" class="star-btn active" data-rating="3" onclick="setReviewRating(3)">★</button>
+                    <button type="button" class="star-btn active" data-rating="4" onclick="setReviewRating(4)">★</button>
+                    <button type="button" class="star-btn active" data-rating="5" onclick="setReviewRating(5)">★</button>
+                  </div>
+                </div>
+
+                <div class="slide-input-wrap">
+                  <label for="reviewFreeMemoInput" class="form-label text-child" id="reviewFreeMemoFieldLabel">
+                    行く前に楽しみなこと・聞いてみたいこと（自由記述・書いても書かなくてもOK）：
+                  </label>
+                  <textarea id="reviewFreeMemoInput" class="child-textarea" rows="3" placeholder="例「ロボット部があるか見てみたい」「食堂のメニューを食べてみたい」など"></textarea>
+                </div>
+
+                <div class="slide-actions-bar between">
+                  <button type="button" class="btn-outline-child" onclick="prevReviewSlide(3)">前に戻る</button>
+                  <button type="button" class="btn-solid-child" id="btnSubmitReviewWizard" onclick="saveReviewWizardRecord()">✦ 期待を記録する</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           4. マイページ画面（お子さま情報編集・アカウント設定）
+           ======================================================== -->
+      <section id="roleMypageView" class="role-view">
+        <div class="screen-sub-header">
+          <button type="button" class="btn-back-icon" onclick="switchAppView('home')">&lt;</button>
+          <h2 class="screen-title">マイページ</h2>
+          <span style="width: 32px;"></span>
+        </div>
+
+        <!-- マイページ プロフィールヘッダーカード（アイコンマーク ＆ 設定した名前 ＆ 編集ボタン） -->
+        <div class="card-surface mypage-profile-card" id="mypageProfileCard" style="margin-bottom: 20px;">
+          <div class="mypage-profile-flex">
+            <div class="profile-avatar-display" id="mypageAvatarDisplay" onclick="openProfileEditModal()" title="タップしてアイコン・名前を変更">
+              <span class="avatar-emoji" id="mypageAvatarIcon">👦</span>
+              <span class="avatar-edit-badge">✎</span>
+            </div>
+            <div class="profile-meta-info">
+              <div class="profile-name-line">
+                <h3 class="profile-user-title" id="mypageUserNameDisplay">いろは</h3>
+                <span class="badge-role-pill" id="mypageUserRoleBadge">お子さま</span>
+              </div>
+            </div>
+            <button type="button" class="btn-outline btn-sm btn-edit-profile-action" onclick="openProfileEditModal()">
+              ✎ プロフィール編集
+            </button>
+          </div>
+        </div>
+
+        <!-- いいねした学校カード（お気に入りリスト） -->
+        <div class="card-surface mypage-favorites-card" id="mypageFavoritesCard" style="margin-bottom: 20px;">
+          <div class="phase-header">
+            <h3 class="title-h2"><span style="color: var(--koko-pink); margin-right: 4px;">♥</span>あなたがいいねした学校</h3>
+            <p class="desc-text text-muted">
+              ハートをつけて保存した学校の一覧です。いつでも見返して比較できます。
+            </p>
+          </div>
+          <div class="mypage-favorite-schools-list" id="mypageFavoriteSchoolsList">
+            <!-- JavaScriptで動的生成 -->
+          </div>
+        </div>
+
+        <!-- おうちの方の条件設定カード（保護者マイページのみ表示） -->
+        <div class="card-surface mypage-parent-conditions-card" id="mypageParentConditionsSection" style="margin-bottom: 20px;">
+          <div class="phase-header flex-between-header">
+            <div>
+              <span class="badge-phase">保護者設定</span>
+              <h3 class="title-h2 text-parent">✦ おうちの方の条件設定</h3>
+              <p class="desc-text text-parent-muted">
+                学校選びで大切にしたい前提条件です。
+              </p>
+            </div>
+            <button type="button" class="btn-edit-answers-pill" onclick="startParentConditionEdit()">
+              ✎ 条件を編集する（全10問）
+            </button>
+          </div>
+          <div class="mypage-parent-conditions-box" id="mypageParentConditionsSummary">
+            <!-- JavaScriptで動的生成 -->
+          </div>
+        </div>
+
+        <!-- 質問回答済みデータ（質問解答データ＆編集ボタン） -->
+        <div class="card-surface mypage-child-answers-card" id="mypageChildAnswersCard" style="margin-bottom: 20px;">
+          <div class="phase-header flex-between-header">
+            <div>
+              <h3 class="title-h2 text-child">質問解答データ</h3>
+              <p class="desc-text text-child-muted">
+                「すきなことを見つけるワーク」で回答した内容です。この内容をもとに学校がマッチングされます。
+              </p>
+            </div>
+            <button type="button" class="btn-edit-answers-pill" id="btnEditChildAnswersMypage" onclick="startChildQuestionEdit()">
+              ✎ 回答を編集する
+            </button>
+          </div>
+          <div class="mypage-answers-summary-box" id="mypageChildAnswersSummary">
+            <!-- JavaScriptで動的生成 -->
+          </div>
+        </div>
+
+        <!-- アカウント・データ管理設定カード -->
+        <div class="card-surface" id="mypageAccountSection" style="margin-top: 20px;">
+          <div class="phase-header">
+            <span class="badge-phase">アカウント</span>
+            <h3 class="title-h2">アカウント・同期設定</h3>
+          </div>
+          <div class="account-info-list" style="margin-top: 14px;">
+            <div class="account-info-row">
+              <span class="account-info-label">データ同期状態</span>
+              <span class="account-info-val text-success">✦ 同期中（最新）</span>
+            </div>
+          </div>
+          <div style="margin-top: 16px;">
+            <button type="button" class="btn-outline btn-sm" onclick="resetAppData()">
+              データを初期状態にリセット
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================================
+           0-4. 学校詳細画面（独立した本物の画面：背景に他画面を表示しない）
+           ======================================================== -->
+      <section id="roleSchoolDetailView" class="role-view">
+        <!-- 上部固定ナビゲーションバー（戻るボタン ＆ タイトル） -->
+        <div class="school-detail-screen-header">
+          <button type="button" class="btn-screen-back" onclick="goBackFromSchoolDetail()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            <span>一覧にもどる</span>
+          </button>
+          <span class="school-detail-screen-title">学校の詳しい案内</span>
+          <button type="button" class="btn-screen-fav-top" id="btnDetailFavTop" onclick="toggleDetailFavFromTop(this)" title="お気に入り">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+
+        <!-- その学校の情報だけを表示するコンテナ -->
+        <div id="schoolDetailScreenContent" class="school-detail-screen-content">
+          <!-- JavaScriptで動的生成 -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ========================================================
+         プロフィール編集モーダル（アイコン選択・お名前編集）
+         ======================================================== -->
+    <div id="profileEditModalOverlay" class="school-modal-overlay" onclick="closeProfileEditModalOnBackdrop(event)" style="display: none;">
+      <div class="school-modal-dialog profile-edit-modal-dialog">
+        <button type="button" class="btn-modal-close" onclick="closeProfileEditModal()" aria-label="閉じる">×</button>
+        <div class="profile-modal-body">
+          <div class="phase-header" style="margin-bottom: 16px;">
+            <span class="badge-phase">設定</span>
+            <h3 class="title-h2">プロフィールを編集</h3>
+            <p class="desc-text text-muted">マイページに表示されるアイコンマークとお名前を変更できます。</p>
+          </div>
+
+          <div class="profile-edit-field-group">
+            <label class="edit-field-label">アイコンマークを選択</label>
+            <div class="avatar-picker-grid" id="avatarPickerGrid">
+              <!-- JavaScriptで動的生成 -->
+            </div>
+          </div>
+
+          <div class="profile-edit-field-group" style="margin-top: 16px;">
+            <label class="edit-field-label" for="editProfileNameInput">お名前・ニックネーム</label>
+            <input type="text" id="editProfileNameInput" class="input-field large-input" placeholder="例：いろは、いろはさん">
+          </div>
+
+          <div class="slide-actions-bar between" style="margin-top: 24px;">
+            <button type="button" class="btn-outline" onclick="closeProfileEditModal()">キャンセル</button>
+            <button type="button" class="btn-solid-parent" id="btnSaveProfileModal" onclick="saveProfileFromModal()">
+              変更を保存する
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         Koko* スマホ固定ボトムナビゲーション (下部4項目)
+         ======================================================== -->
+    <nav class="koko-bottom-nav" aria-label="モバイルボトムナビゲーション">
+      <button type="button" class="bottom-nav-item active" id="bNavHome" onclick="switchAppView('home')">
+        <span class="b-nav-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </span>
+        <span class="b-nav-label">ホーム</span>
+      </button>
+      <button type="button" class="bottom-nav-item" id="bNavSearch" onclick="switchAppView('search')">
+        <span class="b-nav-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </span>
+        <span class="b-nav-label">探す</span>
+      </button>
+      <button type="button" class="bottom-nav-item" id="bNavReview" onclick="switchAppView('review')">
+        <span class="b-nav-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </span>
+        <span class="b-nav-label">記録</span>
+      </button>
+      <button type="button" class="bottom-nav-item" id="bNavMypage" onclick="switchAppView('mypage')">
+        <span class="b-nav-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        <span class="b-nav-label">マイページ</span>
+      </button>
+    </nav>
+
+    <!-- フッター -->
+    <footer class="app-global-footer">
+      <div class="footer-inner">
+        <p class="footer-app-name">Koko* 「ここでいい」から、「ここがいい」へ。</p>
+        <p class="footer-spec-note">自分に合う学校を見つける 中学受験サポートアプリ</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="nationwide_schools.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
