@@ -194,18 +194,48 @@ export const SchoolMatching: React.FC<SchoolMatchingProps> = ({
                   </div>
                 </div>
 
-                {/* 見学後のアクション誘導 */}
-                {onSelectSchoolForReview && (
-                  <div className="pt-4 flex justify-end">
+                {/* 見学後のアクション誘導 ＆ Googleマップ通学経路確認 */}
+                <div className="pt-4 flex flex-wrap justify-end items-center gap-3">
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent((school.location ? `${school.location} ` : '') + school.name)}&travelmode=transit`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent((school.location ? `${school.location} ` : '') + school.name)}&travelmode=transit`;
+                      if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+                        e.preventDefault();
+                        const tauri = (window as any).__TAURI__;
+                        if (tauri?.opener?.openUrl) {
+                          tauri.opener.openUrl(url).catch((err: any) => console.warn(err));
+                          return;
+                        }
+                        if (tauri?.shell?.open) {
+                          tauri.shell.open(url).catch((err: any) => console.warn(err));
+                          return;
+                        }
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                      }
+                    }}
+                    className="min-h-[36px] px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#FFFFFF] text-[#2A9D8F] border-2 border-[#2A9D8F] hover:bg-[#E7F5F3] shadow-[1.5px_1.5px_0px_#1D3557] hover:shadow-[2px_2px_0px_#1D3557] transition-all inline-flex items-center gap-1.5 no-underline"
+                    title={`現在地から${school.name}への公共交通機関ルートをGoogleマップで調べる`}
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                      <circle cx="12" cy="9" r="2.5"/>
+                    </svg>
+                    <span>経路確認</span>
+                  </a>
+
+                  {onSelectSchoolForReview && (
                     <button
                       type="button"
                       onClick={() => onSelectSchoolForReview(school.name)}
-                      className="min-h-[48px] px-6 py-2.5 rounded-lg text-base font-bold bg-[#F7FAFC] text-[#2B6CB0] border-2 border-[#2B6CB0] hover:bg-[#EBF8FF] transition-colors"
+                      className="min-h-[44px] px-5 py-2 rounded-lg text-sm md:text-base font-bold bg-[#F7FAFC] text-[#2B6CB0] border-2 border-[#2B6CB0] hover:bg-[#EBF8FF] transition-colors"
                     >
                       この学校の見学メモをかく
                     </button>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </article>
           ))}

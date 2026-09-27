@@ -1690,29 +1690,34 @@
 
       </section>
 
-      <!-- ========================================================
-           0-4. 学校詳細画面（独立した本物の画面：背景に他画面を表示しない）
-           ======================================================== -->
-      <section id="roleSchoolDetailView" class="role-view">
-        <!-- 上部固定ナビゲーションバー（戻るボタン ＆ タイトル） -->
-        <div class="school-detail-screen-header">
-          <button type="button" class="btn-screen-back" onclick="goBackFromSchoolDetail()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-            <span>一覧にもどる</span>
-          </button>
-          <span class="school-detail-screen-title">学校の詳しい案内</span>
-          <button type="button" class="btn-screen-fav-top" id="btnDetailFavTop" onclick="toggleDetailFavFromTop(this)" title="お気に入り">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </button>
-        </div>
-
-        <!-- その学校の情報だけを表示するコンテナ -->
-        <div id="schoolDetailScreenContent" class="school-detail-screen-content">
-          <!-- JavaScriptで動的生成 -->
-        </div>
       </section>
 
     </main>
+
+    <!-- ========================================================
+         学校詳細情報ポップアップモーダル（画面遷移せず全情報を一括表示）
+         ======================================================== -->
+    <div id="schoolDetailModalOverlay" class="school-modal-overlay school-detail-modal-overlay" onclick="closeSchoolDetailModalOnBackdrop(event)" style="display: none;">
+      <div class="school-modal-dialog school-detail-modal-dialog">
+        <div class="school-detail-modal-header-bar">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="modal-star" style="color: var(--koko-blue-main); font-size: 16px;">✦</span>
+            <span class="school-detail-modal-title" style="font-weight: 800; font-size: 16px; color: var(--koko-blue-main);">学校の詳しい案内</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <button type="button" class="btn-screen-fav-top" id="btnDetailFavTop" onclick="toggleDetailFavFromTop(this)" title="お気に入り">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button type="button" class="btn-modal-close" onclick="closeSchoolDetailModal()" aria-label="閉じる">×</button>
+          </div>
+        </div>
+
+        <!-- その学校の全情報を表示するコンテナ -->
+        <div id="schoolDetailScreenContent" class="school-detail-modal-body">
+          <!-- JavaScriptで動的生成 -->
+        </div>
+      </div>
+    </div>
 
     <!-- ========================================================
          プロフィール編集モーダル（アイコン選択・お名前編集）

@@ -5137,4 +5137,177 @@ body {
   display: none !important;
 }
 
+/* ========================================================
+   Google Maps 通学経路確認ボタン（レトロポップ・小型でスマートなデザイン）
+   ======================================================== */
+.btn-map-transit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background-color: #FFFFFF;
+  color: var(--koko-green, #2A9D8F);
+  border: 1.5px solid var(--koko-green, #2A9D8F);
+  font-family: var(--font-child, 'Zen Maru Gothic', sans-serif);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill, 9999px);
+  box-shadow: 1.5px 1.5px 0px var(--koko-blue-main, #1D3557);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  vertical-align: middle;
+}
+
+.btn-map-transit:hover {
+  background-color: var(--koko-green-light, #E7F5F3);
+  color: #1E7E72;
+  border-color: #1E7E72;
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0px var(--koko-blue-main, #1D3557);
+}
+
+.btn-map-transit:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--koko-blue-main, #1D3557);
+}
+
+.btn-map-transit.btn-sm {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-width: 1.5px;
+  gap: 3px;
+}
+
+.btn-map-transit-svg {
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 通学アクセスタブ・詳細モーダル内専用の通学経路案内カード（コンパクト化） */
+.transit-map-banner-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  background-color: #FFFFFF;
+  border: 2px solid var(--koko-green, #2A9D8F);
+  border-radius: var(--radius-sm, 12px);
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  box-shadow: 2px 2px 0px var(--koko-blue-main, #1D3557);
+}
+
+.transit-map-banner-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.transit-map-banner-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--koko-green-light, #E7F5F3);
+  color: var(--koko-green, #2A9D8F);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--koko-green, #2A9D8F);
+}
+
+.transit-map-banner-text h4 {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--koko-blue-main, #1D3557);
+  margin-bottom: 2px;
+}
+
+.transit-map-banner-text p {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary, #455A75);
+  margin: 0;
+}
+
+/* ========================================================
+   学校詳細ポップアップモーダル（レトロポップ・全情報表示）
+   ======================================================== */
+.school-detail-modal-overlay {
+  background-color: rgba(29, 53, 87, 0.65);
+  backdrop-filter: blur(2px);
+  z-index: 10000;
+}
+
+.school-detail-modal-dialog {
+  max-width: 620px;
+  width: 94%;
+  max-height: 88vh;
+  background-color: var(--bg-page, #FFFDF0);
+  border: 3px solid var(--koko-blue-main, #1D3557);
+  border-radius: var(--radius-card, 20px);
+  box-shadow: 6px 6px 0px var(--koko-blue-main, #1D3557);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+
+.school-detail-modal-header-bar {
+  position: sticky;
+  top: 0;
+  background-color: #FFFFFF;
+  border-bottom: 2px solid var(--koko-blue-main, #1D3557);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.school-detail-modal-header-bar .btn-modal-close {
+  position: static;
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+}
+
+.school-detail-modal-header-bar .btn-screen-fav-top {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--koko-blue-main, #1D3557);
+  background-color: #FFFFFF;
+  color: var(--koko-blue-main, #1D3557);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.school-detail-modal-header-bar .btn-screen-fav-top.active {
+  color: var(--koko-pink, #FF3366);
+  border-color: var(--koko-pink, #FF3366);
+}
+
+.school-detail-modal-header-bar .btn-screen-fav-top.active svg {
+  fill: var(--koko-pink, #FF3366);
+}
+
+.school-detail-modal-body {
+  overflow-y: auto;
+  padding: 16px 20px 32px;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+}
+
 
