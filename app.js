@@ -401,6 +401,82 @@ const CHILD_INTEREST_OPTIONS = [
   { id: "interest_puzzle_math", title: "なぞ解き・パズル・計算", desc: "推理、ひらめき、クイズ研究", icon: "calculator" }
 ];
 
+// 興味関心タグの日本語マッピング
+const CHILD_INTEREST_LABEL_MAP = {
+  "interest_nature_biology": "生き物・自然",
+  "interest_crafting_making": "ものづくり・工作",
+  "interest_arts_music": "絵・音楽・アート",
+  "interest_sports_athletics": "体を動かすこと・スポーツ",
+  "interest_digital_tech": "パソコン・ゲーム・プログラミング",
+  "interest_reading_history": "本・ものがたり・歴史",
+  "interest_science_space": "実験・科学・宇宙",
+  "interest_cooking_food": "料理・おかし作り",
+  "interest_social_events": "友だちとおしゃべり・イベント",
+  "interest_puzzle_math": "なぞ解き・パズル・計算"
+};
+
+// 質問選択肢タグの日本語マッピング
+const CHILD_CHOICE_LABEL_MAP = {
+  // 夢中になる瞬間
+  "moment_invention": "新しいアイデアを思いついて形にしたとき",
+  "moment_discovery": "仕組みや理由がわかって「なるほど！」と思ったとき",
+  "moment_collaboration": "友だちやチームのみんなで力を合わせてできたとき",
+  "moment_mastery": "練習や工夫を重ねてできるようになったとき",
+  "craft": "自分でモノや作品をつくる時間",
+  "reading": "物語や本をじっくり読む時間",
+  "experiment": "ふしぎを実験して確かめる時間",
+  "nature": "自然や生き物とふれあう時間",
+
+  // 理想の放課後
+  "lifestyle_club_active": "部活に思いっきり打ちこんで毎日汗を流したい",
+  "lifestyle_relax_social": "友だちとおしゃべりしたり中庭でのんびり過ごしたい",
+  "lifestyle_individual_focus": "図書館や好きな教室で趣味や勉強に没頭したい",
+  "lifestyle_event_driven": "季節のお祭りや行事の準備をみんなでワイワイやりたい",
+  "club_active": "部活や運動で思いっきり汗を流す",
+  "lab_diy": "工房やパソコン室で工作・プログラミング",
+  "library_reading": "静かな図書室で好きな本に没頭",
+  "chill_friends": "カフェテリアや広場で友達とおしゃべり",
+
+  // 好きな授業スタイル
+  "study_lecture_expert": "先生の話が面白くてグングン学べる授業",
+  "study_inquiry_ict": "パソコンを使って自分で調べ発表する授業",
+  "study_hands_on": "実験や見学など実際に手や体を動かす授業",
+  "study_discussion_group": "みんなで意見を出し合って探究する授業",
+  "hands_on": "体験や実験が多いアクティブな授業",
+  "discussion": "みんなで意見を出し合う探究・ゼミ形式",
+  "deep_lecture": "専門的な知識を深く掘り下げる講義",
+  "global_english": "ネイティブの先生と英語で話す実践授業",
+
+  // 居心地のよい場所
+  "facility_rich_library": "本がたくさん並んで落ち着ける広くてきれいな図書館",
+  "facility_maker_lab": "本格的な実験器具や工作道具、PCがそろう教室",
+  "facility_sports_arena": "広いグラウンドやきれいな体育館など運動できる設備",
+  "facility_open_lounge": "ベンチや芝生があって友だちと語り合える中庭やラウンジ",
+  "high_tech_lab": "最新の3Dプリンタや実験設備があるラボ",
+  "grand_library": "天井が高く吹き抜けの開放的な図書室",
+  "natural_grounds": "緑豊かで広大なグラウンドや芝生テラス",
+  "cozy_cafe": "居心地のよいカフェテリアや交流ラウンジ",
+
+  // 先生・先輩との関係
+  "relation_supportive_care": "困ったときにすぐ相談に乗ってていねいに教えてくれる先生",
+  "relation_autonomous_trust": "生徒の自主性を信じてのびのび見守ってくれる先生",
+  "relation_friendly_seniors": "部活や行事で優しく声をかけてリードしてくれる先輩",
+  "relation_passionate_teachers": "自分の教科への情熱や大好きなことを語ってくれる先生"
+};
+
+// 設定完了判定ヘルパー
+function isParentConfigured() {
+  const p = AppSchema.parent_profile;
+  if (!p) return false;
+  return !!(p.is_completed || (p.station && p.station.trim().length > 0) || (p.address && p.address.trim().length > 0));
+}
+
+function isChildConfigured() {
+  const c = AppSchema.child_profile;
+  if (!c) return false;
+  return !!(c.is_completed || (Array.isArray(c.interests) && c.interests.length > 0));
+}
+
 // ==========================================
 // 2. アプリ共通ステート（一人一人の個別アカウント設定に対応した初期状態）
 // ==========================================
@@ -785,84 +861,306 @@ function renderParentHomeDashboard() {
   // 0. おうちの方の条件設定サマリーの描画
   renderParentConditionsSummary();
 
-  // 1. AI要約サマリーの描画
-  const aiSummaryEl = document.getElementById('aiParentSummaryContent');
-  if (aiSummaryEl) {
-    aiSummaryEl.innerHTML = `
-      <div class="ai-summary-badge-row">
-        <span class="ai-pill-tag">AI総合分析レポート</span>
-        <span class="ai-date-tag">本日更新</span>
-      </div>
-      <p class="ai-summary-lead">
-        お子さまは<strong>「理科の実験・科学」</strong>や<strong>「プログラミング・工作」</strong>に強い知的好奇心を示しており、手を動かして実感できる探究的な授業環境で最もモチベーションが高まる傾向にあります。
-      </p>
-      <div class="ai-condition-match-points">
-        <div class="match-point-item">
-          <strong class="point-badge">保護者の希望条件との一致</strong>
-          <span>「年間学費100万円未満・共学校・文武両道/理数探究」の軸と高い親和性があります。</span>
-        </div>
-        <div class="match-point-item">
-          <strong class="point-badge">おすすめの着眼点</strong>
-          <span>オープンキャンパスでは「実験設備の充実度」と「放課後のクラブ活動の自由度」を一緒に確認すると納得感が高まります。</span>
-        </div>
-      </div>
-    `;
-  }
+  const parentReady = isParentConfigured();
+  const childReady = isChildConfigured();
 
-  // 2. AIによる会話の提案（食卓での問いかけフレーズ）
+  const childProf = AppSchema.child_profile || {};
+  const parentProf = AppSchema.parent_profile || {};
+  const cond = parentProf.conditions || {};
+  const childName = (AppSchema.child_name && AppSchema.child_name !== "お子さま") ? AppSchema.child_name : "お子さま";
+
+  // 1. AI要約サマリーの描画 ＆ 2. 食卓での会話提案
+  const aiSummaryEl = document.getElementById('aiParentSummaryContent');
   const aiPromptsEl = document.getElementById('aiConversationPromptsList');
-  if (aiPromptsEl) {
-    aiPromptsEl.innerHTML = `
-      <li class="conversation-prompt-item">
-        <div class="prompt-num-badge">1</div>
-        <div class="prompt-text-group">
-          <strong class="prompt-phrase">「中学校に入ったら、どんな理科の実験やモノづくりをやってみたい？」</strong>
-          <p class="prompt-guide">本人のやってみたいことを具体化し、学習への前向きな意欲を引き出す問いかけです。</p>
+
+  if (!parentReady || !childReady) {
+    // どちらか（あるいは両方）が未完了の場合
+    if (aiSummaryEl) {
+      if (!parentReady && !childReady) {
+        aiSummaryEl.innerHTML = `
+          <div class="ai-unconfigured-box" style="padding:22px 16px; background:#F8FAFC; border:2px dashed #CBD5E1; border-radius:14px; text-align:center;">
+            <span style="font-size:34px; display:block; margin-bottom:8px;">🤖💭</span>
+            <h3 style="font-size:16px; font-weight:800; color:#1E293B; margin-bottom:6px;">
+              設定が完了すると、AIによる分析・会話のヒントが届きます
+            </h3>
+            <p style="font-size:13px; color:#64748B; line-height:1.6; margin-bottom:16px; max-width:480px; margin-left:auto; margin-right:auto;">
+              保護者の希望条件（最寄駅・通学時間・学費など）とお子さまの「すきなことを見つけるワーク」が完了すると、おふたりの希望を掛け合わせたAI要約レポートと、今夜の食卓で使える対話フレーズがここに届きます。
+            </p>
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+              <button type="button" class="btn-solid-parent btn-sm" onclick="startParentConditionEdit()" style="display:inline-flex; align-items:center; gap:6px;">
+                📋 保護者の条件を設定する
+              </button>
+              <button type="button" class="btn-solid-child btn-sm" onclick="startChildQuestionEdit()" style="display:inline-flex; align-items:center; gap:6px;">
+                🎒 お子さまの質問に答える
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (parentReady && !childReady) {
+        const stationText = parentProf.station ? `ご自宅（${parentProf.station}駅）` : "保護者さまの希望条件";
+        aiSummaryEl.innerHTML = `
+          <div class="ai-unconfigured-box" style="padding:22px 16px; background:#F0FDF4; border:2px dashed #86EFAC; border-radius:14px; text-align:center;">
+            <span style="font-size:34px; display:block; margin-bottom:8px;">🎒⏳</span>
+            <div style="display:inline-block; background:#DCFCE7; color:#166534; font-size:11px; font-weight:800; padding:2px 10px; border-radius:12px; margin-bottom:6px;">
+              保護者の条件設定 完了（ステップ 1/2）
+            </div>
+            <h3 style="font-size:16px; font-weight:800; color:#14532D; margin-bottom:6px;">
+              お子さまのワーク回答をお待ちしています
+            </h3>
+            <p style="font-size:13px; color:#374151; line-height:1.6; margin-bottom:16px; max-width:480px; margin-left:auto; margin-right:auto;">
+              ${stationText}の条件設定が完了しました！<br>
+              お子さまが「すきなことを見つけるワーク（全7問）」に答えると、AIがふたりの希望をマッチングして要約と食卓での会話提案をお届けします。
+            </p>
+            <button type="button" class="btn-solid-child btn-sm" onclick="startChildQuestionEdit()" style="display:inline-flex; align-items:center; gap:6px;">
+              ✦ お子さまの質問に答えてみる
+            </button>
+          </div>
+        `;
+      } else {
+        // childReady && !parentReady
+        const interestsList = (childProf.interests || []).map(id => CHILD_INTEREST_LABEL_MAP[id] || id);
+        const intSummary = interestsList.length > 0 ? `「${interestsList.slice(0, 2).join('」「')}」など` : '興味関心データ';
+        aiSummaryEl.innerHTML = `
+          <div class="ai-unconfigured-box" style="padding:22px 16px; background:#EFF6FF; border:2px dashed #93C5FD; border-radius:14px; text-align:center;">
+            <span style="font-size:34px; display:block; margin-bottom:8px;">📋⏳</span>
+            <div style="display:inline-block; background:#DBEAFE; color:#1E40AF; font-size:11px; font-weight:800; padding:2px 10px; border-radius:12px; margin-bottom:6px;">
+              お子さまのワーク回答 完了（ステップ 1/2）
+            </div>
+            <h3 style="font-size:16px; font-weight:800; color:#1E3A8A; margin-bottom:6px;">
+              保護者さまの条件設定をお待ちしています
+            </h3>
+            <p style="font-size:13px; color:#374151; line-height:1.6; margin-bottom:16px; max-width:480px; margin-left:auto; margin-right:auto;">
+              ${childName}さんの興味関心（${intSummary}）が届いています！<br>
+              保護者さまの希望条件（最寄駅・通学時間・学費など）を設定すると、通学圏や進路をふまえた総合AI要約レポートが完成します。
+            </p>
+            <button type="button" class="btn-solid-parent btn-sm" onclick="startParentConditionEdit()" style="display:inline-flex; align-items:center; gap:6px;">
+              ✦ 保護者の条件を設定する
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    if (aiPromptsEl) {
+      aiPromptsEl.innerHTML = `
+        <li class="conversation-prompt-item unconfigured-prompt" style="background:#F8FAFC; border:1px dashed #CBD5E1; padding:16px; border-radius:12px; list-style:none; text-align:center; color:#64748B;">
+          <span style="font-size:24px; display:block; margin-bottom:4px;">🍽️💬</span>
+          <p style="font-size:13px; font-weight:700; color:#475569; margin:0 0 4px;">設定完了後に、今夜の食卓で使える問いかけフレーズが届きます</p>
+          <span style="font-size:12px; color:#94A3B8;">お子さまの『すきなこと』や放課後の過ごし方に合わせた会話のヒントが3つ自動生成されます。</span>
+        </li>
+      `;
+    }
+  } else {
+    // 保護者もお子さまも設定完了している場合：実際の回答データを元に動的生成！
+    const interestNames = (childProf.interests || []).map(id => CHILD_INTEREST_LABEL_MAP[id] || id);
+    const leadInterests = interestNames.length > 0
+      ? `<strong>「${interestNames.slice(0, 2).join('」</strong>や<strong>「')}」</strong>`
+      : '<strong>「好きなこと」</strong>';
+
+    let styleDesc = "自分の興味を探究できる環境";
+    if (childProf.moment === "moment_discovery" || childProf.study === "study_hands_on") {
+      styleDesc = "教科書だけでなく実際に手を動かして実感できる探究的な授業環境";
+    } else if (childProf.moment === "moment_collaboration" || childProf.study === "study_discussion_group") {
+      styleDesc = "仲間と意見を交わしながらアイデアを形にする協働的な学習環境";
+    } else if (childProf.moment === "moment_invention" || childProf.study === "study_inquiry_ict") {
+      styleDesc = "パソコンや最新の道具を活用して自ら新しいものを創造する環境";
+    } else if (childProf.study === "study_lecture_expert") {
+      styleDesc = "先生の熱意ある専門的な講義を聞いて知的好奇心を深められる環境";
+    }
+
+    const condParts = [];
+    if (parentProf.station) condParts.push(`${parentProf.station}駅起点`);
+    if (cond.commute_time_max) condParts.push(`片道${cond.commute_time_max}分以内`);
+    if (cond.tuition_max !== undefined) {
+      condParts.push(cond.tuition_max === 0 ? "学費上限なし" : `年間学費${cond.tuition_max / 10000}万円未満`);
+    }
+    if (cond.school_gender_type && cond.school_gender_type !== 'any') {
+      condParts.push(cond.school_gender_type === 'coed' ? '共学校' : cond.school_gender_type === 'boys' ? '男子校' : '女子校');
+    }
+    const condSummaryText = condParts.join('・') || "ご家庭の希望条件";
+
+    let focusPointText = "学校見学では「生徒たちの日常の笑顔や雰囲気」を一緒に確認すると納得感が高まります。";
+    if (childProf.facility === "facility_maker_lab" || childProf.interests?.includes("interest_science_space") || childProf.interests?.includes("interest_crafting_making")) {
+      focusPointText = "オープンキャンパスでは「実験室やPC・工作設備の充実度」と「放課後の活動の自由度」を一緒に確認するとワクワクが高まります。";
+    } else if (childProf.facility === "facility_rich_library" || childProf.interests?.includes("interest_reading_history")) {
+      focusPointText = "学校見学では「図書館の広さや蔵書の豊富さ、静かに自習できる居場所」を一緒に確かめると進学後の生活が想像しやすくなります。";
+    } else if (childProf.facility === "facility_sports_arena" || childProf.interests?.includes("interest_sports_athletics")) {
+      focusPointText = "オープンキャンパスでは「グラウンドや体育館の広さ、放課後の部活動の活気」を直接体感してみるのがおすすめです。";
+    } else if (childProf.lifestyle === "lifestyle_club_active") {
+      focusPointText = "下校時刻や部活動の練習頻度、通学時間の体力的なバランスを一緒に確認しておくと安心です。";
+    } else if (childProf.lifestyle === "lifestyle_relax_social") {
+      focusPointText = "中庭やカフェテリアなど生徒がリラックスして語り合えるスペースがあるかをチェックするのがおすすめです。";
+    }
+
+    if (aiSummaryEl) {
+      aiSummaryEl.innerHTML = `
+        <div class="ai-summary-badge-row">
+          <span class="ai-pill-tag">AI総合分析レポート</span>
+          <span class="ai-date-tag">本日更新</span>
         </div>
-      </li>
-      <li class="conversation-prompt-item">
-        <div class="prompt-num-badge">2</div>
-        <div class="prompt-text-group">
-          <strong class="prompt-phrase">「部活は運動系と文化系、どっちの雰囲気が楽しそうに見える？」</strong>
-          <p class="prompt-guide">放課後の過ごし方の希望を聞き、本人の自立心と通学の体力バランスを話し合えます。</p>
+        <p class="ai-summary-lead">
+          ${childName}さんは${leadInterests}に強い知的好奇心を示しており、${styleDesc}で最もモチベーションが高まる傾向にあります。
+        </p>
+        <div class="ai-condition-match-points">
+          <div class="match-point-item">
+            <strong class="point-badge">保護者の希望条件との一致</strong>
+            <span>「${condSummaryText}」というご家庭の方針と、${childName}さんの希望が調和する学校群を抽出しています。</span>
+          </div>
+          <div class="match-point-item">
+            <strong class="point-badge">おすすめの着眼点</strong>
+            <span>${focusPointText}</span>
+          </div>
         </div>
-      </li>
-      <li class="conversation-prompt-item">
-        <div class="prompt-num-badge">3</div>
-        <div class="prompt-text-group">
-          <strong class="prompt-phrase">「見学に行った学校で、教室やグラウンドのどこが一番ワクワクした？」</strong>
-          <p class="prompt-guide">学校説明会やオープンスクール直後の生の記憶を言語化し、居心地の良さを確認できます。</p>
-        </div>
-      </li>
-    `;
+      `;
+    }
+
+    if (aiPromptsEl) {
+      const primaryInterest = (childProf.interests && childProf.interests.length > 0) ? childProf.interests[0] : "";
+      let p1Phrase = "「中学校に入ったら、一番楽しみにしてみたいことはどんなこと？」";
+      let p1Guide = "本人のやってみたいことを具体化し、学校生活への前向きな意欲を引き出す問いかけです。";
+
+      switch (primaryInterest) {
+        case "interest_science_space":
+          p1Phrase = "「中学校の本格的な理科室に入ったら、どんな実験や星の観察をやってみたい？」";
+          p1Guide = "理科・科学への興味を掘り下げ、知的好奇心を刺激する問いかけです。";
+          break;
+        case "interest_crafting_making":
+          p1Phrase = "「中学校の工作室やパソコン室で、どんなロボットやモノづくりに挑戦してみたい？」";
+          p1Guide = "ものづくりへの情熱を言葉にし、創る楽しさを共有できる問いかけです。";
+          break;
+        case "interest_digital_tech":
+          p1Phrase = "「学校のパソコンやタブレットを使って、どんなゲームやプログラミングをやってみたい？」";
+          p1Guide = "ICTや情報分野への関心を引き出し、将来の学びへの期待を膨らませる問いかけです。";
+          break;
+        case "interest_arts_music":
+          p1Phrase = "「中学校の部活や行事で、どんな絵や音楽、作品作りにチャレンジしてみたい？」";
+          p1Guide = "芸術・表現へのワクワクを肯定し、のびのびと個性を発揮できる環境について話せます。";
+          break;
+        case "interest_sports_athletics":
+          p1Phrase = "「中学校の広いグラウンドや体育館で、どんなスポーツを思いっきりやってみたい？」";
+          p1Guide = "運動や外遊びへの意欲を聞き、体力づくりや部活動への憧れを共有できます。";
+          break;
+        case "interest_nature_biology":
+          p1Phrase = "「学校にビオトープや生き物の観察スペースがあったら、どんな自然を探検してみたい？」";
+          p1Guide = "自然観察や生き物への探究心を応援し、緑豊かなキャンパスへの興味を高めます。";
+          break;
+        case "interest_reading_history":
+          p1Phrase = "「何万冊も本がある大きな図書館で、どんな本や歴史の世界をじっくり調べてみたい？」";
+          p1Guide = "読書や歴史への関心を深め、落ち着いた学習環境への適性を確認できます。";
+          break;
+        case "interest_cooking_food":
+          p1Phrase = "「調理実習や文化祭で、どんな料理やお菓子をみんなと一緒に作ってみたい？」";
+          p1Guide = "生活体験や協働への関心を引き出し、家庭科設備や学校行事への期待を広げます。";
+          break;
+        case "interest_social_events":
+          p1Phrase = "「文化祭や体育祭のイベントで、みんなとどんな企画や出し物をやってみたい？」";
+          p1Guide = "行事や友達との関わりへの期待を聞き、活発な校風との相性を確かめられます。";
+          break;
+        case "interest_puzzle_math":
+          p1Phrase = "「なぞ解きや算数のパズルで、どんな難しいひらめき問題に挑戦してみたい？」";
+          p1Guide = "思考力や論理パズルへの興味を肯定し、ハイレベルな探究授業への意欲を引き出します。";
+          break;
+      }
+
+      let p2Phrase = "「部活は運動系と文化系、どっちの雰囲気が楽しそうに見える？」";
+      let p2Guide = "放課後の過ごし方の希望を聞き、本人の自立心と通学の体力バランスを話し合えます。";
+
+      if (childProf.lifestyle === "lifestyle_club_active" || childProf.lifestyle === "club_active") {
+        p2Phrase = "「中学校の部活動では、どんな仲間と一緒に熱中してみたい？」";
+        p2Guide = "放課後のスポーツや部活動への情熱を聞き、通学時間との体力バランスを一緒に考えられます。";
+      } else if (childProf.lifestyle === "lifestyle_individual_focus" || childProf.lifestyle === "library_reading") {
+        p2Phrase = "「放課後に自分の好きなテーマをとことん調べられる場所があったら、どんな時間を過ごしたい？」";
+        p2Guide = "一人でじっくり集中できる環境への希望を確認し、落ち着いた校風との相性を探れます。";
+      } else if (childProf.lifestyle === "lifestyle_relax_social" || childProf.lifestyle === "chill_friends") {
+        p2Phrase = "「中庭やカフェテリアで、友達とどんな話をしながらお昼や放課後を過ごせたら最高かな？」";
+        p2Guide = "学校生活の居心地や友達関係のイメージをリラックスして共有できます。";
+      } else if (childProf.lifestyle === "lifestyle_event_driven") {
+        p2Phrase = "「学校のお祭りやイベントの準備で、どんな係やリーダーをやってみたい？」";
+        p2Guide = "行事への参加意欲やチームワークへの関心を引き出せます。";
+      }
+
+      let p3Phrase = "「見学に行った学校で、教室やグラウンドのどこが一番ワクワクした？」";
+      let p3Guide = "学校説明会やオープンスクール直後の生の記憶を言語化し、居心地の良さを確認できます。";
+
+      const latestReview = (AppSchema.visit_reviews && AppSchema.visit_reviews.length > 0) ? AppSchema.visit_reviews[AppSchema.visit_reviews.length - 1] : null;
+      if (latestReview) {
+        const revSchool = SCHOOL_DATABASE.find(s => s.school_id === latestReview.school_id);
+        const revSchoolName = revSchool ? revSchool.name : "見学した学校";
+        p3Phrase = `「この前見学に行った【${revSchoolName}】で、一番印象に残った教室や先輩の姿はどこだった？」`;
+        p3Guide = "見学直後の生の印象を言葉にし、お子さまの心に響いたポイントを再確認できます。";
+      } else if (childProf.study === "study_hands_on" || childProf.study === "hands_on") {
+        p3Phrase = "「教科書を読むだけじゃなくて、実際に触ったり実験したりする授業が多い学校ってどう思う？」";
+        p3Guide = "体験型学習への意欲を確かめ、理科実験やフィールドワークに強い学校選びに繋げられます。";
+      } else if (childProf.study === "study_discussion_group" || childProf.study === "discussion") {
+        p3Phrase = "「みんなで意見を出し合ってアイデアを形にする授業と、先生が面白い講義をしてくれる授業、どっちがワクワクする？」";
+        p3Guide = "自発的な発言や対話型のアクティブラーニングへの適性を話し合えます。";
+      } else if (childProf.study === "study_inquiry_ict") {
+        p3Phrase = "「1人1台のパソコンを使って、自分で調べたことをスライドで発表する授業って楽しそう？」";
+        p3Guide = "ICT活用やプレゼンテーション教育への興味を確認し、先進的な教育環境との適合を見極められます。";
+      }
+
+      aiPromptsEl.innerHTML = `
+        <li class="conversation-prompt-item">
+          <div class="prompt-num-badge">1</div>
+          <div class="prompt-text-group">
+            <strong class="prompt-phrase">${p1Phrase}</strong>
+            <p class="prompt-guide">${p1Guide}</p>
+          </div>
+        </li>
+        <li class="conversation-prompt-item">
+          <div class="prompt-num-badge">2</div>
+          <div class="prompt-text-group">
+            <strong class="prompt-phrase">${p2Phrase}</strong>
+            <p class="prompt-guide">${p2Guide}</p>
+          </div>
+        </li>
+        <li class="conversation-prompt-item">
+          <div class="prompt-num-badge">3</div>
+          <div class="prompt-text-group">
+            <strong class="prompt-phrase">${p3Phrase}</strong>
+            <p class="prompt-guide">${p3Guide}</p>
+          </div>
+        </li>
+      `;
+    }
   }
 
   // 3. 子どもの興味関心のまとめ
   const interestsBox = document.getElementById('parentSummaryChildInterests');
   if (interestsBox) {
-    const interestItems = [
-      { name: "実験・科学・宇宙", level: "関心度：とても高い", color: "#3B82F6", icon: "✦" },
-      { name: "パソコン・プログラミング", level: "関心度：高い", color: "#10B981", icon: "✦" },
-      { name: "ものづくり・工作", level: "関心度：高い", color: "#F59E0B", icon: "✦" },
-      { name: "体を動かすこと・スポーツ", level: "関心度：普通", color: "#EF4444", icon: "✦" }
-    ];
+    if (!childReady || !childProf.interests || childProf.interests.length === 0) {
+      interestsBox.innerHTML = `
+        <div style="padding:18px 16px; background:#F8FAFC; border:2px dashed #CBD5E1; border-radius:12px; text-align:center;">
+          <p style="font-weight:700; color:#334155; margin-bottom:4px;">まだ質問に答えていません</p>
+          <p style="font-size:13px; color:#64748B; margin-bottom:12px;">お子さまが「すきなことを見つけるワーク」に答えると、ワクワクする分野がここに並びます。</p>
+          <button type="button" class="btn-solid-child btn-sm" onclick="startChildQuestionEdit()" style="display:inline-block;">✦ 質問に答えてみる</button>
+        </div>
+      `;
+    } else {
+      const colors = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6", "#EC4899", "#06B6D4"];
+      const dynamicItems = childProf.interests.map((intId, idx) => {
+        const name = CHILD_INTEREST_LABEL_MAP[intId] || intId;
+        const level = idx === 0 ? "関心度：とても高い" : "関心度：高い";
+        const color = colors[idx % colors.length];
+        return { name, level, color, icon: "✦" };
+      });
 
-    interestsBox.innerHTML = `
-      <div class="parent-interest-tags-grid">
-        ${interestItems.map(item => `
-          <div class="parent-interest-chip-card">
-            <span class="chip-star" style="color: ${item.color}">${item.icon}</span>
-            <div class="chip-info">
-              <strong class="chip-name">${item.name}</strong>
-              <span class="chip-level">${item.level}</span>
+      interestsBox.innerHTML = `
+        <div class="parent-interest-tags-grid">
+          ${dynamicItems.map(item => `
+            <div class="parent-interest-chip-card">
+              <span class="chip-star" style="color: ${item.color}">${item.icon}</span>
+              <div class="chip-info">
+                <strong class="chip-name">${item.name}</strong>
+                <span class="chip-level">${item.level}</span>
+              </div>
             </div>
-          </div>
-        `).join('')}
-      </div>
-    `;
+          `).join('')}
+        </div>
+      `;
+    }
   }
 
-  // 4. お子さまが気になっている学校（お気に入り ＆ 有力候補）
   // 4. お子さまが気になっている学校（お気に入り ＆ 適合推薦校）
   const favSchoolsBox = document.getElementById('parentSummaryFavoriteSchools');
   if (favSchoolsBox) {
@@ -970,43 +1268,47 @@ function renderParentHomeDashboard() {
   // 5. オーキャン・説明会の振り返りまとめ
   const reviewsBox = document.getElementById('parentSummaryReviews');
   if (reviewsBox) {
-    reviewsBox.innerHTML = `
-      <div class="review-summary-cards-list">
-        <div class="review-summary-card">
-          <div class="review-card-top">
-            <span class="review-school-tag">青葉中学校</span>
-            <span class="review-type-badge">学校説明会・施設見学</span>
-            <span class="review-date-badge">先週訪問</span>
-          </div>
-          <div class="review-ratings-row">
-            <span class="rating-item">生徒の雰囲気: <strong>★★★★★</strong></span>
-            <span class="rating-item">実験室・設備: <strong>★★★★☆</strong></span>
-            <span class="rating-item">通いやすさ: <strong>★★★★☆</strong></span>
-          </div>
-          <p class="review-child-quote">
-            <strong>お子さまの感想メモ：</strong><br>
-            「すれちがった先輩たちがみんな元気にあいさつしてくれて安心した！人工芝のサッカーグラウンドがすごく広くてかっこよかった。」
+    const reviews = AppSchema.visit_reviews || [];
+    if (reviews.length === 0) {
+      reviewsBox.innerHTML = `
+        <div style="padding:20px; background:#F8FAFC; border:2px dashed #CBD5E1; border-radius:12px; text-align:center;">
+          <span style="font-size:28px; display:block; margin-bottom:4px;">🏫📝</span>
+          <p style="font-weight:700; color:#334155; margin-bottom:4px; font-size:14px;">まだ見学・説明会の振り返りメモがありません</p>
+          <p style="font-size:12px; color:#64748B; margin-bottom:12px; line-height:1.5;">
+            学校説明会やオープンキャンパスに行った後、お子さまの生の感想を記録すると、ここに比較まとめが表示されます。
           </p>
+          <button type="button" class="btn-outline btn-sm" onclick="switchAppView('review')">✦ 見学を記録する</button>
         </div>
-
-        <div class="review-summary-card">
-          <div class="review-card-top">
-            <span class="review-school-tag">さくら学園中学校</span>
-            <span class="review-type-badge">オープンスクール</span>
-            <span class="review-date-badge">2週間前訪問</span>
-          </div>
-          <div class="review-ratings-row">
-            <span class="rating-item">生徒の雰囲気: <strong>★★★★★</strong></span>
-            <span class="rating-item">校舎のきれいさ: <strong>★★★★★</strong></span>
-            <span class="rating-item">通いやすさ: <strong>★★★★☆</strong></span>
-          </div>
-          <p class="review-child-quote">
-            <strong>お子さまの感想メモ：</strong><br>
-            「大きな図書館のまんなかに中庭があって、本を読みながら落ち着けそうだった。先生が笑顔で優しく質問に答えてくれた。」
-          </p>
+      `;
+    } else {
+      reviewsBox.innerHTML = `
+        <div class="review-summary-cards-list">
+          ${reviews.map(rev => {
+            const revSchool = SCHOOL_DATABASE.find(s => s.school_id === rev.school_id);
+            const schoolName = revSchool ? revSchool.name : (rev.school_name || "見学校");
+            return `
+              <div class="review-summary-card">
+                <div class="review-card-top">
+                  <span class="review-school-tag">${schoolName}</span>
+                  <span class="review-type-badge">${rev.event_type || '学校見学'}</span>
+                  <span class="review-date-badge">${rev.visit_date || '最近訪問'}</span>
+                </div>
+                <div class="review-ratings-row">
+                  <span class="rating-item">生徒の雰囲気: <strong>${'★'.repeat(rev.rating_atmosphere || 4)}${'☆'.repeat(5 - (rev.rating_atmosphere || 4))}</strong></span>
+                  <span class="rating-item">設備・環境: <strong>${'★'.repeat(rev.rating_facility || 4)}${'☆'.repeat(5 - (rev.rating_facility || 4))}</strong></span>
+                </div>
+                ${rev.child_comment ? `
+                  <p class="review-child-quote">
+                    <strong>お子さまの感想メモ：</strong><br>
+                    「${rev.child_comment}」
+                  </p>
+                ` : ''}
+              </div>
+            `;
+          }).join('')}
         </div>
-      </div>
-    `;
+      `;
+    }
   }
 }
 
@@ -2504,8 +2806,7 @@ function finishChildQuestionsAndSlideToResult() {
 // マイページまたは結果画面から回答を編集する
 function startChildQuestionEdit() {
   if (currentUserMode === 'parent') {
-    alert("お子さまの回答データは、保護者画面からは変更できません。\nお子さまの自主性を尊重するため、画面上部の切り替えボタンで「子ども画面」にしてから編集を行ってください。");
-    return;
+    switchUserMode('child');
   }
   switchAppView('child');
 
@@ -4682,72 +4983,9 @@ function renderMypageChildProfile() {
     return;
   }
 
-  // 1. 興味関心タグの日本語マッピング
-  const interestLabelMap = {
-    "interest_nature_biology": "生き物・自然",
-    "interest_crafting_making": "ものづくり・工作",
-    "interest_arts_music": "絵・音楽・アート",
-    "interest_sports_athletics": "体を動かすこと・スポーツ",
-    "interest_digital_tech": "パソコン・ゲーム・プログラミング",
-    "interest_reading_history": "本・ものがたり・歴史",
-    "interest_science_space": "実験・科学・宇宙",
-    "interest_cooking_food": "料理・おかし作り",
-    "interest_social_events": "友だちとおしゃべり・イベント",
-    "interest_puzzle_math": "なぞ解き・パズル・計算"
-  };
-
   const interestBadges = (prof.interests && prof.interests.length > 0)
-    ? prof.interests.map(int => `<span class="ans-chip-tag"># ${interestLabelMap[int] || int}</span>`).join(' ')
+    ? prof.interests.map(int => `<span class="ans-chip-tag"># ${CHILD_INTEREST_LABEL_MAP[int] || int}</span>`).join(' ')
     : '<span style="color:#888;">未選択</span>';
-
-  // 2. 質問選択肢タグの日本語マッピング
-  const choiceLabelMap = {
-    // 夢中になる瞬間
-    "moment_invention": "新しいアイデアを思いついて形にしたとき",
-    "moment_discovery": "仕組みや理由がわかって「なるほど！」と思ったとき",
-    "moment_collaboration": "友だちやチームのみんなで力を合わせてできたとき",
-    "moment_mastery": "練習や工夫を重ねてできるようになったとき",
-    "craft": "自分でモノや作品をつくる時間",
-    "reading": "物語や本をじっくり読む時間",
-    "experiment": "ふしぎを実験して確かめる時間",
-    "nature": "自然や生き物とふれあう時間",
-
-    // 理想の放課後
-    "lifestyle_club_active": "部活に思いっきり打ちこんで毎日汗を流したい",
-    "lifestyle_relax_social": "友だちとおしゃべりしたり中庭でのんびり過ごしたい",
-    "lifestyle_individual_focus": "図書館や好きな教室で趣味や勉強に没頭したい",
-    "lifestyle_event_driven": "季節のお祭りや行事の準備をみんなでワイワイやりたい",
-    "club_active": "部活や運動で思いっきり汗を流す",
-    "lab_diy": "工房やパソコン室で工作・プログラミング",
-    "library_reading": "静かな図書室で好きな本に没頭",
-    "chill_friends": "カフェテリアや広場で友達とおしゃべり",
-
-    // 好きな授業スタイル
-    "study_lecture_expert": "先生の話が面白くてグングン学べる授業",
-    "study_inquiry_ict": "パソコンを使って自分で調べ発表する授業",
-    "study_hands_on": "実験や見学など実際に手や体を動かす授業",
-    "study_discussion_group": "みんなで意見を出し合って探究する授業",
-    "hands_on": "体験や実験が多いアクティブな授業",
-    "discussion": "みんなで意見を出し合う探究・ゼミ形式",
-    "deep_lecture": "専門的な知識を深く掘り下げる講義",
-    "global_english": "ネイティブの先生と英語で話す実践授業",
-
-    // 居心地のよい場所
-    "facility_rich_library": "本がたくさん並んで落ち着ける広くてきれいな図書館",
-    "facility_maker_lab": "本格的な実験器具や工作道具、PCがそろう教室",
-    "facility_sports_arena": "広いグラウンドやきれいな体育館など運動できる設備",
-    "facility_open_lounge": "ベンチや芝生があって友だちと語り合える中庭やラウンジ",
-    "high_tech_lab": "最新の3Dプリンタや実験設備があるラボ",
-    "grand_library": "天井が高く吹き抜けの開放的な図書室",
-    "natural_grounds": "緑豊かで広大なグラウンドや芝生テラス",
-    "cozy_cafe": "居心地のよいカフェテリアや交流ラウンジ",
-
-    // 先生・先輩との関係
-    "relation_supportive_care": "困ったときにすぐ相談に乗ってていねいに教えてくれる先生",
-    "relation_autonomous_trust": "生徒の自主性を信じてのびのび見守ってくれる先生",
-    "relation_friendly_seniors": "部活や行事で優しく声をかけてリードしてくれる先輩",
-    "relation_passionate_teachers": "自分の教科への情熱や大好きなことを語ってくれる先生"
-  };
 
   const momentVal = prof.moment || prof.q1 || '';
   const lifestyleVal = prof.lifestyle || prof.afterschool || prof.q2 || '';
@@ -4755,11 +4993,11 @@ function renderMypageChildProfile() {
   const facilityVal = prof.facility || prof.place || prof.q4 || '';
   const relationVal = prof.relation || prof.q5 || '';
 
-  const momentText = choiceLabelMap[momentVal] || momentVal || '未設定';
-  const afterschoolText = choiceLabelMap[lifestyleVal] || lifestyleVal || '未設定';
-  const subjectText = choiceLabelMap[studyVal] || studyVal || '未設定';
-  const placeText = choiceLabelMap[facilityVal] || facilityVal || '未設定';
-  const relationText = choiceLabelMap[relationVal] || relationVal || '未設定';
+  const momentText = CHILD_CHOICE_LABEL_MAP[momentVal] || momentVal || '未設定';
+  const afterschoolText = CHILD_CHOICE_LABEL_MAP[lifestyleVal] || lifestyleVal || '未設定';
+  const subjectText = CHILD_CHOICE_LABEL_MAP[studyVal] || studyVal || '未設定';
+  const placeText = CHILD_CHOICE_LABEL_MAP[facilityVal] || facilityVal || '未設定';
+  const relationText = CHILD_CHOICE_LABEL_MAP[relationVal] || relationVal || '未設定';
 
   const freeQuotes = [];
   if (prof.free_comments) {
