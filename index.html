@@ -1673,17 +1673,17 @@
         <div class="card-surface" id="mypageAccountSection" style="margin-top: 20px;">
           <div class="phase-header">
             <span class="badge-phase">アカウント</span>
-            <h3 class="title-h2">アカウント・同期設定</h3>
+            <h3 class="title-h2">アカウント・個別データ管理</h3>
           </div>
-          <div class="account-info-list" style="margin-top: 14px;">
-            <div class="account-info-row">
-              <span class="account-info-label">データ同期状態</span>
-              <span class="account-info-val text-success">✦ 同期中（最新）</span>
-            </div>
-          </div>
-          <div style="margin-top: 16px;">
-            <button type="button" class="btn-outline btn-sm" onclick="resetAppData()">
-              データを初期状態にリセット
+          <p style="font-size: 13px; color: #475569; margin: 8px 0 14px; line-height: 1.5;">
+            この端末に保存されているアカウント情報（お名前、最寄り駅、希望条件、質問回答）を管理します。別の方が新しく使う場合や最初からやり直したい場合は以下のボタンからリセットできます。
+          </p>
+          <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 10px;">
+            <button type="button" class="btn-outline btn-sm" onclick="openProfileEditModal()" style="text-align: center; font-weight: 700;">
+              ✎ アカウント名・アイコンを変更する
+            </button>
+            <button type="button" class="btn-outline btn-sm" onclick="resetAppData()" style="color: #DC2626; border-color: #F87171; background: #FFF5F5; text-align: center; font-weight: 700;">
+              🔄 アカウントをリセット（最初から新しく設定する）
             </button>
           </div>
         </div>

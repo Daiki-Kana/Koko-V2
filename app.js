@@ -402,17 +402,17 @@ const CHILD_INTEREST_OPTIONS = [
 ];
 
 // ==========================================
-// 2. アプリ共通ステート（データスキーマ準拠）
+// 2. アプリ共通ステート（一人一人の個別アカウント設定に対応した初期状態）
 // ==========================================
-let AppSchema = {
-  household_id: "いろは",
-  parent_name: "いろはさん",
+const DEFAULT_EMPTY_SCHEMA = {
+  household_id: "",
+  parent_name: "保護者さま",
   parent_avatar: "👤",
-  child_name: "いろは",
+  child_name: "お子さま",
   child_avatar: "👦",
   parent_profile: {
-    address: "茨城県土浦市",
-    station: "荒川沖駅",
+    address: "",
+    station: "",
     conditions: {
       commute_time_max: 60,
       tuition_max: 1000000,
@@ -423,21 +423,16 @@ let AppSchema = {
       university_path: "attached",
       desired_atmospheres: ["free", "stem"]
     },
-    strict_filters: [
-      "commute_time_max",
-      "transportation",
-      "tuition_max",
-      "school_gender_type"
-    ]
+    strict_filters: []
   },
   child_profile: {
     is_completed: false, // 質問に回答完了したかどうかのフラグ
-    interests: ["interest_science_space", "interest_digital_tech"],
-    moment: "moment_creation",
-    lifestyle: "lifestyle_individual_focus",
-    study: "study_hands_on",
-    facility: "facility_maker_lab",
-    relation: "relation_autonomous_trust",
+    interests: [],
+    moment: "",
+    lifestyle: "",
+    study: "",
+    facility: "",
+    relation: "",
     free_comments: {
       step1: "",
       q1: "",
@@ -449,24 +444,11 @@ let AppSchema = {
   },
   recommended_schools: [],
   // 行く前（予定）と行った後（振り返り）を管理する見学予定・記録リスト
-  visit_plans: [
-    {
-      plan_id: "plan_shibushibu_bunkasai",
-      school_id: "sch_shibushibu",
-      school_name: "渋谷教育学園渋谷中学校",
-      event_id: "ev_shibushibu_bunkasai",
-      event_title: "飛翔祭（文化祭）",
-      event_type: "文化祭",
-      event_date: "9月20日(土)",
-      event_desc: "生徒が企画運営する自由でエネルギッシュな展示・英語劇・模擬店が満載！",
-      status: "before", // 'before' (行く前) or 'after' (行った後)
-      reviewed_at: null,
-      rating: null,
-      review_data: null
-    }
-  ],
+  visit_plans: [],
   visit_reviews: []
 };
+
+let AppSchema = JSON.parse(JSON.stringify(DEFAULT_EMPTY_SCHEMA));
 
 let currentRole = "parent";
 let parentCurrentStep = 1;     // 1..10, 11: Phase2, 12: UrlCard
@@ -684,27 +666,36 @@ function getHeartSvg(isFilled = false) {
 // ==========================================
 // 学校写真プレースホルダー（大体のあたり）描画ヘルパー
 // ==========================================
+// ==========================================
+// 学校写真プレースホルダー（学校と写真が一致しないため枠のみ設ける）
+// ==========================================
 function renderSchoolPhotoPlaceholder(school, height = '140px') {
   if (!school) return '';
-  const photoUrl = school.photo_url || '';
   const schoolName = school.name || '学校';
 
   return `
-    <div class="school-card-photo-wrap" style="height:${height};">
-      ${photoUrl ? `
-        <img src="${photoUrl}" alt="${schoolName}" class="school-card-photo-img" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
-        <div class="photo-placeholder-fallback" style="display:none;">
-          <span class="photo-placeholder-icon">📷</span>
-          <span class="photo-placeholder-text">校舎・キャンパス風景（準備中）</span>
-        </div>
-      ` : `
-        <div class="photo-placeholder-fallback">
-          <span class="photo-placeholder-icon">📷</span>
-          <span class="photo-placeholder-text">校舎・キャンパス風景（準備中）</span>
-        </div>
-      `}
+    <div class="school-card-photo-wrap placeholder-only" style="height:${height}; background:#F8FAFC; border:2px dashed #CBD5E1; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:#64748B; margin:8px 0 12px; box-sizing:border-box;">
+      <div class="photo-placeholder-fallback" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; text-align:center; padding:10px;">
+        <span class="photo-placeholder-icon" style="font-size:26px; line-height:1;">📷</span>
+        <span class="photo-placeholder-text" style="font-size:12px; font-weight:700; color:#334155;">【${schoolName}】写真枠</span>
+        <span class="photo-placeholder-sub" style="font-size:10px; color:#64748B;">※学校の公式ホームページで実際の校舎・キャンパス写真をご確認いただけます</span>
+      </div>
     </div>
   `;
+}
+
+// ==========================================
+// 通学時間バッジ生成ヘルパー（自宅最寄り駅の設定有無に応じて表示を切替）
+// ==========================================
+function getCommuteBadgeHtml(school) {
+  if (!school) return '';
+  const station = (AppSchema.parent_profile && AppSchema.parent_profile.station) ? AppSchema.parent_profile.station.trim() : "";
+  const commuteMin = school.calculated_commute_time || school.commute_time || 30;
+
+  if (!station) {
+    return `<span style="font-size:12px; background:#F1F5F9; color:#475569; border:1px solid #CBD5E1; padding:3px 8px; border-radius:6px; font-weight:700;">⏱ 最寄駅未設定（目安約${commuteMin}分）</span>`;
+  }
+  return `<span style="font-size:12px; background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; padding:3px 8px; border-radius:6px; font-weight:800;">⏱ 自宅（${station}）より 片道約${commuteMin}分</span>`;
 }
 
 // ==========================================
@@ -937,9 +928,7 @@ function renderParentHomeDashboard() {
                 <span style="font-size:12px; background:#F8FAFC; color:#475569; border:1px solid #E2E8F0; padding:3px 8px; border-radius:6px; font-weight:700;">
                   📍 所在地：${school.prefecture} ${school.district || ''}（最寄：${school.station_name}）
                 </span>
-                <span style="font-size:12px; background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; padding:3px 8px; border-radius:6px; font-weight:800;">
-                  ⏱ 自宅（${currentStation}）より 片道約${commuteMin}分
-                </span>
+                ${getCommuteBadgeHtml(school)}
               </div>
             </div>
           </div>
@@ -1094,9 +1083,7 @@ function renderHomeRecommendedSchools() {
               <span style="font-size:12px; background:#F8FAFC; color:#475569; border:1px solid #E2E8F0; padding:3px 8px; border-radius:6px; font-weight:700;">
                 📍 所在地：${school.prefecture} ${school.district || ''}（最寄：${school.station_name}）
               </span>
-              <span style="font-size:12px; background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; padding:3px 8px; border-radius:6px; font-weight:800;">
-                ⏱ 自宅（${currentStation}）より 片道約${commuteMin}分
-              </span>
+              ${getCommuteBadgeHtml(school)}
             </div>
           </div>
         </div>
@@ -1225,9 +1212,7 @@ function renderHomeInterestAlternativeSchools() {
               <span style="font-size:12px; background:#F8FAFC; color:#475569; border:1px solid #E2E8F0; padding:3px 8px; border-radius:6px; font-weight:700;">
                 📍 所在地：${school.prefecture} ${school.district || ''}（最寄：${school.station_name}）
               </span>
-              <span style="font-size:12px; background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; padding:3px 8px; border-radius:6px; font-weight:800;">
-                ⏱ 自宅（${currentStation}）より 片道約${commuteMin}分
-              </span>
+              ${getCommuteBadgeHtml(school)}
             </div>
           </div>
         </div>
@@ -1448,9 +1433,7 @@ function renderSchoolSearchList(filterType = 'all') {
               <span style="font-size:12px; background:#F8FAFC; color:#475569; border:1px solid #E2E8F0; padding:3px 8px; border-radius:6px; font-weight:700;">
                 📍 所在地：${school.prefecture} ${school.district || ''}（最寄：${school.station_name}）
               </span>
-              <span style="font-size:12px; background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; padding:3px 8px; border-radius:6px; font-weight:800;">
-                ⏱ 自宅（${currentStation}）より 片道約${commuteMin}分
-              </span>
+              ${getCommuteBadgeHtml(school)}
             </div>
           </div>
         </div>
@@ -1631,9 +1614,7 @@ function openSchoolDetailModal(schoolId) {
           <h1 style="margin: 4px 0 10px; font-size:24px; font-weight:800; color:var(--text-main); line-height:1.3;">${school.name}</h1>
           
           <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin: 8px 0 12px;">
-            <span style="font-size:12px; background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; padding:4px 10px; border-radius:8px; font-weight:800;">
-              ⏱ 自宅（${currentStation}）より 片道約${commuteMin}分
-            </span>
+            ${getCommuteBadgeHtml(school)}
             <span style="font-size:12px; background:#F8FAFC; color:#334155; border:1px solid #CBD5E1; padding:4px 10px; border-radius:8px; font-weight:700;">
               📍 所在地：${school.prefecture} ${school.district || ''}（最寄：${school.station_name}駅）
             </span>
@@ -2002,16 +1983,17 @@ function updateParentProgressIndicator(step) {
 }
 
 function nextParentSlide(targetStep) {
-  // 質問1：保護者のお名前保存（世帯IDとは完全分離）
+  // 質問1：保護者のお名前保存（一人一人の入力値を反映）
   if (parentCurrentStep === 1) {
     const nameInput = document.getElementById('pInputParentName');
     const rawVal = nameInput ? nameInput.value.trim() : "";
-    if (rawVal === "いろは") {
-      AppSchema.parent_name = "いろはさん";
-    } else if (rawVal) {
+    if (rawVal) {
       AppSchema.parent_name = rawVal.endsWith("さん") ? rawVal : `${rawVal}さん`;
+    } else {
+      AppSchema.parent_name = "保護者さま";
     }
     renderMypageProfileHeader();
+    saveAppStateToLocalStorage();
   }
 
 function handleAddressStationInput() {
@@ -2269,6 +2251,7 @@ function saveAndGenerateChildUrl() {
     return;
   }
 
+  AppSchema.parent_profile.is_completed = true;
   saveAppStateToLocalStorage();
   executeSchoolMatching();
   renderQrCode();
@@ -2373,16 +2356,17 @@ function getChildSlideEl(step) {
 }
 
 function nextChildSlide(targetStep) {
-  // 質問1：ニックネーム保存（世帯IDとは完全分離）
+  // 質問1：ニックネーム保存（一人一人の入力値を反映）
   if (childCurrentStep === 1) {
     const nickInput = document.getElementById('cInputNickname');
     const nickVal = nickInput ? nickInput.value.trim() : "";
-    if (nickVal === "いろは") {
-      AppSchema.child_name = "いろは";
-    } else if (nickVal) {
+    if (nickVal) {
       AppSchema.child_name = nickVal;
+    } else {
+      AppSchema.child_name = "お子さま";
     }
     renderMypageProfileHeader();
+    saveAppStateToLocalStorage();
   }
 
   // 質問2：すきなこと選択チェック
@@ -2547,7 +2531,7 @@ function startChildQuestionEdit() {
   childCurrentStep = 1;
   updateChildProgressIndicator(1);
   if (document.getElementById('cInputNickname')) {
-    document.getElementById('cInputNickname').value = AppSchema.child_name || "いろは";
+    document.getElementById('cInputNickname').value = (AppSchema.child_name && AppSchema.child_name !== "お子さま") ? AppSchema.child_name : "";
   }
   renderInterestSelectionGrid();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2587,15 +2571,15 @@ function startParentConditionEdit() {
 
   // 設問1: 保護者お名前
   if (document.getElementById('pInputParentName')) {
-    document.getElementById('pInputParentName').value = AppSchema.parent_name || "いろはさん";
+    document.getElementById('pInputParentName').value = (AppSchema.parent_name && AppSchema.parent_name !== "保護者さま") ? AppSchema.parent_name : "";
   }
 
   // 設問2: 住所・最寄り駅
   if (document.getElementById('pInputAddress')) {
-    document.getElementById('pInputAddress').value = prof.address || "茨城県土浦市";
+    document.getElementById('pInputAddress').value = prof.address || "";
   }
   if (document.getElementById('pInputStation')) {
-    document.getElementById('pInputStation').value = prof.station || "荒川沖駅";
+    document.getElementById('pInputStation').value = prof.station || "";
   }
 
   // 設問3: 通学時間上限
@@ -3048,9 +3032,7 @@ function renderChildRecommendedSchools() {
               <span style="font-size:12px; background:#F8FAFC; color:#475569; border:1px solid #E2E8F0; padding:3px 8px; border-radius:6px; font-weight:700;">
                 📍 所在地：${s.prefecture} ${s.district || ''}（最寄：${s.station_name}）
               </span>
-              <span style="font-size:12px; background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; padding:3px 8px; border-radius:6px; font-weight:800;">
-                ⏱ 自宅（${currentStation}）より 片道約${commuteMin}分
-              </span>
+              ${getCommuteBadgeHtml(s)}
             </div>
           </div>
         </div>
@@ -4096,6 +4078,23 @@ function renderParentConditionsSummary() {
   const prof = AppSchema.parent_profile || {};
   const cond = prof.conditions || {};
 
+  // まだ住所・最寄り駅や条件が設定されていない場合
+  if (!prof.is_completed && !prof.address && !prof.station) {
+    mypageEl.innerHTML = `
+      <div style="padding: 20px; background: #F8FAFC; border: 2px dashed #94A3B8; border-radius: 12px; text-align: center;">
+        <span style="font-size: 28px; display: block; margin-bottom: 6px;">📋</span>
+        <p style="font-weight: 700; margin-bottom: 6px; color: #1E293B; font-size: 15px;">おうちの方の希望条件がまだ設定されていません</p>
+        <p style="font-size: 13px; color: #64748B; margin-bottom: 14px; line-height: 1.5;">
+          ご自宅の最寄り駅や通学時間、学費などの希望を設定すると、<br>通学可能で条件にぴったりの学校が自動で見つかります！
+        </p>
+        <button type="button" class="btn-solid" onclick="startParentConditionEdit()" style="display: inline-block; padding: 10px 20px; font-weight: 800;">
+          ✦ 希望条件を設定する
+        </button>
+      </div>
+    `;
+    return;
+  }
+
   // 各設定値の日本語変換マップ
   const transportMap = {
     "train": "電車利用",
@@ -4271,7 +4270,7 @@ function renderMypageProfileHeader() {
   const roleBadgeEl = document.getElementById('mypageUserRoleBadge');
 
   const avatar = isParent ? (AppSchema.parent_avatar || "👤") : (AppSchema.child_avatar || "👦");
-  const name = isParent ? (AppSchema.parent_name || "いろはさん") : (AppSchema.child_name || "いろは");
+  const name = isParent ? (AppSchema.parent_name || "保護者さま") : (AppSchema.child_name || "お子さま");
   const roleText = isParent ? "保護者アカウント" : "お子さまアカウント";
 
   if (avatarEl) avatarEl.textContent = avatar;
@@ -4297,7 +4296,9 @@ function openProfileEditModal() {
 
   const nameInput = document.getElementById('editProfileNameInput');
   if (nameInput) {
-    nameInput.value = isParent ? (AppSchema.parent_name || "いろはさん") : (AppSchema.child_name || "いろは");
+    const currentName = isParent ? AppSchema.parent_name : AppSchema.child_name;
+    nameInput.value = (currentName && currentName !== "保護者さま" && currentName !== "お子さま") ? currentName : "";
+    nameInput.placeholder = isParent ? "例：お母さん、お父さん" : "例：ゆうき、はるか";
   }
 
   renderAvatarPicker();
@@ -4342,15 +4343,13 @@ function saveProfileFromModal() {
 
   if (isParent) {
     if (newName) {
-      if (newName === "いろは") {
-        AppSchema.parent_name = "いろはさん";
-      } else {
-        AppSchema.parent_name = newName;
-      }
+      AppSchema.parent_name = newName.endsWith("さん") ? newName : `${newName}さん`;
+    } else {
+      AppSchema.parent_name = "保護者さま";
     }
     AppSchema.parent_avatar = selectedModalAvatar;
   } else {
-    if (newName) AppSchema.child_name = newName;
+    AppSchema.child_name = newName || "お子さま";
     AppSchema.child_avatar = selectedModalAvatar;
   }
 
@@ -4408,8 +4407,13 @@ function handleChildProfileUpdate(event) {
 }
 
 function resetAppData() {
-  if (confirm("アプリの入力内容を初期状態にリセットしますか？")) {
-    localStorage.clear();
+  if (confirm("アカウント情報（お名前、住所、最寄り駅、アンケート回答、お気に入り等）をすべて初期化して、最初から新しく設定しますか？\n（別の方が新しく使う場合や最初からやり直す場合にご利用ください）")) {
+    try {
+      localStorage.clear();
+      sessionStorage.clear();
+    } catch(e) {}
+    AppSchema = JSON.parse(JSON.stringify(DEFAULT_EMPTY_SCHEMA));
+    alert("アカウント情報を初期化しました。新しいアカウント設定を始めてください。");
     location.reload();
   }
 }
@@ -4599,12 +4603,16 @@ function getSolidIconSvg(iconType) {
 // ==========================================
 // 10. マイページ：質問回答データ描画 ＆ ローカルストレージ連携
 // ==========================================
-const APP_STORAGE_KEY = "koko_app_data_v2";
+const APP_STORAGE_KEY = "koko_user_data_v3";
 
 function saveAppStateToLocalStorage() {
   try {
     const dataToSave = {
+      household_id: AppSchema.household_id,
+      parent_name: AppSchema.parent_name,
+      parent_avatar: AppSchema.parent_avatar,
       child_name: AppSchema.child_name,
+      child_avatar: AppSchema.child_avatar,
       child_grade: AppSchema.child_grade,
       child_profile: AppSchema.child_profile,
       parent_profile: AppSchema.parent_profile,
@@ -4620,13 +4628,36 @@ function saveAppStateToLocalStorage() {
 
 function loadAppStateFromLocalStorage() {
   try {
+    // 過去の開発時テストデータ（「いろは」「荒川沖駅」「茨城県土浦市」など）の古いキーを自動クリア
+    try {
+      localStorage.removeItem("koko_app_data_v1");
+      localStorage.removeItem("koko_app_data_v2");
+    } catch(e) {}
+
     const saved = localStorage.getItem(APP_STORAGE_KEY);
     if (!saved) return;
     const parsed = JSON.parse(saved);
-    if (parsed.child_name) AppSchema.child_name = parsed.child_name;
+    if (parsed.household_id) AppSchema.household_id = parsed.household_id;
+    if (parsed.parent_name && parsed.parent_name !== "いろは" && parsed.parent_name !== "いろはさん") {
+      AppSchema.parent_name = parsed.parent_name;
+    }
+    if (parsed.parent_avatar) AppSchema.parent_avatar = parsed.parent_avatar;
+    if (parsed.child_name && parsed.child_name !== "いろは") {
+      AppSchema.child_name = parsed.child_name;
+    }
+    if (parsed.child_avatar) AppSchema.child_avatar = parsed.child_avatar;
     if (parsed.child_grade) AppSchema.child_grade = parsed.child_grade;
     if (parsed.child_profile) AppSchema.child_profile = Object.assign(AppSchema.child_profile, parsed.child_profile);
-    if (parsed.parent_profile) AppSchema.parent_profile = Object.assign(AppSchema.parent_profile, parsed.parent_profile);
+    if (parsed.parent_profile) {
+      // 旧テストデータ「茨城県土浦市」「荒川沖駅」が混入していた場合はクリア
+      if (parsed.parent_profile.address === "茨城県土浦市" && !parsed.parent_profile.custom_entered) {
+        parsed.parent_profile.address = "";
+      }
+      if (parsed.parent_profile.station === "荒川沖駅" && !parsed.parent_profile.custom_entered) {
+        parsed.parent_profile.station = "";
+      }
+      AppSchema.parent_profile = Object.assign(AppSchema.parent_profile, parsed.parent_profile);
+    }
     if (Array.isArray(parsed.favorites)) AppSchema.favorites = parsed.favorites;
     if (Array.isArray(parsed.visit_planned_events)) AppSchema.visit_planned_events = parsed.visit_planned_events;
     if (Array.isArray(parsed.visit_reviews)) AppSchema.visit_reviews = parsed.visit_reviews;
