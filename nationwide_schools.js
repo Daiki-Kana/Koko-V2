@@ -1402,7 +1402,7 @@ const NATIONWIDE_SCHOOL_LIST = [
     school_id: "sch_edotoride",
     name: "江戸川学園取手中学校",
     name_ruby: "えどがわがくえんとりでちゅうがっこう",
-    official_url: "https://www.e-t.ed.jp/",
+    official_url: "https://www2.e-t.ed.jp/",
     catchphrase: "心豊かなリーダーを育てる規律ある進学校。医科・東大・難関大コース編成",
     recommend_phrase: "★ 医学部や最難関大を目指し、充実した理科実験室や規律ある環境で学びたい人におすすめ！",
     photo_url: "assets/images/real_shibushibu.jpg",
